@@ -65,7 +65,7 @@ Route::middleware(['auth'])->prefix('profile')->name('profile.')->group(function
 Route::middleware(['admin'])->name('admin.')->prefix('admin')->group(function () {
 
     Route::view('/', 'admin.index')->name('index');
-    Route::resource('category', [CategoryController::class]);
+    Route::resource('category', CategoryController::class);
     
 });
 
