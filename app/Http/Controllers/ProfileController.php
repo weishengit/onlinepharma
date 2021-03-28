@@ -50,12 +50,9 @@ class ProfileController extends Controller
                 'scid' => $request->input('scid'),
             ]);
 
-        return view('profile.index')
-            ->with('message', 'profile updated. reload to view changes');
+        return redirect()
+            ->route('profile.index')
+            ->with('message', 'profile updated.');
     }
 
-    public function destroy(Request $request)
-    {
-        
-    }
 }

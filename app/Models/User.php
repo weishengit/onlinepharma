@@ -44,6 +44,7 @@ class User extends Authenticatable
      */
     protected $attributes = [
         'is_admin' => 0,
+        'is_active' => 1,
     ];
 
     /**

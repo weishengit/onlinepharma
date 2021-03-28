@@ -7,6 +7,8 @@
 
         <title>{{ config('app.name', 'Laravel') }}</title>
 
+        
+
         <!-- Fonts -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
 
@@ -14,6 +16,8 @@
         
         <!-- Styles -->
         <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+
+        @yield('style')
 
         <!--Replace with your tailwind.css once created-->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js" integrity="sha256-XF29CBwU1MWLaGEnsELogU6Y6rcc5nCkhhx89nFMIDQ=" crossorigin="anonymous"></script>
@@ -156,7 +160,10 @@
     
             </div>
         </footer>
-    
+        
+        @yield('script')
+
+
         <script>
         /*Toggle dropdown list*/
         /*https://gist.github.com/slavapas/593e8e50cf4cc16ac972afcbad4f70c8*/
@@ -209,6 +216,8 @@
             }
             return false;
         }
+
+        
         </script>
     
     </body>

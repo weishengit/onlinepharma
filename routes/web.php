@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileDelete;
 use App\Http\Controllers\PagesController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PasswordController;
 
 /*
@@ -37,7 +38,7 @@ Route::prefix('pages')->name('pages.')->group(function () {
 
     Route::get('/checkout', [PagesController::class, 'checkout'])
         ->name('checkout')
-        ->middleware(['customer', 'checkout']);
+        ->middleware(['customer', 'checkout', 'active']);
 
     Route::get('/show/{product}', [PagesController::class, 'show'])
         ->name('show')
@@ -45,7 +46,7 @@ Route::prefix('pages')->name('pages.')->group(function () {
 });
 
 // PROFILE ROUTE
-Route::middleware(['auth'])->prefix('profile')->name('profile.')->group(function () {
+Route::middleware(['auth', 'active'])->prefix('profile')->name('profile.')->group(function () {
     Route::get('/', [ProfileController::class, 'index'] )->name('index');
     Route::get('/edit', [ProfileController::class, 'edit'] )->name('edit');
     Route::put('/update', [ProfileController::class, 'update'] )->name('update');
@@ -62,7 +63,7 @@ Route::middleware(['auth'])->prefix('profile')->name('profile.')->group(function
 });
 
 // ADMIN ROUTE
-Route::middleware(['admin'])->name('admin.')->prefix('admin')->group(function () {
+Route::middleware(['admin', 'active'])->name('admin.')->prefix('admin')->group(function () {
 
     Route::view('/', 'admin.index')->name('index');
     Route::resource('category', CategoryController::class);

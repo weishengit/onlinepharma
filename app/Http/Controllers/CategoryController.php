@@ -14,7 +14,25 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        return view('admin.category.index');
+    }
+
+    public function show($filter = '')
+    {
+        $categories = '';
+
+        switch($filter){
+            case 'all' :
+                $categories = Category::orderBy('name', 'ASC')->get();
+            break;
+            default:
+                $categories = Category::orderBy('name', 'DESC')->get();
+            break;
+        }
+
+        return view('admin.category.show')
+            ->with('categories', $categories)
+            ->with('filter', $filter);
     }
 
     /**
@@ -24,7 +42,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.category.create');
     }
 
     /**
@@ -35,18 +53,17 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        $request->validate([
+            'name' => 'required|unique:categories,name',
+        ]);
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Category  $category
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Category $category)
-    {
-        //
+        Category::create([
+            'name' => $request->input('name'),
+        ]);
+
+        return redirect()
+            ->route('admin.category.show')
+            ->with('message', 'Category '. $request->input('name') .' has been created.');
     }
 
     /**
@@ -55,9 +72,16 @@ class CategoryController extends Controller
      * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function edit(Category $category)
+    public function edit($id)
     {
-        //
+        $category = Category::where('id', $id)->first() ?? null;
+
+        if ($category == null) {
+            return redirect()->route('admin.category.index')->with('message', 'Category not found.');
+        }
+
+        return view('admin.category.edit')
+            ->with('category', Category::where('id', $id)->first());
     }
 
     /**
@@ -67,9 +91,20 @@ class CategoryController extends Controller
      * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Category $category)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'name' => 'required|unique:categories,name,'. $id,
+        ]);
+
+        Category::where('id', $id)
+            ->update([
+                'name' => $request->input('name'),
+            ]);
+
+        return redirect()
+            ->route('admin.category.show')
+            ->with('message', 'Category '. $request->input('name') .' has been updated.');
     }
 
     /**
@@ -78,8 +113,19 @@ class CategoryController extends Controller
      * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Category $category)
+    public function destroy($id)
     {
-        //
+        $category = Category::where('id', $id)->first()  ?? null;
+
+        if ($category == null) {
+            return redirect()->route('admin.category.index')->with('message', 'Category not found.');
+        }
+
+        $name = $category->name;
+        $category->delete();
+
+        return redirect()
+            ->route('admin.category.show')
+            ->with('message', 'Category '. $name .' has been deleted.');
     }
 }

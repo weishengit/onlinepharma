@@ -76,7 +76,7 @@
     <div class="w-full px-4 md:px-0 md:mt-8 mb-16 text-gray-800 leading-normal">
         {{-- Title --}}
         <h1 class="flex items-center font-sans font-bold break-normal text-indigo-500 px-2 py-8 text-xl md:text-2xl">
-			Categories Table - {{ $filter }}
+			Categories Table
 		</h1>
         {{-- Message --}}
         @if (session()->has('message'))
@@ -100,34 +100,7 @@
                 </ul>
             </div>
         @endif
-        {{-- Table --}}
-        <div id='recipients' class="p-8 mt-6 lg:mt-0 rounded shadow bg-white">
-            <table id="data_table" class="stripe hover" style="width:100%; padding-top: 1em;  padding-bottom: 1em;">
-                <thead>
-                    <tr>
-                        <th>Category ID</th>
-                        <th>Category Name</th>
-                        <th>Edit</th>
-                    </tr>
-                </thead>
-                <tbody>
-                @foreach ($categories as $category)
-                    <tr>
-                        <td>{{ $category->id }}</td>
-                        <td>{{ $category->name }}</td>
-                        <td>
-                            <a 
-                                href="/admin/category/{{ $category->id }}/edit">
-                                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                                    Edit
-                                </button>
-                            </a>
-                        </td>
-                    </tr>
-                @endforeach
-                </tbody>
-            </table>
-        </div>
+        
     </div>
 </div>
 @endsection
