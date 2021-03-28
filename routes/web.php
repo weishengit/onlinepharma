@@ -21,6 +21,8 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
+
+
 // PAGES ROUTE
 Route::get('/', [PagesController::class, 'index'])->name('home');
 
@@ -63,7 +65,7 @@ Route::middleware(['auth'])->prefix('profile')->name('profile.')->group(function
 Route::middleware(['admin'])->name('admin.')->prefix('admin')->group(function () {
 
     Route::view('/', 'admin.index')->name('index');
-    
+    Route::resource('category', [CategoryController::class]);
     
 });
 

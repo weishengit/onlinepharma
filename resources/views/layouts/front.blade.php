@@ -32,11 +32,14 @@
 
         <div class="container">
             <div class="d-flex align-items-center justify-content-between">
-            <div class="logo">
-                <div class="site-logo">
-                <a href="{{ route('home') }}" class="js-logo-clone">{{ config('app.name') ?? Store }}</a>
-                </div>
-            </div>
+              <div class="logo">
+                  <div class="site-logo">
+                    <a class="navbar-brand" href="#">
+                      <img src="{{ asset('favicon-32x32.png') }}" width="30" height="30" alt="">
+                    </a>
+                  <a href="{{ route('home') }}" class="js-logo-clone">{{ config('app.name') ?? Store }}</a>
+                  </div>
+              </div>
             <div class="main-nav d-none d-lg-block">
                 <nav class="site-navigation text-right text-md-center" role="navigation">
                 <ul class="site-menu js-clone-nav d-none d-lg-block">

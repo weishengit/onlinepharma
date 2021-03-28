@@ -37,17 +37,20 @@ class PagesController extends Controller
 
     public function checkout()
     {
-        return view('pages.checkout');
+        return view('pages.checkout')
+            ->with('metaTitle', 'Checkout');
     }
 
     public function thanks()
     {
-        return view('pages.thanks');
+        return view('pages.thanks')
+            ->with('metaTitle', 'Thanks');
     }
 
     public function cart()
     {
-        return view('pages.cart');
+        return view('pages.cart')
+            ->with('metaTitle', 'Cart');
     }
 
     public function show($product = null)
@@ -55,7 +58,7 @@ class PagesController extends Controller
         $productItem = 'product from db';
 
         return view('pages.show')
-            ->with('metaTitle', 'Shop - ' . $product . ' - Online Pharma System')
+            ->with('metaTitle', 'Shop - ' . $product)
             ->with('product', $productItem);
     }
 }
