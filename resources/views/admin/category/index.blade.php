@@ -35,9 +35,17 @@
         <div class="flex flex-col">
             <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
             <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-                <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-                    <a href="{{ route('admin.category.show', ['category' => 'all']) }}"><h2>Categories</h2></a>
-                </div>
+                <a 
+                    href="{{ route('admin.category.show', ['category' => 'all']) }}">
+
+                    <div class="max-w-2xl bg-white border-2 border-gray-300 p-5 rounded-md tracking-wide shadow-lg">
+                        <div id="header" class=""> 
+                              <h4 id="name" class="text-2xl font-semibold mb-2">All Categories</h4>
+                              <p id="job" class="text-gray-800 mt-2 text-sm">Show all categories.</p>
+                           </div>
+                        </div>
+                     </div>
+                </a>
             </div>
             </div>
         </div>

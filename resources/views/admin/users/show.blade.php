@@ -77,14 +77,14 @@
         {{-- Title --}}
         <h1 class="flex items-center font-sans font-bold break-normal text-indigo-500 px-2 py-8 text-xl md:text-2xl">
 			<a 
-                href="{{ route('admin.category.index') }}"\
+                href="{{ route('admin.user.index') }}"\
                 class="float-right">
                 <button class="bg-red-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                     Back
                 </button>
             </a>
             &nbsp; - 
-            Categories Table - {{ $filter }}
+            Users Table - {{ $filter }}
 
             
 		</h1>
@@ -118,21 +118,21 @@
             <table id="data_table" class="stripe hover" style="width:100%; padding-top: 1em;  padding-bottom: 1em;">
                 <thead>
                     <tr>
-                        <th>Category ID</th>
-                        <th>Category Name</th>
-                        <th>Edit</th>
+                        <th>ID</th>
+                        <th>Username</th>
+                        <th>Options</th>
                     </tr>
                 </thead>
                 <tbody>
-                @foreach ($categories as $category)
+                @foreach ($users as $user)
                     <tr>
-                        <td>{{ $category->id }}</td>
-                        <td>{{ $category->name }}</td>
+                        <td>{{ $user->id }}</td>
+                        <td>{{ $user->name }}</td>
                         <td>
                             <a 
-                                href="/admin/category/{{ $category->id }}/edit">
+                                href="/admin/users/{{ $user->id }}/edit">
                                 <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                                    Edit
+                                    Options
                                 </button>
                             </a>
                         </td>
