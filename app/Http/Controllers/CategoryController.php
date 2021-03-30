@@ -81,7 +81,7 @@ class CategoryController extends Controller
         }
 
         return view('admin.category.edit')
-            ->with('category', Category::where('id', $id)->first());
+            ->with('category', $category);
     }
 
     /**

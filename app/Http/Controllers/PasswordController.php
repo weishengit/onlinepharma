@@ -24,7 +24,8 @@ class PasswordController extends Controller
                 'password' => Hash::make($request->input('password')),
             ]);
             
-        return view('profile.index')
-            ->with('message', 'password updated');
+        return redirect()
+            ->route('profile.edit')
+            ->with('message', 'Your password was successfully updated');
     }
 }

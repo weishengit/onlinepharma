@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\BanController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileDelete;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\PagesController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CategoryController;
@@ -65,9 +67,17 @@ Route::middleware(['auth', 'active'])->prefix('profile')->name('profile.')->grou
 // ADMIN ROUTE
 Route::middleware(['admin', 'active'])->name('admin.')->prefix('admin')->group(function () {
 
+    //DASHBOARD
     Route::view('/', 'admin.index')->name('index');
+    //CATEGORY
     Route::resource('category', CategoryController::class);
-    
+    //USERS
+    Route::resource('user', UserController::class);
+    Route::get('users/show/admin', [UserController::class , 'showAdmin'])->name('user.admin.show');
+    Route::get('users/show/customer', [UserController::class , 'showCustomer'])->name('user.customer.show');
+    Route::get('users/show/inactive', [UserController::class , 'showInactive'])->name('user.inactive.show');
+    Route::post('users/edit/{id}/ban', [BanController::class , 'store'])->name('user.ban');
+    Route::delete('users/edit/{id}/unban', [BanController::class , 'destroy'])->name('user.unban');
 });
 
 require __DIR__.'/auth.php';

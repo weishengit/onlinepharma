@@ -74,10 +74,6 @@
 <!--Container-->
 <div class="container w-full mx-auto pt-20">
     <div class="w-full px-4 md:px-0 md:mt-8 mb-16 text-gray-800 leading-normal">
-        {{-- Title --}}
-        <h1 class="flex items-center font-sans font-bold break-normal text-indigo-500 px-2 py-8 text-xl md:text-2xl">
-			Categories Table
-		</h1>
         {{-- Message --}}
         @if (session()->has('message'))
         <div class="p-10 flex flex-col space-y-3">
@@ -100,6 +96,60 @@
                 </ul>
             </div>
         @endif
+        {{-- Title --}}
+        <h1 class="border-2 flex items-center font-sans font-bold break-normal text-gray-900 px-2 py-8 text-lg md:text-2xl">
+			<a 
+                href="{{ route('admin.index') }}">
+                <p class="text-blue-500 hover:text-blue-700 font-bold">
+                    Dashboard&nbsp;
+                </p>
+                
+            </a>
+            /&nbsp;
+            <a 
+                href="{{ route('admin.user.index') }}">
+                <p class="text-blue-500 hover:text-blue-700 font-bold">
+                    Accounts&nbsp;
+                </p>
+                
+            </a>
+            /&nbsp;
+            <p class="text-indigo-700">
+                Customers
+            </p>
+        </h1>
+        {{-- Table --}}
+        <div id='recipients' class="p-8 mt-6 lg:mt-0 rounded shadow bg-white">
+            <table id="data_table" class="stripe hover" style="width:100%; padding-top: 1em;  padding-bottom: 1em;">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Actions</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Contact</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach ($users as $user)
+                    <tr>
+                        <td>{{ $user->id }}</td>
+                        <td>
+                            <a 
+                            href="{{ route('admin.user.edit', ['user' => $user->id]) }}">
+                                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                    Options
+                                </button>
+                            </a>
+                        </td>
+                        <td>{{ $user->name }}</td>
+                        <td>{{ $user->email }}</td>
+                        <td>{{ $user->contact }}</td>
+                    </tr>
+                @endforeach
+                </tbody>
+            </table>
+        </div>
         
     </div>
 </div>

@@ -20,6 +20,14 @@
             
             </div><!--/col-3-->
     	<div class="col-sm-9">
+            @if (session()->has('message'))
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    {{ session()->get('message') }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            @endif
             @if ($errors->any())
                 <div class="alert alert-warning alert-dismissible fade show" role="alert">
                     <strong>Holy guacamole!</strong> You should check in on some of those fields below.
@@ -103,26 +111,4 @@
         </div><!--/col-9-->
     </div><!--/row-->
 </div>
-    <script>
-    $(document).ready(function() {
-
-    
-    var readURL = function(input) {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-
-            reader.onload = function (e) {
-                $('.avatar').attr('src', e.target.result);
-            }
-    
-            reader.readAsDataURL(input.files[0]);
-        }
-    }
-    
-
-    $(".file-upload").on('change', function(){
-        readURL(this);
-    });
-});
-    </script>
 @endsection
