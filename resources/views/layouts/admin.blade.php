@@ -35,7 +35,7 @@
             <div class="w-full container mx-auto flex flex-wrap items-center mt-0 pt-3 pb-3 md:pb-0">
     
                 <div class="w-1/2 pl-2 md:pl-0">
-                    <a class="text-gray-900 text-base xl:text-xl no-underline hover:no-underline font-bold" href="#">
+                    <a class="text-green-600 text-base xl:text-xl no-underline hover:no-underline font-bold" href="{{ route('admin.index') }}">
                         <i class="fas fa-heart pr-3"></i> Admin Dashboard
                     </a>
                 </div>
@@ -100,7 +100,7 @@
                             </a>
                         </li>
                         <li class="mr-6 my-2 md:my-0">
-                            <a href="#" class="block py-1 md:py-3 pl-1 align-middle text-gray-500 no-underline hover:text-gray-900 border-b-2 border-white hover:border-purple-500">
+                            <a href="{{ route('admin.product.index') }}" class="block py-1 md:py-3 pl-1 align-middle text-gray-500 no-underline hover:text-gray-900 border-b-2 border-white hover:border-purple-500">
                                 <i class="fa fa-envelope fa-fw mr-3"></i><span class="pb-1 md:pb-0 text-sm">Products</span>
                             </a>
                         </li>
@@ -125,7 +125,8 @@
         {{-- CONTENT --}}
         @yield('content')
         {{-- CONTENT END --}}
-        <footer class="bg-white border-t border-gray-400 shadow">
+        {{-- FOOTER --}}
+        {{-- <footer class="bg-white border-t border-gray-400 shadow">
             <div class="container max-w-md mx-auto flex py-8">
     
                 <div class="w-full mx-auto flex flex-wrap">
@@ -159,7 +160,7 @@
     
     
             </div>
-        </footer>
+        </footer> --}}
         
         @yield('script')
 

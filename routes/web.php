@@ -1,10 +1,11 @@
 <?php
 
-use App\Http\Controllers\BanController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\BanController;
 use App\Http\Controllers\ProfileDelete;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PagesController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PasswordController;
@@ -72,12 +73,14 @@ Route::middleware(['admin', 'active'])->name('admin.')->prefix('admin')->group(f
     //CATEGORY
     Route::resource('category', CategoryController::class);
     //USERS
-    Route::resource('user', UserController::class);
     Route::get('users/show/admin', [UserController::class , 'showAdmin'])->name('user.admin.show');
     Route::get('users/show/customer', [UserController::class , 'showCustomer'])->name('user.customer.show');
     Route::get('users/show/inactive', [UserController::class , 'showInactive'])->name('user.inactive.show');
     Route::post('users/edit/{id}/ban', [BanController::class , 'store'])->name('user.ban');
     Route::delete('users/edit/{id}/unban', [BanController::class , 'destroy'])->name('user.unban');
+    Route::resource('user', UserController::class);
+    //PRODUCTS
+    Route::resource('product', ProductController::class);
 });
 
 require __DIR__.'/auth.php';
