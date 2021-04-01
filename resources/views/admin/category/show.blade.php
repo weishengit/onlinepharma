@@ -74,23 +74,6 @@
 <!--Container-->
 <div class="container w-full mx-auto pt-20">
     <div class="w-full px-4 md:px-0 md:mt-8 mb-16 text-gray-800 leading-normal">
-        {{-- Title --}}
-        <h1 class="flex items-center font-sans font-bold break-normal text-indigo-500 px-2 py-8 text-xl md:text-2xl">
-			<a 
-                href="{{ route('admin.category.index') }}"\
-                class="float-right">
-                <button class="bg-red-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                    Back
-                </button>
-            </a>
-            &nbsp; - 
-            Categories Table - {{ $filter }}
-
-            
-		</h1>
-            
-
-        
         {{-- Message --}}
         @if (session()->has('message'))
         <div class="p-10 flex flex-col space-y-3">
@@ -105,14 +88,46 @@
         @endif
         {{-- Error --}}
         @if ($errors->any())
-            <div class="w-4/5 m-auto mt-10 pl-2">
+            <div class="m-auto mt-10 pl-2 bg-red-200">
+                <h2 class="text-2xl p-4">Please check the following fields</h2>
+                <hr>
                 <ul>
                     @foreach ($errors->all() as $error)
-                        {{ $error }}
+                        <li class="p-2">* {{ $error }}</li>
                     @endforeach
                 </ul>
             </div>
         @endif
+        <div class="m-2 mt-7 float-right">
+            <a href="{{ route('admin.category.create') }}">
+                <button type="button" class="block py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-500 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    Add Category
+                </button>
+            </a>
+        </div>
+        {{-- Title --}}
+        <h1 class="border-2 flex items-center font-sans font-bold break-normal text-gray-900 px-2 py-8 text-lg md:text-2xl">
+			<a 
+                href="{{ route('admin.index') }}">
+                <p 
+                    class="text-blue-500 hover:text-blue-700 font-bold">
+                    Dashboard&nbsp;
+                </p>
+            </a>
+            /&nbsp;
+            <a 
+                href="{{ route('admin.category.index') }}">
+                <p 
+                    class="text-blue-500 hover:text-blue-700 font-bold">
+                    Categories&nbsp;
+                </p>
+            </a>
+            /&nbsp;
+            <p class="text-indigo-700">
+                All
+            </p>
+		</h1>
+
         {{-- Table --}}
         <div id='recipients' class="p-8 mt-6 lg:mt-0 rounded shadow bg-white">
             <table id="data_table" class="stripe hover" style="width:100%; padding-top: 1em;  padding-bottom: 1em;">
@@ -130,7 +145,7 @@
                         <td>{{ $category->name }}</td>
                         <td>
                             <a 
-                                href="/admin/category/{{ $category->id }}/edit">
+                                href="{{ route('admin.category.edit', ['category' => $category->id]) }}">
                                 <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                                     Edit
                                 </button>

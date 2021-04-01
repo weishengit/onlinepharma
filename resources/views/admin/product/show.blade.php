@@ -1,12 +1,10 @@
 @extends('layouts.admin')
 
 
-@section('content')
+@section('content') 
 <!--Container-->
 <div class="container w-full mx-auto pt-20">
     <div class="w-full px-4 md:px-0 md:mt-8 mb-16 text-gray-800 leading-normal">
-        {{-- PAGE START --}}
-
         {{-- Message --}}
         @if (session()->has('message'))
         <div class="p-10 flex flex-col space-y-3">
@@ -21,10 +19,12 @@
         @endif
         {{-- Error --}}
         @if ($errors->any())
-            <div class="w-4/5 m-auto mt-10 pl-2">
+            <div class="m-auto mt-10 pl-2 bg-red-200">
+                <h2 class="text-2xl p-4">Please check the following fields</h2>
+                <hr>
                 <ul>
                     @foreach ($errors->all() as $error)
-                        {{ $error }}
+                        <li class="p-2">* {{ $error }}</li>
                     @endforeach
                 </ul>
             </div>
@@ -55,6 +55,7 @@
                 {{ $product->name }}
             </p>
 		</h1>
+
         {{-- CONTENT --}}
         <div>
             {{-- BORDER --}}
@@ -72,6 +73,13 @@
                             <h3 class="text-3xl font-medium leading-6 text-gray-900">Product Information</h3>  
                         </div>
                     </div>
+                    {{-- IMAGE --}}
+                    <div class="bg-rose-300 ...">
+                        <img 
+                            class="object-contain h-48 w-full ..."
+                            src="{{ asset('images/' . $product->image) }}"
+                            alt="product-image">
+                      </div>
                     {{-- FIELD GROUP --}}
                     <div class="mt-5 md:mt-0 md:col-span-2">
                         <div class="shadow overflow-hidden sm:rounded-md">

@@ -21,6 +21,7 @@ class Product extends Model
         'drug_class',
         'description',
         'price',
+        'stock',
         'measurement',
         'is_prescription',
         'is_available',

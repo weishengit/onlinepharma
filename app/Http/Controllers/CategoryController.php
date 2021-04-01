@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CategoryController extends Controller
 {
@@ -17,22 +19,15 @@ class CategoryController extends Controller
         return view('admin.category.index');
     }
 
-    public function show($filter = '')
+    public function show($category = null)
     {
-        $categories = '';
-
-        switch($filter){
-            case 'all' :
-                $categories = Category::orderBy('name', 'ASC')->get();
-            break;
-            default:
-                $categories = Category::orderBy('name', 'DESC')->get();
-            break;
+        $categories = Category::orderBy('name', 'ASC')->get() ?? null;
+        if ($categories == null) {
+            return redirect()->route('admin.category.index')->with('message', 'there are currently no categories');
         }
 
         return view('admin.category.show')
-            ->with('categories', $categories)
-            ->with('filter', $filter);
+            ->with('categories', $categories);
     }
 
     /**
@@ -62,7 +57,7 @@ class CategoryController extends Controller
         ]);
 
         return redirect()
-            ->route('admin.category.show')
+            ->route('admin.category.index')
             ->with('message', 'Category '. $request->input('name') .' has been created.');
     }
 
@@ -103,7 +98,7 @@ class CategoryController extends Controller
             ]);
 
         return redirect()
-            ->route('admin.category.show')
+            ->route('admin.category.index')
             ->with('message', 'Category '. $request->input('name') .' has been updated.');
     }
 
@@ -120,12 +115,21 @@ class CategoryController extends Controller
         if ($category == null) {
             return redirect()->route('admin.category.index')->with('message', 'Category not found.');
         }
-
         $name = $category->name;
-        $category->delete();
+
+        // DELETE THE CATEGORY AND UNSET IT FROM PRODUCTS
+        DB::transaction(function () use($category, $id){
+            $category->delete();
+
+            Product::where('category_id', $id)
+                ->update([
+                    'category_id' => null
+                ]);
+        });
+        
 
         return redirect()
-            ->route('admin.category.show')
+            ->route('admin.category.index')
             ->with('message', 'Category '. $name .' has been deleted.');
     }
 }

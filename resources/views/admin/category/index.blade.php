@@ -4,10 +4,6 @@
 <!--Container-->
 <div class="container w-full mx-auto pt-20">
     <div class="w-full px-4 md:px-0 md:mt-8 mb-16 text-gray-800 leading-normal">
-        {{-- Title --}}
-        <h1 class="flex items-center font-sans font-bold break-normal text-indigo-500 px-2 py-8 text-xl md:text-2xl">
-			Categories
-		</h1>
         {{-- Message --}}
         @if (session()->has('message'))
         <div class="p-10 flex flex-col space-y-3">
@@ -22,14 +18,30 @@
         @endif
         {{-- Error --}}
         @if ($errors->any())
-            <div class="w-4/5 m-auto mt-10 pl-2">
+            <div class="m-auto mt-10 pl-2 bg-red-200">
+                <h2 class="text-2xl p-4">Please check the following fields</h2>
+                <hr>
                 <ul>
                     @foreach ($errors->all() as $error)
-                        {{ $error }}
+                        <li class="p-2">* {{ $error }}</li>
                     @endforeach
                 </ul>
             </div>
         @endif
+        {{-- Title --}}
+        <h1 class="border-2 flex items-center font-sans font-bold break-normal text-gray-900 px-2 py-8 text-lg md:text-2xl">
+			<a 
+                href="{{ route('admin.index') }}">
+                <p 
+                    class="text-blue-500 hover:text-blue-700 font-bold">
+                    Dashboard&nbsp;
+                </p>
+            </a>
+            /&nbsp;
+            <p class="text-indigo-700">
+                Categories
+            </p>
+		</h1>
 
         {{-- Cards --}}
         <div class="flex flex-col">

@@ -22,7 +22,7 @@ class ProductFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->word,
+            'name' => $this->faker->unique()->word,
             'category_id' => $this->faker->numberBetween(1, 8),
             'generic_name' => $this->faker->word,
             'drug_class' => $this->faker->word,
@@ -32,7 +32,7 @@ class ProductFactory extends Factory
             'stock' => $this->faker->numberBetween(100, 1000),
             'is_prescription' => $this->faker->numberBetween(0, 1),
             'is_available' => $this->faker->numberBetween(0, 1),
-            'image' => 'yes',
+            'image' => 'product_01.png',
         ];
     }
 }
