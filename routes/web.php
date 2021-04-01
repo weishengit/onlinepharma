@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BanController;
 use App\Http\Controllers\ProfileDelete;
@@ -73,6 +74,8 @@ Route::middleware(['admin', 'active'])->name('admin.')->prefix('admin')->group(f
     //CATEGORY
     Route::resource('category', CategoryController::class);
     //USERS
+    Route::post('users/admin/{id}/add', [AdminController::class, 'store'])->name('make.admin');
+    Route::delete('users/admin/{id}/remove', [AdminController::class, 'destroy'])->name('remove.admin');
     Route::get('users/show/admin', [UserController::class , 'showAdmin'])->name('user.admin.show');
     Route::get('users/show/customer', [UserController::class , 'showCustomer'])->name('user.customer.show');
     Route::get('users/show/inactive', [UserController::class , 'showInactive'])->name('user.inactive.show');
