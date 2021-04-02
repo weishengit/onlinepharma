@@ -14,11 +14,6 @@
 
     <div class="row">
       <div class="col-lg-6">
-        <h3 class="mb-3 h6 text-uppercase text-black d-block">Filter by Price</h3>
-        <div id="slider-range" class="border-primary"></div>
-        <input type="text" name="text" id="amount" class="form-control border-0 pl-0 bg-white" disabled="" />
-      </div>
-      <div class="col-lg-6">
         <h3 class="mb-3 h6 text-uppercase text-black d-block">Filter by Reference</h3>
         <button type="button" class="btn btn-secondary btn-md dropdown-toggle px-4" id="dropdownMenuReference"
           data-toggle="dropdown">Reference</button>
@@ -33,25 +28,26 @@
       </div>
     </div>
 
+    {{-- Products --}}
     <div class="row">
+      @foreach ($products as $product)
       <div class="col-sm-6 col-lg-4 text-center item mb-4">
-        <span class="tag">Sale</span>
-        <a href="{{ route('pages.show', ['product' => 'bioderma-tablet-200mg']) }}"> <img src="{{ asset('images/product_01.png') }}" alt="Image"></a>
-        <h3 class="text-dark"><a href="shop-single.php">Bioderma</a></h3>
-        <p class="price"><del>95.00</del> &mdash; $55.00</p>
+        <a href="{{ route('pages.show', ['product' => $product->id]) }}"> <img width="300" height="300" src="{{ asset('images/' . $product->image) }}" alt="Image">
+          <h3 class="text-dark">
+            {{ $product->name }}
+          </h3>
+          <p class="price">&#8369;{{ $product->price }}</p>
+        </a>
       </div>
-      <div class="col-sm-6 col-lg-4 text-center item mb-4">
-        <a href="shop-single.php"> <img src="{{ asset('images/product_02.png') }}" alt="Image"></a>
-        <h3 class="text-dark"><a href="shop-single.php">Chanca Piedra</a></h3>
-        <p class="price">$70.00</p>
-      </div>
-      <div class="col-sm-6 col-lg-4 text-center item mb-4">
-        <a href="shop-single.php"> <img src="{{ asset('images/product_03.png') }}" alt="Image"></a>
-        <h3 class="text-dark"><a href="shop-single.php">Umcka Cold Care</a></h3>
-        <p class="price">$120.00</p>
-      </div>
+      @endforeach
+    </div>
 
-      <div class="col-sm-6 col-lg-4 text-center item mb-4">
+    {{-- Pagination --}}
+    <div class="d-flex justify-content-center">
+      {{ $products->links() }}
+    </div>
+    
+      {{-- <div class="col-sm-6 col-lg-4 text-center item mb-4">
 
         <a href="shop-single.php"> <img src="{{ asset('images/product_04.png') }}" alt="Image"></a>
         <h3 class="text-dark"><a href="shop-single.php">Cetyl Pure</a></h3>
@@ -117,8 +113,8 @@
             <li><a href="#">&gt;</a></li>
           </ul>
         </div>
-      </div>
-    </div>
+      </div> --}}
+    {{-- </div> --}}
   </div>
 </div>
 @endsection

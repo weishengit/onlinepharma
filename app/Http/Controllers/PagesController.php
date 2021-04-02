@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class PagesController extends Controller
@@ -31,8 +32,10 @@ class PagesController extends Controller
 
     public function shop()
     {
+        $products = Product::paginate(12);
         return view('pages.shop')
-            ->with('metaTitle', 'Shop');
+            ->with('metaTitle', 'Shop')
+            ->with('products', $products);
     }
 
     public function checkout()
@@ -53,12 +56,12 @@ class PagesController extends Controller
             ->with('metaTitle', 'Cart');
     }
 
-    public function show($product = null)
+    public function show($id)
     {
-        $productItem = 'product from db';
+        $product = Product::find($id);
 
         return view('pages.show')
-            ->with('metaTitle', 'Shop - ' . $product)
-            ->with('product', $productItem);
+            ->with('metaTitle', 'Shop - ' . $product->name)
+            ->with('product', $product);
     }
 }
