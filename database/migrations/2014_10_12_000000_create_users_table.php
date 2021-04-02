@@ -1,8 +1,9 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 class CreateUsersTable extends Migration
 {
@@ -29,6 +30,17 @@ class CreateUsersTable extends Migration
             $table->rememberToken();
             $table->timestamps();
         });
+
+        // INSERT DEFAULT ADMIN ACCOUNT
+        DB::table('users')->insert(
+        array(
+            'name' => 'admin.account',
+            'password' => '$2y$10$qEcTIo9/iWhLb2SX3g6hxO3LkzX8XvNtrmieAFYKSY43T.CXEC..O',
+            'email' => 'admin@account.com',
+            'is_admin' => 1,
+            'is_active' => 1
+        )
+    );
     }
 
     /**

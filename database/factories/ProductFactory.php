@@ -32,7 +32,7 @@ class ProductFactory extends Factory
             'stock' => $this->faker->numberBetween(100, 1000),
             'is_prescription' => $this->faker->numberBetween(0, 1),
             'is_available' => $this->faker->numberBetween(0, 1),
-            'image' => 'product_01.png',
+            'image' => 'product_0' . $this->faker->numberBetween(1, 6) . '.png',
         ];
     }
 }
