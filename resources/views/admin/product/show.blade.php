@@ -1,7 +1,76 @@
 @extends('layouts.admin')
 
+@section('style')
+    {{-- DATATABLES --}}
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
+    
+    <style>
+    
+        /*Overrides for Tailwind CSS */
+        
+        /*Form fields*/
+        .dataTables_wrapper select,
+        .dataTables_wrapper .dataTables_filter input {
+            color: #4a5568; 			/*text-gray-700*/
+            padding-left: 1rem; 		/*pl-4*/
+            padding-right: 1rem; 		/*pl-4*/
+            padding-top: .5rem; 		/*pl-2*/
+            padding-bottom: .5rem; 		/*pl-2*/
+            line-height: 1.25; 			/*leading-tight*/
+            border-width: 2px; 			/*border-2*/
+            border-radius: .25rem; 		
+            border-color: #edf2f7; 		/*border-gray-200*/
+            background-color: #edf2f7; 	/*bg-gray-200*/
+        }
 
-@section('content') 
+        /*Row Hover*/
+        table.dataTable.hover tbody tr:hover, table.dataTable.display tbody tr:hover {
+            background-color: #ebf4ff;	/*bg-indigo-100*/
+        }
+        
+        /*Pagination Buttons*/
+        .dataTables_wrapper .dataTables_paginate .paginate_button		{
+            font-weight: 700;				/*font-bold*/
+            border-radius: .25rem;			/*rounded*/
+            border: 1px solid transparent;	/*border border-transparent*/
+        }
+        
+        /*Pagination Buttons - Current selected */
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current	{
+            color: #fff !important;				/*text-white*/
+            box-shadow: 0 1px 3px 0 rgba(0,0,0,.1), 0 1px 2px 0 rgba(0,0,0,.06); 	/*shadow*/
+            font-weight: 700;					/*font-bold*/
+            border-radius: .25rem;				/*rounded*/
+            background: #667eea !important;		/*bg-indigo-500*/
+            border: 1px solid transparent;		/*border border-transparent*/
+        }
+
+        /*Pagination Buttons - Hover */
+        .dataTables_wrapper .dataTables_paginate .paginate_button:hover		{
+            color: #fff !important;				/*text-white*/
+            box-shadow: 0 1px 3px 0 rgba(0,0,0,.1), 0 1px 2px 0 rgba(0,0,0,.06);	 /*shadow*/
+            font-weight: 700;					/*font-bold*/
+            border-radius: .25rem;				/*rounded*/
+            background: #667eea !important;		/*bg-indigo-500*/
+            border: 1px solid transparent;		/*border border-transparent*/
+        }
+        
+        /*Add padding to bottom border */
+        table.dataTable.no-footer {
+            border-bottom: 1px solid #e2e8f0;	/*border-b-1 border-gray-300*/
+            margin-top: 0.75em;
+            margin-bottom: 0.75em;
+        }
+        
+        /*Change colour of responsive icon*/
+        table.dataTable.dtr-inline.collapsed>tbody>tr>td:first-child:before, table.dataTable.dtr-inline.collapsed>tbody>tr>th:first-child:before {
+            background-color: #667eea !important; /*bg-indigo-500*/
+        }
+        
+      </style>
+@endsection
+
+@section('content')
 <!--Container-->
 <div class="container w-full mx-auto pt-20">
     <div class="w-full px-4 md:px-0 md:mt-8 mb-16 text-gray-800 leading-normal">
@@ -29,6 +98,13 @@
                 </ul>
             </div>
         @endif
+        <div class="m-2 mt-7 float-right">
+            <a href="{{ route('admin.product.create') }}">
+                <button type="button" class="block py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-500 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    Add Product
+                </button>
+            </a>
+        </div>
         {{-- Title --}}
         <h1 class="border-2 flex items-center font-sans font-bold break-normal text-gray-900 px-2 py-8 text-lg md:text-2xl">
 			<a 
@@ -40,171 +116,90 @@
             </a>
             /&nbsp;
             <a 
-                href="{{ route('admin.product.index') }}">
+                href="{{ route('admin.index') }}">
                 <p class="text-blue-500 hover:text-blue-700 font-bold">
                     Products&nbsp;
                 </p>
                 
             </a>
             /&nbsp;
-            <p class="text-blue-500">
-                Show&nbsp;
-            </p>
-            :&nbsp;
             <p class="text-indigo-700">
-                {{ $product->name }}
+                {{ $title ?? 'Product' }}
             </p>
-		</h1>
-
-        {{-- CONTENT --}}
-        <div>
-            {{-- BORDER --}}
-            <div class="hidden sm:block" aria-hidden="true">
-                <div class="py-5">
-                <div class="border-t border-gray-200"></div>
-                </div>
-            </div>
-            {{-- FIELD CONTAINER --}}
-            <div class="mt-10 sm:mt-0">
-                <div class="md:grid md:grid-cols-2 md:gap-6">
-                    {{-- TITLE --}}
-                    <div class="md:col-span-1">
-                        <div class="px-4 sm:px-0">
-                            <h3 class="text-3xl font-medium leading-6 text-gray-900">Product Information</h3>  
-                        </div>
-                    </div>
-                    {{-- IMAGE --}}
-                    <div class="bg-rose-300 ...">
-                        <img 
-                            class="object-contain h-48 w-full ..."
-                            src="{{ asset('images/' . $product->image) }}"
-                            alt="product-image">
-                      </div>
-                    {{-- FIELD GROUP --}}
-                    <div class="mt-5 md:mt-0 md:col-span-2">
-                        <div class="shadow overflow-hidden sm:rounded-md">
-                            <div class="px-4 py-5 bg-white sm:p-6">
-                                <div class="grid grid-cols-8 gap-6">
-                                    {{-- FIELD ITEM --}}
-                                    <div class="col-span-6 sm:col-span-6 lg:col-span-2">
-                                        <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
-                                        <input disabled value="{{ $product->name ?? ''}}" type="text" name="name" id="name" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                                    </div>
-                                    {{-- FIELD ITEM --}}
-                                    <div class="col-span-6 sm:col-span-3">
-                                        <label for="generic_name" class="block text-sm font-medium text-gray-700">Generic Name</label>
-                                        <input disabled value="{{ $product->generic_name ?? ''}}" type="text" name="generic_name" id="generic_name"  class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                                    </div>
-                                    {{-- FIELD ITEM --}}
-                                    <div class="col-span-6 sm:col-span-3">
-                                        <label for="drug_class" class="block text-sm font-medium text-gray-700">Drug Class</label>
-                                        <input disabled value="{{ $product->drug_class ?? ''}}" type="text" name="drug_class" id="drug_class" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                                    </div>
-                                    {{-- FIELD ITEM --}}
-                                    <div class="col-span-6 sm:col-span-6 lg:col-span-2">
-                                        <label for="category" class="block text-sm font-medium text-gray-700">Category</label>
-                                        <input disabled value="{{ $product->category->name ?? ''}}" type="text" name="category" id="category" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                                    </div>
-                                    {{-- FIELD ITEM --}}
-                                    <div class="col-span-6 sm:col-span-6 lg:col-span-2">
-                                        <label for="price" class="block text-sm font-medium text-gray-700">Price</label>
-                                        <input disabled value="&#8369; {{ $product->price ?? ''}}" type="text" name="price" id="price   " class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                                    </div>
-                                    {{-- FIELD ITEM --}}
-                                    <div class="col-span-6 sm:col-span-6 lg:col-span-2">
-                                        <label for="stock" class="block text-sm font-medium text-gray-700">Stock</label>
-                                        <input disabled value="{{ $product->stock ?? ''}}" type="text" name="stock" id="stock" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                                    </div>
-                                    {{-- FIELD ITEM --}}
-                                    <div class="col-span-6 sm:col-span-6 lg:col-span-2">
-                                        <label for="measurement" class="block text-sm font-medium text-gray-700">Measurement</label>
-                                        <input disabled value="{{ $product->measurement ?? ''}}" type="text" name="measurement" id="measurement" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                                    </div>
-                                    {{-- FIELD ITEM --}}
-                                    <div class="col-span-6 sm:col-span-6 lg:col-span-2">
-                                        <label for="prescription" class="block text-sm font-medium text-gray-700">Prescription</label>
-                                        <input 
-                                            disabled 
-                                            type="text" 
-                                            name="prescription"
-                                            id="prescription" 
-                                            class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                                            @if ($product->is_prescription == 1)
-                                                value="Yes"
-                                            @else
-                                                value="No"
-                                            @endif >
-                                    </div>
-                                    {{-- FIELD ITEM --}}
-                                    <div class="col-span-6 sm:col-span-6 lg:col-span-2">
-                                        <label for="available" class="block text-sm font-medium text-gray-700">Available</label>
-                                        <input 
-                                            disabled 
-                                            type="text" 
-                                            name="available"
-                                            id="available" 
-                                            class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                                            @if ($product->is_available == 1)
-                                                value="Yes"
-                                            @else
-                                                value="No"
-                                            @endif >
-                                    </div>
-                                    {{-- FIELD ITEM --}}
-                                    <div class="col-span-6 sm:col-span-3 lg:col-span-2">
-                                        <label for="created" class="block text-sm font-medium text-gray-700">Product Added</label>
-                                        <input disabled value="{{ $product->created_at ?? ''}}" type="text" name="created" id="created" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                                    </div>
-                                    {{-- FIELD ITEM --}}
-                                    <div class="col-span-6 sm:col-span-3 lg:col-span-2">
-                                        <label for="updated" class="block text-sm font-medium text-gray-700">Last Modified</label>
-                                        <input disabled value="{{ $product->updated_at ?? ''}}" type="text" name="updated" id="updated" autocomplete="postal-code" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                                    </div>
-                                    {{-- FIELD ITEM --}}
-                                    <div class="col-span-6">
-                                        <label for="description" class="block text-sm font-medium text-gray-700">Product Description</label>
-                                        <textarea disabled id="description" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                                            {{ $product->description }}
-                                        </textarea>
-                                    </div>
-
-                                </div>
-                            </div>
-                            {{-- BUTTONS --}}
-                            <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
-                                <div class="">
-                                    <div class="m-auto float-right">
-                                        <a href="{{ route('admin.product.edit', ['product' => $product->id]) }}">
-                                            <button type="button" class="py-2 px-4 border border-transparent shadow-sm text-lg font-medium rounded-md text-white bg-green-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                                                Edit
-                                            </button>
-                                        </a>
-                                    </div>
-                                    <div class="m-auto mr-3 float-right">
-                                        <form 
-                                            action="{{ route('admin.product.destroy', ['product' => $product->id]) }}"
-                                            method="POST">
-                                            @csrf
-                                            @method('delete')
-                                            <button type="submit" class="py-2 px-4 border border-transparent shadow-sm text-lg font-medium rounded-md text-white bg-red-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                                                Delete
-                                            </button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    {{-- FIELD GROUP END--}}
-                </div>
-            </div>
-            {{-- FIELD CONTAINER END --}}
             
-        </div>
-        {{-- CONTENT END --}}
+		</h1>
+        
 
-        {{-- PAGE END --}}
+        
+
+        @if (isset($products))
+        {{-- Table --}}
+        <div id='recipients' class="p-8 mt-6 lg:mt-0 rounded shadow bg-white">
+            <table id="data_table" class="stripe hover" style="width:100%; padding-top: 1em;  padding-bottom: 1em;">
+                <thead>
+                    <tr>
+                        <th>Options</th>
+                        <th>Name</th>
+                        <th>Price</th>
+                        <th>Stock</th>
+                        <th>Available In Store</th>
+                        <th>RX</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach ($products as $product)
+                    <tr>
+                        <td>
+                            <a 
+                            href="{{ route('admin.product.edit', ['product' => $product->id]) }}">
+                                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                    Options
+                                </button>
+                            </a>
+                        </td>
+                        <td>{{ $product->name }}</td>
+                        <td>{{ $product->price }}</td>
+                        <td>{{ $product->stock }}</td>
+                        <td>
+                            @if ($product->is_available == 1)
+                                Yes
+                            @else
+                                No
+                            @endif
+                        </td>
+                        <td>
+                            @if ($product->is_prescription == 1)
+                                Yes
+                            @else
+                                No
+                            @endif
+                        </td>
+                    </tr>
+                @endforeach
+                </tbody>
+            </table>
+        </div>
+        {{-- Table end --}}
+        @else
+            There are currently no products in the database.
+        @endif
+
     </div>
 </div>
-<!-- Container end -->
+@endsection
+
+@section('script')
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+	<script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
+    <script>
+        $(document).ready(function() {
+			
+			var table = $('#data_table').DataTable( {
+					responsive: true
+				} )
+				.columns.adjust()
+				.responsive.recalc();
+		} );
+    </script>
 @endsection

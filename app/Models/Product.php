@@ -25,7 +25,17 @@ class Product extends Model
         'measurement',
         'is_prescription',
         'is_available',
+        'is_active',
         'image',
+    ];
+
+    /**
+     * The attributes that should be filled automatically.
+     *
+     * @var array
+     */
+    protected $attributes = [
+        'is_active' => 1,
     ];
 
     public function category()

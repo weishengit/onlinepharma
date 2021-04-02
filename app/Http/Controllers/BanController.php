@@ -47,7 +47,8 @@ class BanController extends Controller
             'user_id' => $id,
             'reason' => $request->input('reason'),
             'banned_by' => auth()->user()->name,
-        ]);
+            ]);
+            
         });
 
         return redirect()->route('admin.user.index')->with('message',  $name .' user has been banned.');
@@ -88,7 +89,9 @@ class BanController extends Controller
             ]);
             
             // DELETE BAN
-            $ban->delete();
+            if ($ban != null) {
+                $ban->delete();
+            }
         });
 
         return redirect()->route('admin.user.index')->with('message', $name . ' sucessfully unbanned.');

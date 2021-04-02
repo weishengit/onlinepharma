@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Ban;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Auth\User;
 
 class ProfileDelete extends Controller
@@ -14,9 +16,21 @@ class ProfileDelete extends Controller
 
     public function destroy()
     {
-        $user = User::where('id', auth()->user()->id);
-        $user->delete();
+        DB::transaction(function () {
+            
+            User::where('id', auth()->user()->id)
+            ->update([
+                'is_active' => 0,
+            ]);
 
-        return redirect('/')->with('message', 'account deleted');
+            Ban::create([
+            'user_id' => auth()->user()->id,
+            'reason' => 'Deactivated own account',
+            'banned_by' => auth()->user()->name,
+            ]);
+            
+        });
+
+        return redirect('/')->with('message', 'account deactivated');
     }
 }

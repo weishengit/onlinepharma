@@ -72,6 +72,7 @@ Route::middleware(['admin', 'active'])->name('admin.')->prefix('admin')->group(f
     //DASHBOARD
     Route::view('/', 'admin.index')->name('index');
     //CATEGORY
+    Route::put('category/{id}/activate', [CategoryController::class, 'activate'])->name('category.activate');
     Route::resource('category', CategoryController::class);
     //USERS
     Route::post('users/admin/{id}/add', [AdminController::class, 'store'])->name('make.admin');
@@ -83,6 +84,9 @@ Route::middleware(['admin', 'active'])->name('admin.')->prefix('admin')->group(f
     Route::delete('users/edit/{id}/unban', [BanController::class , 'destroy'])->name('user.unban');
     Route::resource('user', UserController::class);
     //PRODUCTS
+    Route::put('product/{product}/activate', [ProductController::class, 'activate'])->name('product.activate');
+    Route::put('product/{product}/not-available', [ProductController::class, 'markNotForSale'])->name('product.notavailable');
+    Route::put('product/{product}/available', [ProductController::class, 'markForSale'])->name('product.available');
     Route::resource('product', ProductController::class);
 });
 

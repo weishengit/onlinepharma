@@ -124,7 +124,7 @@
             </a>
             /&nbsp;
             <p class="text-indigo-700">
-                All
+                {{ $title ?? 'Category' }}
             </p>
 		</h1>
 

@@ -16,6 +16,16 @@ class Category extends Model
      */
     protected $fillable = [
         'name',
+        'is_active',
+    ];
+
+    /**
+     * The attributes that should be filled automatically.
+     *
+     * @var array
+     */
+    protected $attributes = [
+        'is_active' => 1,
     ];
 
     public function products()

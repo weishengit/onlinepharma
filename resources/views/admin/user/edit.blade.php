@@ -114,69 +114,76 @@
                                 </div>
 
                                 <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
-                                    @if ($user->is_active == 0)
-                                        <form 
-                                            action="{{ route('admin.user.unban', ['id' => $user->id]) }}"
-                                            method="POST">
-                                            @csrf
-                                            @method('delete')
-                                                <div class="grid grid-cols-2 gap-6">
-                                                    <div class="col-span-6 sm:col-span-3 lg:col-span-1">
-                                                        <label for="reason" class="text-left block text-lg font-medium text-gray-700">Reason for ban:</label>
-                                                        <input disabled value="{{ $user->ban->reason }}" type="text" name="reason" id="reason" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                                                    </div>
-                                                    <div class="col-span-6 sm:col-span-3 lg:col-span-1">
-                                                        <label for="banned_by" class="text-left block text-lg font-medium text-gray-700">Banned By:</label>
-                                                        <input disabled value="{{ $user->ban->banned_by }}" type="text" name="banned_by" id="banned_by" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                                                    </div>
-                                                    <div class="col-span-6 sm:col-span-3 lg:col-span-2">
-                                                        <button type="submit" class="block py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                                                            Unban
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                    @else
-                                        <div class="grid grid-cols-2 gap-6">
+                                    {{-- CHECK IF SUPER ADMIN --}}
+                                    @if ($user->id == 1)
+                                        <button disabled type="button" class="block py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                            Super Admin
+                                        </button>
+                                    @else                                 
+                                        @if ($user->is_active == 0)
                                             <form 
-                                                action="{{ route('admin.user.ban', ['id' => $user->id]) }}"
+                                                action="{{ route('admin.user.unban', ['id' => $user->id]) }}"
                                                 method="POST">
                                                 @csrf
-                                                <div class="col-span-6 sm:col-span-3 lg:col-span-1">
-                                                    <label for="reason" class="text-left block text-lg font-medium text-gray-700">Reason for ban:</label>
-                                                    <input  placecholder="reason for ban..." type="text" name="reason" id="reason" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                                                </div>
+                                                @method('delete')
+                                                    <div class="grid grid-cols-2 gap-6">
+                                                        <div class="col-span-6 sm:col-span-3 lg:col-span-1">
+                                                            <label for="reason" class="text-left block text-lg font-medium text-gray-700">Reason for ban:</label>
+                                                            <input disabled value="{{ $user->ban->reason ?? '' }}" type="text" name="reason" id="reason" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                                        </div>
+                                                        <div class="col-span-6 sm:col-span-3 lg:col-span-1">
+                                                            <label for="banned_by" class="text-left block text-lg font-medium text-gray-700">Banned By:</label>
+                                                            <input disabled value="{{ $user->ban->banned_by ?? '' }}" type="text" name="banned_by" id="banned_by" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                                        </div>
+                                                        <div class="col-span-6 sm:col-span-3 lg:col-span-2">
+                                                            <button type="submit" class="block py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                                                Unban
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                        @else
+                                            <div class="grid grid-cols-2 gap-6">
+                                                <form 
+                                                    action="{{ route('admin.user.ban', ['id' => $user->id]) }}"
+                                                    method="POST">
+                                                    @csrf
+                                                    <div class="col-span-6 sm:col-span-3 lg:col-span-1">
+                                                        <label for="reason" class="text-left block text-lg font-medium text-gray-700">Reason for ban:</label>
+                                                        <input  placecholder="reason for ban..." type="text" name="reason" id="reason" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                                    </div>
+                                                    <div class="col-span-6 sm:col-span-3 lg:col-span-2">
+                                                        <button type="submit" class="block py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                                            Ban
+                                                        </button>
+                                                    </div>
+                                                </form>
+                                                @if ($user->is_admin == 0)
                                                 <div class="col-span-6 sm:col-span-3 lg:col-span-2">
-                                                    <button type="submit" class="block py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                                                        Ban
-                                                    </button>
+                                                    <form 
+                                                        action="{{ route('admin.make.admin', ['id' => $user->id]) }}"
+                                                        method="POST">
+                                                        @csrf
+                                                        <button type="submit" class="block py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                                            Make Admin
+                                                        </button>
+                                                    </form>
                                                 </div>
-                                            </form>
-                                            @if ($user->is_admin == 0)
-                                            <div class="col-span-6 sm:col-span-3 lg:col-span-2">
-                                                <form 
-                                                    action="{{ route('admin.make.admin', ['id' => $user->id]) }}"
-                                                    method="POST">
-                                                    @csrf
-                                                    <button type="submit" class="block py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                                                        Make Admin
-                                                    </button>
-                                                </form>
+                                                @else
+                                                <div class="col-span-6 sm:col-span-3 lg:col-span-2">
+                                                    <form 
+                                                        action="{{ route('admin.remove.admin', ['id' => $user->id]) }}"
+                                                        method="POST">
+                                                        @csrf
+                                                        @method('delete')
+                                                        <button type="submit" class="block py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-yellow-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                                            Remove Admin
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                                @endif
                                             </div>
-                                            @else
-                                            <div class="col-span-6 sm:col-span-3 lg:col-span-2">
-                                                <form 
-                                                    action="{{ route('admin.remove.admin', ['id' => $user->id]) }}"
-                                                    method="POST">
-                                                    @csrf
-                                                    @method('delete')
-                                                    <button type="submit" class="block py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-yellow-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                                                        Remove Admin
-                                                    </button>
-                                                </form>
-                                            </div>
-                                            @endif
-                                        </div>
-                                        
+                                            
+                                        @endif
                                     @endif
                                 </div>
                                 

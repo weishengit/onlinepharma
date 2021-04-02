@@ -100,8 +100,8 @@
                     <hr>
                 </div>
                 <div class="alert alert-danger" role="alert">
-                    <h4 class="alert-heading">Delete Account</h4>
-                    <p>Warning! This action is permanent and cannot be undone. This button will completely delete your account</p>
+                    <h4 class="alert-heading">Deactivate Account</h4>
+                    <p><strong>Warning!</strong>  This button will deactivate your account</p>
                     <hr>
                     <p class="mb-0">
                         <a href="{{ route('profile.delete.show') }}"><button class="btn btn-lg btn-danger" type="button"><i class="glyphicon glyphicon-ok-sign"></i>Permanently Delete</button></a>

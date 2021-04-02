@@ -36,6 +36,7 @@ class UserFactory extends Factory
                 'Brgy ' . $this->faker->cityPrefix . ', ' .
                 $this->faker->city . ' City',
             'scid' => $this->faker->randomNumber(8),
+            'is_active' => $this->faker->biasedNumberBetween(0, 1, $function = 'sqrt'),
             'remember_token' => Str::random(10),
         ];
     }

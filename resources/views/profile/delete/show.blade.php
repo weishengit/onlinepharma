@@ -11,14 +11,14 @@
   		
                 <div class="alert alert-danger" role="alert">
                     <h4 class="alert-heading">Delete Account</h4>
-                    <p>Warning! This action is permanent and cannot be undone. This button will completely delete your account</p>
+                    <p><strong>Warning!</strong>  This button will deactivate your account</p>
                     <hr>
                     <p class="mb-0">
                         <div class="btn-group" role="group">
                         <form action="{{ route('profile.delete.show') }}" method="post">
                             @csrf
                             @method('delete')
-                            <button class="btn btn-lg btn-danger" type="submit"><i class="glyphicon glyphicon-ok-sign"></i>Permanently Delete</button>
+                            <button class="btn btn-lg btn-danger" type="submit"><i class="glyphicon glyphicon-ok-sign"></i>Deactivate</button>
                         </form>
                         </div>
                         <div class="btn-group" role="group">

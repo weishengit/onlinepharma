@@ -45,21 +45,37 @@
 
         {{-- Cards --}}
         <div class="flex flex-col">
+            {{-- Active Categories --}}
             <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-            <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-                <a 
-                    href="{{ route('admin.category.show', ['category' => 'all']) }}">
+                <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                    <a 
+                        href="{{ route('admin.category.show', ['category' => 'all']) }}">
 
-                    <div class="max-w-2xl bg-white border-2 border-gray-300 p-5 rounded-md tracking-wide shadow-lg">
-                        <div id="header" class=""> 
-                              <h4 id="name" class="text-2xl font-semibold mb-2">All Categories</h4>
-                              <p id="job" class="text-gray-800 mt-2 text-sm">Show all categories.</p>
-                           </div>
+                        <div class="max-w-2xl bg-white border-2 border-gray-300 p-5 rounded-md tracking-wide shadow-lg">
+                            <div id="header" class=""> 
+                                <h4 id="name" class="text-2xl font-semibold mb-2">Active Categories</h4>
+                                <p id="job" class="text-gray-800 mt-2 text-sm">Show all active categories.</p>
+                            </div>
                         </div>
-                     </div>
-                </a>
+                    </a>
+                </div>
             </div>
+            {{-- Inactive Categories --}}
+            <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                    <a 
+                        href="{{ route('admin.category.show', ['category' => 'inactive']) }}">
+
+                        <div class="max-w-2xl bg-white border-2 border-gray-300 p-5 rounded-md tracking-wide shadow-lg">
+                            <div id="header" class=""> 
+                                <h4 id="name" class="text-2xl font-semibold mb-2">Inactive Categories</h4>
+                                <p id="job" class="text-gray-800 mt-2 text-sm">Show all inactive categories.</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
             </div>
+
         </div>
         {{-- Cards End --}}
     </div>

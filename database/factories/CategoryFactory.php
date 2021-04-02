@@ -22,7 +22,8 @@ class CategoryFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->unique()->word,
+            'name' => $this->faker->unique()->stateAbbr,
+            'is_active' => $this->faker->biasedNumberBetween(0, 1, $function = 'sqrt'),
         ];
     }
 }

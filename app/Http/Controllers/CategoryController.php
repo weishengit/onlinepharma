@@ -21,13 +21,27 @@ class CategoryController extends Controller
 
     public function show($category = null)
     {
-        $categories = Category::orderBy('name', 'ASC')->get() ?? null;
+        $categories = null;
+        $title = '';
+
+        if ($category == 'inactive') {
+            // GETS INACTIVE CATEGORIES
+            $categories = Category::where('is_active', 0)->get() ?? null;
+            $title = 'Inactive';
+        }
+        else{
+            // GETS ALL ACTIVE CATEGORIES
+            $categories = Category::where('is_active', '1')->get() ?? null;
+            $title = 'Active';
+        }
+        
         if ($categories == null) {
             return redirect()->route('admin.category.index')->with('message', 'there are currently no categories');
         }
 
         return view('admin.category.show')
-            ->with('categories', $categories);
+            ->with('categories', $categories)
+            ->with('title', $title);
     }
 
     /**
@@ -117,19 +131,31 @@ class CategoryController extends Controller
         }
         $name = $category->name;
 
-        // DELETE THE CATEGORY AND UNSET IT FROM PRODUCTS
-        DB::transaction(function () use($category, $id){
-            $category->delete();
-
-            Product::where('category_id', $id)
-                ->update([
-                    'category_id' => null
-                ]);
-        });
+        Category::where('id', $id)
+            ->update([
+                'is_active' => 0
+            ]);
         
 
         return redirect()
             ->route('admin.category.index')
-            ->with('message', 'Category '. $name .' has been deleted.');
+            ->with('message', 'Category '. $name .' has been disabled.');
+    }
+
+    public function activate($id)
+    {
+        // CHECK IF CATEOGRY EXIST
+        $category = Category::where('id', $id)->first() ?? null;
+        if ($category == null) {
+            return redirect()->route('admin.category.index')->with('message', 'category not found.');
+        }
+        $name = $category->name;
+
+        category::where('id', $id)
+        ->update([
+            'is_active' => 1,
+        ]);
+        
+        return redirect()->route('admin.category.index')->with('message', $name . ' has been reactivated');
     }
 }

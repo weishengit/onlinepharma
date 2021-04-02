@@ -88,16 +88,29 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($product = null)
     {
-        $product = Product::where('id', $id)->first() ?? null;
+        $products = null;
+        $title = '';
+
+        if ($product == 'inactive') {
+            // GETS INACTIVE CATEGORIES
+            $products = Product::where('is_active', 0)->get() ?? null;
+            $title = 'Inactive';
+        }
+        else{
+            // GETS ALL ACTIVE CATEGORIES
+            $products = Product::where('is_active', '1')->get() ?? null;
+            $title = 'Active';
+        }
         
         if ($product == null) {
-            return redirect()->route('admin.product.index')->with('message', 'product not found.');
+            return redirect()->route('admin.category.index')->with('message', 'there are currently no products');
         }
 
         return view('admin.product.show')
-            ->with('product', $product);
+            ->with('products', $products)
+            ->with('title', $title);
     }
 
     /**
@@ -153,7 +166,7 @@ class ProductController extends Controller
             
             $request->image->move(public_path('images'), $newImageName);
 
-            // CREATE PRODUCT
+            // UPDATE PRODUCT
             Product::where('id', $id)
                 ->update([
                 'name' => $request->input('name'),
@@ -183,15 +196,47 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
+        // CHECK IF PRODUCT EXIST
         $product = Product::where('id', $id)->first() ?? null;
         if ($product == null) {
             return redirect()->route('admin.product.index')->with('message', 'product not found.');
         }
         $name = $product->name;
-        $image =$product->image;
-        File::delete(public_path('images/'. $image));
-        $product->delete();
 
-        return redirect()->route('admin.product.index')->with('message', $name . ' has been deleted');
+        // CHECK IF PRODUCT IS ACTIVE
+        if ($product->is_active == 0) {
+            return redirect()->route('admin.product.index')->with('message', $name . ' is already inactive.');
+        }
+
+        // DEACTIVATE PRODUCT
+        Product::where('id', $id)
+            ->update([
+                'is_active' => 0
+            ]);
+
+        return redirect()->route('admin.product.index')->with('message', $name . ' has been deactivated');
     }
+    /**
+     * Mark the specified resource as activated.
+     *
+     * @param  int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function activate($id)
+    {
+        // CHECK IF PRODUCT EXIST
+        $product = Product::where('id', $id)->first() ?? null;
+        if ($product == null) {
+            return redirect()->route('admin.product.index')->with('message', 'product not found.');
+        }
+        $name = $product->name;
+
+        Product::where('id', $id)
+        ->update([
+            'is_active' => 1,
+        ]);
+        
+        return redirect()->route('admin.product.index')->with('message', $name . ' has been reactivated');
+    }
+
 }
