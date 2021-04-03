@@ -16,7 +16,11 @@ class CheckoutCheck
      */
     public function handle(Request $request, Closure $next)
     {
-        if(!auth()->user() || is_null(auth()->user()->address)){
+        if(!auth()->user()){
+            return redirect('register');
+        }
+
+        if(is_null(auth()->user()->address)){
             return redirect('/profile/edit')->with('message', 'Please set up your profile to recieve deliveries');
         }
 

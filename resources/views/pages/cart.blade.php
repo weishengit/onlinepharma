@@ -80,20 +80,26 @@
       </form>
     </div>
 {{-- TABLE END --}}
+    
     <div class="row">
       <div class="col-md-6">
+        {{-- BUTTONS --}}
         <div class="row mb-5">
+          {{-- CLEAR CART --}}
           <div class="col-md-6 mb-3 mb-md-0">
             <a href="{{ route('cart.clear') }}">
               <button class="btn btn-danger btn-md btn-block">Clear Cart</button>
             </a>
           </div>
+          {{-- CONTINUE SHOPPING --}}
           <div class="col-md-6">
             <a href="{{ route('pages.shop') }}">
               <button class="btn btn-outline-primary btn-md btn-block">Continue Shopping</button>
             </a>
           </div>
         </div>
+        {{-- BUTTONS END --}}
+        {{-- COUPON --}}
         <div class="row">
           <div class="col-md-12">
             <label class="text-black h4" for="coupon">Coupon</label>
@@ -106,15 +112,20 @@
             <button class="btn btn-primary btn-md px-4">Apply Coupon</button>
           </div>
         </div>
+        {{-- COUPON END --}}
       </div>
+
+      {{-- TOTALS --}}
       <div class="col-md-6 pl-5">
         <div class="row justify-content-end">
           <div class="col-md-7">
+            {{-- TOTAL --}}
             <div class="row">
               <div class="col-md-12 text-right border-bottom mb-5">
                 <h3 class="text-black h4 text-uppercase">Cart Totals</h3>
               </div>
             </div>
+            {{-- TOTAL ITEMS --}}
             <div class="row mb-3">
               <div class="col-md-6">
                 <span class="text-black">Total Items</span>
@@ -123,6 +134,7 @@
                 <strong class="text-black">{{ $cart->getTotalCartQty() ?? 'error' }}</strong>
               </div>
             </div>
+            {{-- SUBTOTAL --}}
             <div class="row mb-3">
               <div class="col-md-6">
                 <span class="text-black">Subtotal</span>
@@ -131,15 +143,26 @@
                 <strong class="text-black">&#8369;{{ number_format($cart->getSubTotal(), 2) ?? 'error' }}</strong>
               </div>
             </div>
+            {{-- VAT --}}
             <div class="row mb-3">
               <div class="col-md-6">
                 <span class="text-black">VAT(12%)</span>
               </div>
               <div class="col-md-6 text-right">
-                <strong class="text-black">&#8369;{{ number_format($cart->getVat(), 2) ?? 'error' }}</strong>
+                <strong class="text-black">+&#8369;{{ number_format($cart->getVat(), 2) ?? 'error' }}</strong>
               </div>
             </div>
+            {{-- VAT --}}
             <div class="row mb-5">
+              <div class="col-md-6">
+                <span class="text-black">Coupon</span>
+              </div>
+              <div class="col-md-6 text-right">
+                <strong class="text-black">-&#8369;{{ number_format($cart->getDiscount(), 2) ?? 'error' }}</strong>
+              </div>
+            </div>
+            {{-- TOTAL WITH OUT SC --}}
+            <div class="row mb-3">
               <div class="col-md-6">
                 <span class="text-black">Total</span>
               </div>
@@ -147,16 +170,42 @@
                 <strong class="text-black">&#8369;{{ number_format($cart->getTotal(), 2) }}</strong>
               </div>
             </div>
-
-            <div class="row">
-              <div class="col-md-12">
-                <button class="btn btn-primary btn-lg btn-block" onclick="window.location='checkout.php'">Proceed To
-                  Checkout</button>
+            {{-- TOTAL WITH SC --}}
+            <div class="row mb-5">
+              <div class="col-md-6">
+                <span class="text-black">Total(Senior)</span>
+              </div>
+              <div class="col-md-6 text-right">
+                <strong class="text-black">&#8369;{{ number_format($cart->getSC(), 2) }}</strong>
               </div>
             </div>
+            {{-- DELIVERY FEE --}}
+            {{-- TOTAL WITH SC --}}
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <span class="text-black">Delivery Fee</span>
+              </div>
+              <div class="col-md-6 text-right">
+                <strong class="text-black">+&#8369;{{ number_format($cart->getDelivery(), 2) }}</strong>
+              </div>
+            </div>
+
+            {{-- CHECKOUT --}}
+            <div class="row">
+              <div class="col-md-12">
+                <a href="{{ route('pages.checkout') }}">
+                  <button class="btn btn-primary btn-lg btn-block">
+                    Proceed To Checkout
+                  </button>
+                </a>
+              </div>
+            </div>
+
           </div>
         </div>
       </div>
+      {{-- TOTALS END --}}
+
     </div>
   </div>
 </div>

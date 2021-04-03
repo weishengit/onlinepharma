@@ -14,9 +14,9 @@ class Cart
     public $totalCartQty = 0;
     public $subTotal = 0;
     public $seniorDiscount = 0.20;
-    public $otherDiscount = 0.;
+    public $otherDiscount = 0;
     public $vatTax = 0.12;
-    public $deliveryFee = 50;
+    public $deliveryFee = 30;
     public $totalPrice = 0;
 
     public function __construct($oldCart) {
@@ -124,9 +124,24 @@ class Cart
         return $vat;
     }
 
+    public function getDiscount()
+    {
+        return $this->otherDiscount;
+    }
+
+    public function getDelivery()
+    {
+        return $this->deliveryFee;
+    }
+
     public function getSC()
     {
-        # code...
+        $subTotal = $this->getSubTotal();
+        $discount = $subTotal * 0.20;
+        
+        $scDiscount = $subTotal - $discount;
+
+        return $scDiscount;
     }
 
     public function getTotal()

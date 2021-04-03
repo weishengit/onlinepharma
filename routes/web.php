@@ -38,12 +38,16 @@ Route::prefix('pages')->name('pages.')->group(function () {
     Route::get('/thanks', [PagesController::class, 'thanks'])->name('thanks');
     Route::get('/about', [PagesController::class, 'about'])->name('about');
     Route::get('/contact', [PagesController::class, 'contact'])->name('contact');
-    Route::get('/shop', [PagesController::class, 'shop'])->name('shop');
-    Route::get('/cart', [PagesController::class, 'cart'])->name('cart');
+    Route::get('/shop', [PagesController::class, 'shop'])
+        ->name('shop')
+        ->middleware(['active']);;
+    Route::get('/cart', [PagesController::class, 'cart'])
+        ->name('cart')
+        ->middleware(['active']);
 
     Route::get('/checkout', [PagesController::class, 'checkout'])
         ->name('checkout')
-        ->middleware(['customer', 'checkout', 'active']);
+        ->middleware(['checkout', 'active']);
 
     Route::get('/show/{product}', [PagesController::class, 'show'])
         ->name('show')
