@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BanController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\ProfileDelete;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PagesController;
@@ -48,6 +49,14 @@ Route::prefix('pages')->name('pages.')->group(function () {
         ->name('show')
         ->where('product', '[a-zA-Z0-9-_]+');
 });
+
+// CART ROUTE
+Route::get('/cart', [CartController::class, 'getCart'])->name('cart');
+Route::post('/add-to-cart/{id}', [CartController::class, 'add'])->name('cart.add');
+Route::get('/remove-from-cart/{id}/{quantity}', [CartController::class, 'remove'])->name('cart.remove');
+Route::get('/cart/increase/{id}', [CartController::class, 'increase'])->name('cart.increase');
+Route::get('/cart/decrease/{id}', [CartController::class, 'decrease'])->name('cart.decrease');
+Route::get('/clear-cart', [CartController::class, 'clear'])->name('cart.clear');
 
 // PROFILE ROUTE
 Route::middleware(['auth', 'active'])->prefix('profile')->name('profile.')->group(function () {

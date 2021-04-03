@@ -71,9 +71,12 @@
                 </nav>
             </div>
             <div class="icons">
-                <a href="{{ route('pages.cart') }}" class="icons-btn d-inline-block bag">
+                <a href="{{ route('cart') }}" class="icons-btn d-inline-block bag">
                 <span class="icon-shopping-bag"></span>
-                <span class="number">2</span>
+                @if (Session::has('cart'))
+                  <span class="number">{{ Session::get('cart')->getTotalCartQty() ?? '' }}</span>
+                @endif
+                
                 </a>
                 <a href="#" class="site-menu-toggle js-menu-toggle ml-3 d-inline-block d-lg-none"><span
                     class="icon-menu"></span></a>

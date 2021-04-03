@@ -31,7 +31,7 @@ class ProductController extends Controller
     public function create()
     {
         // GET THE AVAILABLE CATEGORIES
-        $categories = Category::orderBy('name', 'ASC')->get() ?? null;
+        $categories = Category::orderBy('name', 'asc')->get() ?? null;
 
 
         return view('admin.product.create')->with('categories', $categories);
@@ -57,11 +57,15 @@ class ProductController extends Controller
             'measurement' => 'required|string|max:255',
             'is_prescription' => 'required|numeric',
             'is_available' => 'required|numeric',
-            'image' => 'required|mimes:jpg,jpeg,png|max:1096'
+            'image' => 'mimes:jpg,jpeg,png|max:1096'
         ]);
         // MOVE IMAGE TO PUBLIC FOLDER
-        $newImageName = uniqid() . '-' . $request->name . '.' . $request->image->extension(); 
-        $request->image->move(public_path('images'), $newImageName);
+        $newImageName = null;
+        
+        if ($request->image != null) {
+            $newImageName = uniqid() . '-' . $request->name . '.' . $request->image->extension();
+            $request->image->move(public_path('images'), $newImageName);
+        }
 
         // CREATE PRODUCT
         Product::create([
@@ -75,7 +79,7 @@ class ProductController extends Controller
             'measurement' => $request->input('measurement'),
             'is_prescription' => $request->input('is_prescription'),
             'is_available' => $request->input('is_available'),
-            'image' => $newImageName,
+            'image' => $newImageName ?? 'no-image.jpg',
         ]);
 
         // REDIRECT TO PRODUCT INDEX
@@ -154,17 +158,31 @@ class ProductController extends Controller
             'measurement' => 'required|string|max:255',
             'is_prescription' => 'required|numeric',
             'is_available' => 'required|numeric',
-            'image' => 'required|mimes:jpg,jpeg,png|max:1096'
+            'image' => 'mimes:jpg,jpeg,png|max:1096'
         ]);
         // MOVE IMAGE TO PUBLIC FOLDER
         $product = Product::where('id', $id)->first();
+        
         $oldPicture = $product->image;
-        $newImageName = uniqid() . '-' . $request->name . '.' . $request->image->extension();
+        $newImageName = null;
+        
 
-        DB::transaction(function () use($request, $oldPicture, $newImageName, $id) {
+        if ($request->image != null) {
+            $newImageName = uniqid() . '-' . $request->name . '.' . $request->image->extension();
+        }
+        
+        DB::transaction(function () use($request, $oldPicture, $newImageName, $id, $product) {
 
-            
-            $request->image->move(public_path('images'), $newImageName);
+            // IF USER SENT IMAGE
+            if ($newImageName != null) {
+                // CREATE IMAGE
+                $request->image->move(public_path('images'), $newImageName);
+
+                // REMOVE OLD IMAGE IF NOT PLACEHOLDER
+                if ($product->image != 'no-image.jpg') {
+                    File::delete(public_path('images/'. $oldPicture));
+                }
+            }
 
             // UPDATE PRODUCT
             Product::where('id', $id)
@@ -178,10 +196,10 @@ class ProductController extends Controller
                 'measurement' => $request->input('measurement'),
                 'is_prescription' => $request->input('is_prescription'),
                 'is_available' => $request->input('is_available'),
-                'image' => $newImageName,
+                'image' => $newImageName ?? $oldPicture,
             ]);
 
-            File::delete(public_path('images/'. $oldPicture));
+            
         });
         
         // REDIRECT TO PRODUCT INDEX

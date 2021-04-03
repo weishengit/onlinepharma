@@ -30,16 +30,28 @@
 
     {{-- Products --}}
     <div class="row">
+
       @foreach ($products as $product)
+      {{-- Container --}}
       <div class="col-sm-6 col-lg-4 text-center item mb-4">
-        <a href="{{ route('pages.show', ['product' => $product->id]) }}"> <img width="300" height="300" src="{{ asset('images/' . $product->image) }}" alt="Image">
+        <a href="{{ route('pages.show', ['product' => $product->id]) }}"> 
+          {{-- Image --}}
+          <img 
+            width="300" 
+            height="300" 
+            src="{{ asset('images/' . $product->image) }}" 
+            alt="Image">
+          {{-- Name --}}
           <h3 class="text-dark">
             {{ $product->name }}
           </h3>
+          {{-- Price --}}
           <p class="price">&#8369;{{ $product->price }}</p>
         </a>
       </div>
+      {{-- Container End --}}
       @endforeach
+
     </div>
 
     {{-- Pagination --}}

@@ -22,7 +22,7 @@ class CategoryFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->unique()->stateAbbr,
+            'name' => $this->faker->unique()->domainWord,
             'is_active' => $this->faker->biasedNumberBetween(0, 1, $function = 'sqrt'),
         ];
     }

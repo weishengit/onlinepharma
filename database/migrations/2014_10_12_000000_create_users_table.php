@@ -34,13 +34,13 @@ class CreateUsersTable extends Migration
         // INSERT DEFAULT ADMIN ACCOUNT
         DB::table('users')->insert(
         array(
-            'name' => 'admin.account',
-            'password' => '$2y$10$qEcTIo9/iWhLb2SX3g6hxO3LkzX8XvNtrmieAFYKSY43T.CXEC..O',
-            'email' => 'admin@account.com',
+            'name' => 'admin@gmail.com',
+            'password' => '$2y$10$1cbdzXESQS3kr53ZK3yuce9BpU2rlI5vBZPZnreLfiA3gVyVqx9Ue',
+            'email' => 'admin@gmail.com',
             'is_admin' => 1,
             'is_active' => 1
-        )
-    );
+            )
+        );
     }
 
     /**

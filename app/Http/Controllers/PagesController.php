@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cart;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class PagesController extends Controller
 {
@@ -32,7 +34,7 @@ class PagesController extends Controller
 
     public function shop()
     {
-        $products = Product::paginate(12);
+        $products = Product::where('is_active', 1)->where('is_available', 1)->paginate(12);
         return view('pages.shop')
             ->with('metaTitle', 'Shop')
             ->with('products', $products);
@@ -50,16 +52,13 @@ class PagesController extends Controller
             ->with('metaTitle', 'Thanks');
     }
 
-    public function cart()
-    {
-        return view('pages.cart')
-            ->with('metaTitle', 'Cart');
-    }
 
     public function show($id)
     {
         $product = Product::find($id);
-
+        if ($product->is_active == 0 || $product->is_available == 0) {
+            return redirect()->route('home');
+        }
         return view('pages.show')
             ->with('metaTitle', 'Shop - ' . $product->name)
             ->with('product', $product);

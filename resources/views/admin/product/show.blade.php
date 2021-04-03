@@ -139,6 +139,8 @@
                 <thead>
                     <tr>
                         <th>Options</th>
+                        <th>Image</th>
+                        <th>Category</th>
                         <th>Name</th>
                         <th>Price</th>
                         <th>Stock</th>
@@ -157,6 +159,8 @@
                                 </button>
                             </a>
                         </td>
+                        <td> <img width="50" height="50" src="{{ asset('images/'. $product->image) }}" alt="image"></td>
+                        <td>{{ $product->category->name }}</td>
                         <td>{{ $product->name }}</td>
                         <td>{{ $product->price }}</td>
                         <td>{{ $product->stock }}</td>

@@ -22,11 +22,11 @@ class ProductFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->unique()->word,
+            'name' => $this->faker->unique()->streetSuffix,
             'category_id' => $this->faker->numberBetween(1, 8),
-            'generic_name' => $this->faker->word,
-            'drug_class' => $this->faker->word,
-            'description' => $this->faker->sentence(12), 
+            'generic_name' => $this->faker->lastName,
+            'drug_class' => $this->faker->citySuffix,
+            'description' => $this->faker->realText(140), 
             'price' => $this->faker->randomFloat(2, 5, 500),
             'measurement' => $this->faker->numberBetween(5, 1000) . $this->faker->randomElement($array = array('mg', 'ml', 'g')),
             'stock' => $this->faker->numberBetween(100, 1000),

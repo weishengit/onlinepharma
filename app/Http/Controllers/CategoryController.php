@@ -26,15 +26,14 @@ class CategoryController extends Controller
 
         if ($category == 'inactive') {
             // GETS INACTIVE CATEGORIES
-            $categories = Category::where('is_active', 0)->get() ?? null;
+            $categories = Category::where('is_active', 0)->where('id', '!=', 1)->get() ?? null;
             $title = 'Inactive';
-        }
-        else{
+        } else {
             // GETS ALL ACTIVE CATEGORIES
-            $categories = Category::where('is_active', '1')->get() ?? null;
+            $categories = Category::where('is_active', 1)->where('id', '!=', 1)->get() ?? null;
             $title = 'Active';
         }
-        
+
         if ($categories == null) {
             return redirect()->route('admin.category.index')->with('message', 'there are currently no categories');
         }
@@ -72,7 +71,7 @@ class CategoryController extends Controller
 
         return redirect()
             ->route('admin.category.index')
-            ->with('message', 'Category '. $request->input('name') .' has been created.');
+            ->with('message', 'Category ' . $request->input('name') . ' has been created.');
     }
 
     /**
@@ -103,7 +102,7 @@ class CategoryController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name' => 'required|unique:categories,name,'. $id,
+            'name' => 'required|unique:categories,name,' . $id,
         ]);
 
         Category::where('id', $id)
@@ -113,7 +112,7 @@ class CategoryController extends Controller
 
         return redirect()
             ->route('admin.category.index')
-            ->with('message', 'Category '. $request->input('name') .' has been updated.');
+            ->with('message', 'Category ' . $request->input('name') . ' has been updated.');
     }
 
     /**
@@ -129,17 +128,26 @@ class CategoryController extends Controller
         if ($category == null) {
             return redirect()->route('admin.category.index')->with('message', 'Category not found.');
         }
-        $name = $category->name;
 
-        Category::where('id', $id)
+        DB::transaction(function () use($category){
+            // SET CATEGORY TO NONE
+            Product::where('category_id', $category->id)
+            ->update([
+                'category_id' => 1
+            ]);
+
+            // DISABLE CATEGORY
+             Category::where('id', $category->id)
             ->update([
                 'is_active' => 0
             ]);
+        });
         
+
 
         return redirect()
             ->route('admin.category.index')
-            ->with('message', 'Category '. $name .' has been disabled.');
+            ->with('message', 'Category ' . $category->name . ' has been disabled.');
     }
 
     public function activate($id)
@@ -152,10 +160,10 @@ class CategoryController extends Controller
         $name = $category->name;
 
         category::where('id', $id)
-        ->update([
-            'is_active' => 1,
-        ]);
-        
+            ->update([
+                'is_active' => 1,
+            ]);
+
         return redirect()->route('admin.category.index')->with('message', $name . ' has been reactivated');
     }
 }

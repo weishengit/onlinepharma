@@ -4,15 +4,48 @@
 <div class="bg-light py-3">
   <div class="container">
     <div class="row">
-      <div class="col-md-12 mb-0"><a href="{{ route('home') }}">Home</a> <span class="mx-2 mb-0">/</span> <a
-          href="{{ route('pages.shop') }}">Store</a> <span class="mx-2 mb-0">/</span> <strong class="text-black">{{ $product->name ?? 'Item' }}</strong></div>
+
+      <div class="col-md-12 mb-0">
+        <a href="{{ route('home') }}">Home</a> 
+          <span class="mx-2 mb-0">/</span> 
+        <a href="{{ route('pages.shop') }}">Store</a> 
+          <span class="mx-2 mb-0">/</span> <strong class="text-black">{{ $product->name ?? 'Item' }}</strong>
+      </div>
+
     </div>
+
+    @if (isset($message))
+      <div class="alert alert-warning alert-dismissible fade show" role="alert">
+          {{ $message }}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+          </button>
+      </div>
+    @endif
+    @if ($errors->any())
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            @endif
   </div>
 </div>
-
+<form 
+      method="post"
+      action="{{ route('cart.add', ['id' => $product->id]) }}">
+      @csrf
 <div class="site-section">
   <div class="container">
     <div class="row">
+
+    
 
       {{-- Product --}}
       <div class="col-md-5 mr-auto">
@@ -49,7 +82,7 @@
             <div class="input-group-prepend">
               <button class="btn btn-outline-primary js-btn-minus" type="button">&minus;</button>
             </div>
-            <input type="text" class="form-control text-center" value="1" placeholder=""
+            <input name="quantity" type="text" min="1" class="form-control text-center" value="1" placeholder=""
               aria-label="Example text with button addon" aria-describedby="button-addon1">
             <div class="input-group-append">
               <button class="btn btn-outline-primary js-btn-plus" type="button">&plus;</button>
@@ -69,13 +102,14 @@
 
         {{-- ADD TO CART --}}
         <p>
-          <a 
-            href="cart.php" 
+          <button 
+            type="submit"
             class="buy-now btn btn-sm height-auto px-4 py-3 btn-primary">
             Add To Cart
-          </a>
+          </button>
         </p>
 
+    
         
 
 
@@ -83,5 +117,6 @@
       </div>
     </div>
   </div>
+</form>
 </div>
 @endsection
