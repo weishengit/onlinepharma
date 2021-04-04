@@ -17,15 +17,17 @@ class IsActive
      */
     public function handle(Request $request, Closure $next)
     {
-        if (!Auth::user() || Auth::user()->is_active != 1) {
+        if (Auth::user() && Auth::user()->is_active != 1) {
             Auth::guard('web')->logout();
 
             $request->session()->invalidate();
 
             $request->session()->regenerateToken();
+
             
             abort(403, 'Unauthorized. Your account has been deactivated. contact support to have your account reinstated');
 
+            
         }
 
         return $next($request);
