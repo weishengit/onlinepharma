@@ -33,6 +33,7 @@ class ProductFactory extends Factory
             'is_prescription' => $this->faker->numberBetween(0, 1),
             'is_available' => $this->faker->biasedNumberBetween(0, 1, $function = 'sqrt'),
             'is_active' => $this->faker->biasedNumberBetween(0, 1, $function = 'sqrt'),
+            'is_vatable' => $this->faker->biasedNumberBetween(1, 0, $function = 'sqrt'),
             'image' => 'product_0' . $this->faker->numberBetween(1, 6) . '.png',
         ];
     }

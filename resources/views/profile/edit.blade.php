@@ -99,6 +99,8 @@
               	    </form>
                     <hr>
                 </div>
+
+                @if (auth()->user()->id != 1)
                 <div class="alert alert-danger" role="alert">
                     <h4 class="alert-heading">Deactivate Account</h4>
                     <p><strong>Warning!</strong>  This button will deactivate your account</p>
@@ -106,7 +108,8 @@
                     <p class="mb-0">
                         <a href="{{ route('profile.delete.show') }}"><button class="btn btn-lg btn-danger" type="button"><i class="glyphicon glyphicon-ok-sign"></i>Permanently Delete</button></a>
                     </p>
-                  </div>
+                </div>
+                @endif
             </div><!--/tab-content-->
         </div><!--/col-9-->
     </div><!--/row-->

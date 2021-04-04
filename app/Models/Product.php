@@ -24,6 +24,7 @@ class Product extends Model
         'stock',
         'measurement',
         'is_prescription',
+        'is_vatable',
         'is_available',
         'is_active',
         'image',

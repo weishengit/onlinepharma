@@ -53,7 +53,7 @@
 
                         <div class="max-w-2xl bg-white border-2 border-gray-300 p-5 rounded-md tracking-wide shadow-lg">
                             <div id="header" class=""> 
-                                <h4 id="name" class="text-2xl font-semibold mb-2">Active Products</h4>
+                                <h4 id="name" class="text-blue-500 text-2xl font-semibold mb-2">Active Products</h4>
                                 <p id="job" class="text-gray-800 mt-2 text-sm">Show all active products.</p>
                             </div>
                         </div>
@@ -68,7 +68,7 @@
 
                         <div class="max-w-2xl bg-white border-2 border-gray-300 p-5 rounded-md tracking-wide shadow-lg">
                             <div id="header" class=""> 
-                                <h4 id="name" class="text-2xl font-semibold mb-2">Inactive Products</h4>
+                                <h4 id="name" class="text-blue-500 text-2xl font-semibold mb-2">Inactive Products</h4>
                                 <p id="job" class="text-gray-800 mt-2 text-sm">Show all inactive products.</p>
                             </div>
                         </div>

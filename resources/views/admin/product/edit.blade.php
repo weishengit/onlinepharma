@@ -176,6 +176,26 @@
                             </select>
                             </div>
                         </div>
+                        {{-- VAT --}}
+                        <div class="m-auto">
+                            <label for="is_vatable" class="block text-sm font-medium text-gray-700">
+                                Vat <span class="text-red-600">*</span>
+                            </label>
+                            <div class="mt-1 flex rounded-md shadow-sm">
+                                <span class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">
+                                    Vatable
+                                </span>
+                            <select name="is_vatable" id="is_vatable" class="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300">
+                                @if ($product->is_vatable == 1)
+                                    <option value="0">No</option>
+                                    <option selected value="1">Yes</option>
+                                @else
+                                    <option selected value="0">No</option>
+                                    <option value="1">Yes</option>
+                                @endif
+                            </select>
+                            </div>
+                        </div>
                         {{-- Active --}}
                         <div class="m-auto">
                             <label for="is_available" class="block text-sm font-medium text-gray-700">

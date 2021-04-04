@@ -26,6 +26,7 @@ class CreateProductsTable extends Migration
             $table->integer('is_prescription');
             $table->integer('is_available');
             $table->integer('is_active');
+            $table->integer('is_vatable');
             $table->string('image');
             $table->timestamps();
         });

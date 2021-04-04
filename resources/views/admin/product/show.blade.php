@@ -145,6 +145,7 @@
                         <th>Price</th>
                         <th>Stock</th>
                         <th>Available In Store</th>
+                        <th>Vat</th>
                         <th>RX</th>
                     </tr>
                 </thead>
@@ -166,6 +167,13 @@
                         <td>{{ $product->stock }}</td>
                         <td>
                             @if ($product->is_available == 1)
+                                Yes
+                            @else
+                                No
+                            @endif
+                        </td>
+                        <td>
+                            @if ($product->is_vatable == 1)
                                 Yes
                             @else
                                 No

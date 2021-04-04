@@ -91,9 +91,9 @@
         </div>
         {{-- Additional Info --}}
         <div class="row">
-          <ul>
+          <ul class="text-secondary">
             @if ($product->category_id != null) <li>Category: {{ $product->category->name }}</li> @endif
-            @if ($product->is_prescription == 1) <li>Prescription: Yes</li> @endif
+            @if ($product->is_prescription == 1) <li>Prescription: <span class="text-danger">Yes</span> </li> @endif
             @if ($product->generic_name != null) <li>Generic Name: {{ $product->generic_name }}</li> @endif
             @if ($product->drug_class != null) <li>Drug Class: {{ $product->drug_class }}</li> @endif
             @if ($product->measurement != null) <li>Measurement: {{ $product->measurement }}</li> @endif

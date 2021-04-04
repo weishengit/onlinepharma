@@ -57,6 +57,7 @@ class ProductController extends Controller
             'measurement' => 'required|string|max:255',
             'is_prescription' => 'required|numeric',
             'is_available' => 'required|numeric',
+            'is_vatable' => 'required|numeric',
             'image' => 'mimes:jpg,jpeg,png|max:1096'
         ]);
         // MOVE IMAGE TO PUBLIC FOLDER
@@ -79,6 +80,7 @@ class ProductController extends Controller
             'measurement' => $request->input('measurement'),
             'is_prescription' => $request->input('is_prescription'),
             'is_available' => $request->input('is_available'),
+            'is_vatable' => $request->input('is_available'),
             'image' => $newImageName ?? 'no-image.jpg',
         ]);
 
@@ -158,6 +160,7 @@ class ProductController extends Controller
             'measurement' => 'required|string|max:255',
             'is_prescription' => 'required|numeric',
             'is_available' => 'required|numeric',
+            'is_vatable' => 'required|numeric',
             'image' => 'mimes:jpg,jpeg,png|max:1096'
         ]);
         // MOVE IMAGE TO PUBLIC FOLDER
@@ -196,6 +199,7 @@ class ProductController extends Controller
                 'measurement' => $request->input('measurement'),
                 'is_prescription' => $request->input('is_prescription'),
                 'is_available' => $request->input('is_available'),
+                'is_vatable' => $request->input('is_available'),
                 'image' => $newImageName ?? $oldPicture,
             ]);
 

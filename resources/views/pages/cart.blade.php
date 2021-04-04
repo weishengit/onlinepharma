@@ -143,16 +143,7 @@
                 <strong class="text-black">&#8369;{{ number_format($cart->getSubTotal(), 2) ?? 'error' }}</strong>
               </div>
             </div>
-            {{-- VAT --}}
-            <div class="row mb-3">
-              <div class="col-md-6">
-                <span class="text-black">VAT(12%)</span>
-              </div>
-              <div class="col-md-6 text-right">
-                <strong class="text-black">+&#8369;{{ number_format($cart->getVat(), 2) ?? 'error' }}</strong>
-              </div>
-            </div>
-            {{-- VAT --}}
+            {{-- COUPON --}}
             <div class="row mb-5">
               <div class="col-md-6">
                 <span class="text-black">Coupon</span>
@@ -170,36 +161,32 @@
                 <strong class="text-black">&#8369;{{ number_format($cart->getTotal(), 2) }}</strong>
               </div>
             </div>
-            {{-- TOTAL WITH SC --}}
-            <div class="row mb-5">
-              <div class="col-md-6">
-                <span class="text-black">Total(Senior)</span>
-              </div>
-              <div class="col-md-6 text-right">
-                <strong class="text-black">&#8369;{{ number_format($cart->getSC(), 2) }}</strong>
+
+            {{-- CHECKOUT --}}
+            <div class="row border border-info">
+              <h2 class="text-primary text-center ml-4 mt-2">Checkout Method</h2>
+            
+
+            <div class="card">
+              <h5 class="card-header">Pick Up</h5>
+              <div class="card-body">
+                <h5 class="card-title">Get From Store</h5>
+                <p class="card-text">You are required to bring your prescription and/or senior citizen id and booklet.</p>
+                <a href="#" class="btn btn-primary">Pick Up</a>
               </div>
             </div>
-            {{-- DELIVERY FEE --}}
-            {{-- TOTAL WITH SC --}}
-            <div class="row mb-3">
-              <div class="col-md-6">
-                <span class="text-black">Delivery Fee</span>
-              </div>
-              <div class="col-md-6 text-right">
-                <strong class="text-black">+&#8369;{{ number_format($cart->getDelivery(), 2) }}</strong>
+            <div class="card">
+              <h5 class="card-header">Delivery</h5>
+              <div class="card-body">
+                <h5 class="card-title">Deliver To Your Address</h5>
+                <p class="card-text">The customer who ordered must be present to claim the order. Present your prescription or sc/pwd id if required</p>
+                <a href="#" class="btn btn-primary">Delivery</a>
               </div>
             </div>
 
+          </div>
             {{-- CHECKOUT --}}
-            <div class="row">
-              <div class="col-md-12">
-                <a href="{{ route('pages.checkout') }}">
-                  <button class="btn btn-primary btn-lg btn-block">
-                    Proceed To Checkout
-                  </button>
-                </a>
-              </div>
-            </div>
+     
 
           </div>
         </div>
