@@ -11,6 +11,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PasswordController;
+use App\Http\Controllers\TaxController;
 
 /*
 |--------------------------------------------------------------------------
@@ -96,6 +97,9 @@ Route::middleware(['admin', 'active'])->name('admin.')->prefix('admin')->group(f
     Route::post('users/edit/{id}/ban', [BanController::class , 'store'])->name('user.ban');
     Route::delete('users/edit/{id}/unban', [BanController::class , 'destroy'])->name('user.unban');
     Route::resource('user', UserController::class);
+    //TAX
+    Route::put('tax/{product}/activate', [TaxController::class, 'activate'])->name('tax.activate');
+    Route::resource('tax', TaxController::class);
     //PRODUCTS
     Route::put('product/{product}/activate', [ProductController::class, 'activate'])->name('product.activate');
     Route::put('product/{product}/not-available', [ProductController::class, 'markNotForSale'])->name('product.notavailable');

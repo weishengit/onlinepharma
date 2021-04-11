@@ -30,33 +30,36 @@
         @endif
         {{-- Title --}}
         <h1 class="border-2 flex items-center font-sans font-bold break-normal text-gray-900 px-2 py-8 text-lg md:text-2xl">
-			<a 
+			<a
                 href="{{ route('admin.index') }}">
                 <p class="text-blue-500 hover:text-blue-700 font-bold">
                     Dashboard&nbsp;
                 </p>
-                
+
             </a>
             /&nbsp;
-            <a 
+            <a
                 href="{{ route('admin.product.index') }}">
                 <p class="text-blue-500 hover:text-blue-700 font-bold">
                     Products&nbsp;
                 </p>
-                
+
             </a>
             /&nbsp;
             <p class="text-indigo-700">
                 Edit : {{ $product->name }}
             </p>
-            
+
 		</h1>
-        
+        {{-- Photo --}}
+        <div class="flex flex-wrap content-center justify-center">
+            <img src="{{ asset('images/' . $product->image ) }}" alt="product image" width="280" height="280">
+        </div>
         {{-- START --}}
         <div class="mt-5 md:mt-0 md:col-span-2">
             {{-- FORM --}}
-            <form 
-                action="{{ route('admin.product.update', ['product' => $product->id]) }}" 
+            <form
+                action="{{ route('admin.product.update', ['product' => $product->id]) }}"
                 method="POST"
                 enctype="multipart/form-data">
                 @csrf
@@ -176,22 +179,31 @@
                             </select>
                             </div>
                         </div>
-                        {{-- VAT --}}
+                        {{-- Tax --}}
                         <div class="m-auto">
-                            <label for="is_vatable" class="block text-sm font-medium text-gray-700">
-                                Vat <span class="text-red-600">*</span>
+                            <label for="tax" class="block text-sm font-medium text-gray-700">
+                                Tax <span class="text-red-600">*</span>
                             </label>
                             <div class="mt-1 flex rounded-md shadow-sm">
                                 <span class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">
-                                    Vatable
+                                    Tax
                                 </span>
-                            <select name="is_vatable" id="is_vatable" class="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300">
-                                @if ($product->is_vatable == 1)
-                                    <option value="0">No</option>
-                                    <option selected value="1">Yes</option>
+                            <select name="tax" id="tax" class="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300">
+                                {{-- GET CURRENT TAX --}}
+                                @if (isset($product->tax_id))
+                                    <option value="{{ $product->tax_id }}" selected >{{ $product->tax->name . ' - ' . $product->tax->rate * 100 . '%' }}</option>
                                 @else
-                                    <option selected value="0">No</option>
-                                    <option value="1">Yes</option>
+                                    {{-- IF NO TAX SET --}}
+                                    <option value=""selected disabled hidden>Choose Tax</option>
+                                @endif
+                                {{-- GET ALL TAXES --}}
+                                @if (isset($taxes))
+                                    @foreach ($taxes as $tax)
+                                        {{-- EXCEPT CURRENT TAX --}}
+                                        @if ($tax->id != $product->tax_id)
+                                            <option value="{{ $tax->id }}">{{ $tax->name . ' - ' . $tax->rate * 100 . '%' }}</option>
+                                        @endif
+                                    @endforeach
                                 @endif
                             </select>
                             </div>
@@ -247,11 +259,11 @@
                                 </button>
                             </div>
                         @endif
-            </form>     
+            </form>
                         @if ($product->is_active == 1)
                             {{-- DEACTIVATE PRODUCT --}}
                             <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
-                                <form 
+                                <form
                                     method="POST"
                                     action="{{ route('admin.product.destroy', ['product' => $product->id]) }}">
                                     @csrf
@@ -263,7 +275,7 @@
                             </div>
                         @else
                         <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
-                            <form 
+                            <form
                                 method="POST"
                                 action="{{ route('admin.product.activate', ['product' => $product->id]) }}">
                                 @csrf
@@ -274,7 +286,7 @@
                             </form>
                         </div>
                         @endif
-                        
+
                     </div>
                 </div>
         </div>

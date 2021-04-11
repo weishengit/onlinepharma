@@ -30,33 +30,33 @@
         @endif
         {{-- Title --}}
         <h1 class="border-2 flex items-center font-sans font-bold break-normal text-gray-900 px-2 py-8 text-lg md:text-2xl">
-			<a 
+			<a
                 href="{{ route('admin.index') }}">
                 <p class="text-blue-500 hover:text-blue-700 font-bold">
                     Dashboard&nbsp;
                 </p>
-                
+
             </a>
             /&nbsp;
-            <a 
+            <a
                 href="{{ route('admin.product.index') }}">
                 <p class="text-blue-500 hover:text-blue-700 font-bold">
                     Products&nbsp;
                 </p>
-                
+
             </a>
             /&nbsp;
             <p class="text-indigo-700">
                 Create New
             </p>
-            
+
 		</h1>
-        
+
         {{-- START --}}
         <div class="mt-5 md:mt-0 md:col-span-2">
             {{-- FORM --}}
-            <form 
-                action="{{ route('admin.product.store') }}" 
+            <form
+                action="{{ route('admin.product.store') }}"
                 method="POST"
                 enctype="multipart/form-data">
                 @csrf
@@ -177,18 +177,22 @@
                         </select>
                         </div>
                     </div>
-                    {{-- VAT --}}
+                    {{-- TAX --}}
                     <div class="m-auto">
-                        <label for="is_vatable" class="block text-sm font-medium text-gray-700">
-                            Vat <span class="text-red-600">*</span>
+                        <label for="tax" class="block text-sm font-medium text-gray-700">
+                            Tax <span class="text-red-600">*</span>
                         </label>
                         <div class="mt-1 flex rounded-md shadow-sm">
                             <span class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">
-                                Vatable
+                                Tax
                             </span>
-                        <select name="is_vatable" id="is_vatable" class="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300">
-                            <option value="0">No</option>
-                            <option selected value="1">Yes</option>
+                        <select name="tax" id="tax" class="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300">
+                            <option value=""selected disabled hidden>Choose Tax</option>
+                            @if (isset($taxes))
+                                @foreach ($taxes as $tax)
+                                    <option value="{{ $tax->id }}">{{ $tax->name . '-' . $tax->rate * 100 . '%' }}</option>
+                                @endforeach
+                            @endif
                         </select>
                         </div>
                     </div>

@@ -30,13 +30,13 @@ class UserFactory extends Factory
             'first_name' => $this->faker->firstName,
             'last_name' => $this->faker->lastName,
             'contact' => '09' . $this->faker->randomNumber(8) . $this->faker->randomDigit,
-            'address' => 
+            'address' =>
                 $this->faker->buildingNumber . ' ' .
-                $this->faker->streetName . ', ' . 
+                $this->faker->streetName . ', ' .
                 'Brgy ' . $this->faker->cityPrefix . ', ' .
                 $this->faker->city . ' City',
             'scid' => $this->faker->randomNumber(8),
-            'is_active' => $this->faker->biasedNumberBetween(0, 1, $function = 'sqrt'),
+            'is_active' => 1,
             'remember_token' => Str::random(10),
         ];
     }

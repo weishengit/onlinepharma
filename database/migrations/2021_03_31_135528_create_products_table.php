@@ -16,6 +16,7 @@ class CreateProductsTable extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->foreignId('category_id')->nullable();
+            $table->foreignId('tax_id')->nullable();
             $table->string('name');
             $table->string('generic_name')->nullable();
             $table->string('drug_class')->nullable();
@@ -26,7 +27,6 @@ class CreateProductsTable extends Migration
             $table->integer('is_prescription');
             $table->integer('is_available');
             $table->integer('is_active');
-            $table->integer('is_vatable');
             $table->string('image');
             $table->timestamps();
         });

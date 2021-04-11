@@ -2,17 +2,17 @@
 
 namespace Database\Factories;
 
-use App\Models\Category;
+use App\Models\Tax;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class CategoryFactory extends Factory
+class TaxFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = Category::class;
+    protected $model = Tax::class;
 
     /**
      * Define the model's default state.
@@ -21,8 +21,10 @@ class CategoryFactory extends Factory
      */
     public function definition()
     {
+        // CURRENTLY UNUSED
         return [
             'name' => $this->faker->unique()->domainWord,
+            'rate' => 0. . $this->faker->randomNumber(2),
             'is_active' => 1,
         ];
     }

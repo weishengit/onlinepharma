@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Product extends Model
+class Tax extends Model
 {
     use HasFactory;
 
@@ -16,18 +16,8 @@ class Product extends Model
      */
     protected $fillable = [
         'name',
-        'category_id',
-        'tax_id',
-        'generic_name',
-        'drug_class',
-        'description',
-        'price',
-        'stock',
-        'measurement',
-        'is_prescription',
-        'is_available',
+        'rate',
         'is_active',
-        'image',
     ];
 
     /**
@@ -39,13 +29,8 @@ class Product extends Model
         'is_active' => 1,
     ];
 
-    public function category()
+    public function products()
     {
-        return $this->belongsTo(Category::class);
-    }
-
-    public function tax()
-    {
-        return $this->belongsTo(Tax::class);
+        return $this->hasMany(Product::class);
     }
 }

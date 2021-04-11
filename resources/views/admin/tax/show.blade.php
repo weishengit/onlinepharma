@@ -99,9 +99,9 @@
             </div>
         @endif
         <div class="m-2 mt-7 float-right">
-            <a href="{{ route('admin.product.create') }}">
+            <a href="{{ route('admin.tax.create') }}">
                 <button type="button" class="block py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-500 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                    Add Product
+                    Add Tax
                 </button>
             </a>
         </div>
@@ -109,87 +109,55 @@
         <h1 class="border-2 flex items-center font-sans font-bold break-normal text-gray-900 px-2 py-8 text-lg md:text-2xl">
 			<a
                 href="{{ route('admin.index') }}">
-                <p class="text-blue-500 hover:text-blue-700 font-bold">
+                <p
+                    class="text-blue-500 hover:text-blue-700 font-bold">
                     Dashboard&nbsp;
                 </p>
-
             </a>
             /&nbsp;
             <a
-                href="{{ route('admin.index') }}">
-                <p class="text-blue-500 hover:text-blue-700 font-bold">
-                    Products&nbsp;
+                href="{{ route('admin.tax.index') }}">
+                <p
+                    class="text-blue-500 hover:text-blue-700 font-bold">
+                    Taxes&nbsp;
                 </p>
-
             </a>
             /&nbsp;
             <p class="text-indigo-700">
-                {{ $title ?? 'Product' }}
+                {{ $title ?? 'Taxes' }}
             </p>
-
 		</h1>
 
-
-
-
-        @if (isset($products))
         {{-- Table --}}
         <div id='recipients' class="p-8 mt-6 lg:mt-0 rounded shadow bg-white">
             <table id="data_table" class="stripe hover" style="width:100%; padding-top: 1em;  padding-bottom: 1em;">
                 <thead>
                     <tr>
-                        <th>Options</th>
-                        <th>Image</th>
-                        <th>Category</th>
-                        <th>Name</th>
-                        <th>Price</th>
-                        <th>Stock</th>
-                        <th>Available In Store</th>
-                        <th>Tax</th>
-                        <th>RX</th>
+                        <th>Tax ID</th>
+                        <th>Tax Name</th>
+                        <th>Tax Rate</th>
+                        <th>Edit</th>
                     </tr>
                 </thead>
                 <tbody>
-                @foreach ($products as $product)
+                @foreach ($taxes as $tax)
                     <tr>
+                        <td>{{ $tax->id }}</td>
+                        <td>{{ $tax->name }}</td>
+                        <td>{{ $tax->rate }}</td>
                         <td>
                             <a
-                            href="{{ route('admin.product.edit', ['product' => $product->id]) }}">
+                                href="{{ route('admin.tax.edit', ['tax' => $tax->id]) }}">
                                 <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                                    Options
+                                    Edit
                                 </button>
                             </a>
-                        </td>
-                        <td> <img width="50" height="50" src="{{ asset('images/'. $product->image) }}" alt="image"></td>
-                        <td>{{ $product->category->name }}</td>
-                        <td>{{ $product->name }}</td>
-                        <td>{{ $product->price }}</td>
-                        <td>{{ $product->stock }}</td>
-                        <td>
-                            @if ($product->is_available == 1)
-                                Yes
-                            @else
-                                No
-                            @endif
-                        </td>
-                        <td>{{ $product->tax->name . ' - ' . $product->tax->rate * 100 . '%' }}</td>
-                        <td>
-                            @if ($product->is_prescription == 1)
-                                Yes
-                            @else
-                                No
-                            @endif
                         </td>
                     </tr>
                 @endforeach
                 </tbody>
             </table>
         </div>
-        {{-- Table end --}}
-        @else
-            There are currently no products in the database.
-        @endif
-
     </div>
 </div>
 @endsection
