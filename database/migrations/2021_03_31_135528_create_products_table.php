@@ -21,7 +21,7 @@ class CreateProductsTable extends Migration
             $table->string('generic_name')->nullable();
             $table->string('drug_class')->nullable();
             $table->string('description');
-            $table->unsignedInteger('price');
+            $table->float('price');
             $table->string('measurement')->nullable();
             $table->unsignedInteger('stock');
             $table->integer('is_prescription');
