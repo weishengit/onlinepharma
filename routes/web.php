@@ -39,9 +39,11 @@ Route::prefix('pages')->name('pages.')->group(function () {
     Route::get('/thanks', [PagesController::class, 'thanks'])->name('thanks');
     Route::get('/about', [PagesController::class, 'about'])->name('about');
     Route::get('/contact', [PagesController::class, 'contact'])->name('contact');
-    Route::get('/shop', [PagesController::class, 'shop'])
+    Route::get('/shop/search/{filter?}', [PagesController::class, 'search'])
+        ->name('search');
+    Route::get('/shop/{filter?}', [PagesController::class, 'shop'])
         ->name('shop')
-        ->middleware(['active']);;
+        ->middleware(['active']);
     Route::get('/cart', [PagesController::class, 'cart'])
         ->name('cart')
         ->middleware(['active']);
@@ -85,6 +87,7 @@ Route::middleware(['admin', 'active'])->name('admin.')->prefix('admin')->group(f
 
     //DASHBOARD
     Route::view('/', 'admin.index')->name('index');
+    Route::get('/manage', [AdminController::class, 'manage'])->name('manage');
     //CATEGORY
     Route::put('category/{id}/activate', [CategoryController::class, 'activate'])->name('category.activate');
     Route::resource('category', CategoryController::class);

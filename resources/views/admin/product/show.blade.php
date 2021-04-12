@@ -144,7 +144,7 @@
                         <th>Name</th>
                         <th>Price</th>
                         <th>Stock</th>
-                        <th>Available In Store</th>
+                        <th>Available</th>
                         <th>Tax</th>
                         <th>RX</th>
                     </tr>
@@ -161,10 +161,10 @@
                             </a>
                         </td>
                         <td> <img width="50" height="50" src="{{ asset('images/'. $product->image) }}" alt="image"></td>
-                        <td>{{ $product->category->name }}</td>
-                        <td>{{ $product->name }}</td>
-                        <td>{{ $product->price }}</td>
-                        <td>{{ $product->stock }}</td>
+                        <td>{{ $product->category->name ?? 'null'}}</td>
+                        <td>{{ $product->name ?? null}}</td>
+                        <td>{{ $product->price ?? null}}</td>
+                        <td>{{ $product->stock ?? null}}</td>
                         <td>
                             @if ($product->is_available == 1)
                                 Yes
@@ -172,7 +172,13 @@
                                 No
                             @endif
                         </td>
-                        <td>{{ $product->tax->name . ' - ' . $product->tax->rate * 100 . '%' }}</td>
+                        <td>
+                            @if (isset($product->tax->name))
+                                {{ ($product->tax->name . ' - ' . $product->tax->rate * 100 . '%')}}
+                            @else
+                                null
+                            @endif
+                        </td>
                         <td>
                             @if ($product->is_prescription == 1)
                                 Yes

@@ -7,13 +7,13 @@
 
         <title>{{ config('app.name', 'Laravel') }}</title>
 
-        
+
 
         <!-- Fonts -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
 
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
-        
+
         <!-- Styles -->
         <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 
@@ -26,14 +26,14 @@
         <!-- Scripts -->
         <script src="{{ asset('js/app.js') }}" defer></script>
     </head>
-    
+
     <body class="bg-gray-100 font-sans leading-normal tracking-normal">
 
         <nav id="header" class="bg-white fixed w-full z-10 top-0 shadow">
-    
-    
+
+
             <div class="w-full container mx-auto flex flex-wrap items-center mt-0 pt-3 pb-3 md:pb-0">
-    
+
                 <div class="w-1/2 pl-2 md:pl-0">
                     <a class="text-green-600 text-base xl:text-xl no-underline hover:no-underline font-bold" href="{{ route('admin.index') }}">
                         <i class="fas fa-heart pr-3"></i> Admin Dashboard
@@ -41,7 +41,7 @@
                 </div>
                 <div class="w-1/2 pr-0">
                     <div class="flex relative inline-block float-right">
-    
+
                         <div class="relative text-sm">
                             <button id="userButton" class="flex items-center focus:outline-none mr-3">
                                 <span class="inline-block">Hi, {{ auth()->user()->name }} </span>
@@ -72,8 +72,8 @@
                                 </ul>
                             </div>
                         </div>
-    
-    
+
+
                         <div class="block lg:hidden pr-4">
                             <button id="nav-toggle" class="flex items-center px-3 py-2 border rounded text-gray-500 border-gray-600 hover:text-gray-900 hover:border-teal-500 appearance-none focus:outline-none">
                                 <svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -83,10 +83,10 @@
                             </button>
                         </div>
                     </div>
-    
+
                 </div>
-    
-    
+
+
                 <div class="w-full flex-grow lg:flex lg:items-center lg:w-auto hidden lg:block mt-2 lg:mt-0 bg-white z-20" id="nav-content">
                     <ul class="list-reset lg:flex flex-1 items-center px-4 md:px-0">
                         <li class="mr-6 my-2 md:my-0">
@@ -100,8 +100,8 @@
                             </a>
                         </li>
                         <li class="mr-6 my-2 md:my-0">
-                            <a href="{{ route('admin.category.index') }}" class="block py-1 md:py-3 pl-1 align-middle text-gray-500 no-underline hover:text-gray-900 border-b-2 border-white hover:border-purple-500">
-                                <i class="fa fa-box fa-fw mr-3"></i><span class="pb-1 md:pb-0 text-sm">Categories</span>
+                            <a href="{{ route('admin.manage') }}" class="block py-1 md:py-3 pl-1 align-middle text-gray-500 no-underline hover:text-gray-900 border-b-2 border-white hover:border-purple-500">
+                                <i class="fa fa-box fa-fw mr-3"></i><span class="pb-1 md:pb-0 text-sm">Manage</span>
                             </a>
                         </li>
                         <li class="mr-6 my-2 md:my-0">
@@ -120,11 +120,11 @@
                             </a>
                         </li>
                     </ul>
-    
-                    
-    
+
+
+
                 </div>
-    
+
             </div>
         </nav>
         {{-- CONTENT --}}
@@ -133,7 +133,7 @@
         {{-- FOOTER --}}
         {{-- <footer class="bg-white border-t border-gray-400 shadow">
             <div class="container max-w-md mx-auto flex py-8">
-    
+
                 <div class="w-full mx-auto flex flex-wrap">
                     <div class="flex w-full md:w-1/2 ">
                         <div class="px-8">
@@ -143,7 +143,7 @@
                             </p>
                         </div>
                     </div>
-    
+
                     <div class="flex w-full md:w-1/2">
                         <div class="px-8">
                             <h3 class="font-bold font-bold text-gray-900">Social</h3>
@@ -161,30 +161,30 @@
                         </div>
                     </div>
                 </div>
-    
-    
-    
+
+
+
             </div>
         </footer> --}}
-        
+
         @yield('script')
 
 
         <script>
         /*Toggle dropdown list*/
         /*https://gist.github.com/slavapas/593e8e50cf4cc16ac972afcbad4f70c8*/
-    
+
         var userMenuDiv = document.getElementById("userMenu");
         var userMenu = document.getElementById("userButton");
-    
+
         var navMenuDiv = document.getElementById("nav-content");
         var navMenu = document.getElementById("nav-toggle");
-    
+
         document.onclick = check;
-    
+
         function check(e) {
             var target = (e && e.target) || (event && event.srcElement);
-    
+
             //User Menu
             if (!checkParent(target, userMenuDiv)) {
                 // click NOT on the menu
@@ -198,7 +198,7 @@
                     userMenuDiv.classList.add("invisible");
                 }
             }
-    
+
             //Nav Menu
             if (!checkParent(target, navMenuDiv)) {
                 // click NOT on the menu
@@ -212,9 +212,9 @@
                     navMenuDiv.classList.add("hidden");
                 }
             }
-    
+
         }
-    
+
         function checkParent(t, elm) {
             while (t.parentNode) {
                 if (t == elm) { return true; }
@@ -223,9 +223,9 @@
             return false;
         }
 
-        
+
         </script>
-    
+
     </body>
-    
+
     </html>

@@ -17,7 +17,9 @@
             <h2 class="sub-title">Effective Medicine, New Medicine Everyday</h2>
             <h1>Welcome To Online Pharma</h1>
             <p>
-              <a href="{{ route('login') }}" class="btn btn-primary px-5 py-3">LOGIN NOW</a>
+                @guest
+                    <a href="{{ route('login') }}" class="btn btn-primary px-5 py-3">LOGIN NOW</a>
+                @endguest
             </p>
           </div>
         </div>
@@ -126,7 +128,7 @@
             @if (isset($newProducts))
                 @foreach ($newProducts as $newProduct)
                     <div class="text-center item mb-4">
-                        <a href="{{ route('pages.show', ['product' => $newProduct->id]) }}"> <img src="{{ asset('images/' . $newProduct->image) }}" alt="Image"></a>
+                        <a href="{{ route('pages.show', ['product' => $newProduct->id]) }}"> <img src="{{ asset('images/' . $newProduct->image) }}" alt="Image" height="340" width="40"></a>
                         <h3 class="text-dark"><a href="{{ route('pages.show', ['product' => $newProduct->id]) }}">{{ $newProduct->name }}</a></h3>
                         <p class="price">&#8369;{{ $newProduct->price }}</p>
                     </div>

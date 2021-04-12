@@ -9,7 +9,7 @@ class AdminController extends Controller
 {
     /**
      * Make account an admin.
-     * 
+     *
      * Promotes the selected user.
      *
      * @param int $id
@@ -23,7 +23,7 @@ class AdminController extends Controller
             return redirect()->route('admin.user.index')->with('message', 'user not found.');
         }
         $name = $user->name;
-        
+
         // CHECK IF ALREADY ADMIN
         if ($user->is_admin == 1) {
             return redirect()->route('admin.user.index')->with('message', $name .' is already admin.');
@@ -39,7 +39,7 @@ class AdminController extends Controller
 
     /**
      * Remove account admin.
-     * 
+     *
      * removes admin from the selected user.
      *
      * @param int $id
@@ -49,7 +49,7 @@ class AdminController extends Controller
     {
         // CHECK USER
         $user = User::where('id', $id)->first() ?? null;
-        
+
         if ($user == null) {
             // IF NO USER
             return redirect()->route('admin.user.index')->with('message', 'user not found.');
@@ -65,7 +65,12 @@ class AdminController extends Controller
         ->update([
             'is_admin' => 0,
         ]);
- 
+
         return redirect()->route('admin.user.index')->with('message', $name . ' was removed from admin.');
+    }
+
+    public function manage()
+    {
+        return view('admin.manage');
     }
 }

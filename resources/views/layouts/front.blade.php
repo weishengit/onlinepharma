@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="{{ asset('css/jquery-ui.css') }}">
   <link rel="stylesheet" href="{{ asset('css/owl.carousel.min.css') }}">
   <link rel="stylesheet" href="{{ asset('css/owl.theme.default.min.css') }}">
-  
+
   <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('apple-touch-icon.png') }}">
   <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon-32x32.png') }}">
   <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('favicon-16x16.png') }}">
@@ -76,7 +76,7 @@
                 @if (Session::has('cart'))
                   <span class="number">{{ Session::get('cart')->getTotalCartQty() ?? '' }}</span>
                 @endif
-                
+
                 </a>
                 <a href="#" class="site-menu-toggle js-menu-toggle ml-3 d-inline-block d-lg-none"><span
                     class="icon-menu"></span></a>
@@ -109,24 +109,31 @@
         <div class="container">
           <div class="row">
             <div class="col-md-6 col-lg-3 mb-4 mb-lg-0">
-  
+
               <div class="block-7">
                 <h3 class="footer-heading mb-4">About Us</h3>
                 <p>This Website is a Template Website of a Pharmaceutical Online Store that is purposely created
                 to be a capstone project and at the same time, a fully functioning online drugstore.</p>
               </div>
-  
+
             </div>
             <div class="col-lg-3 mx-auto mb-5 mb-lg-0">
               <h3 class="footer-heading mb-4">Quick Links</h3>
               <ul class="list-unstyled">
-                <li><a href="shop.php">Store</a></li>
-                <li><a href="about.php">About</a></li>
-                <li><a href="login.php">Login</a></li>
-                <li><a href="contact.php">Contact </a></li>
+                <li><a href="{{ route('pages.shop') }}">Store</a></li>
+                <li><a href="{{ route('pages.about') }}">About</a></li>
+                <li>
+                    @guest
+                        <a href="{{ route('login') }}">Login</a>
+                    @endguest
+                    @auth
+                        <a href="{{ route('logout') }}">Logout</a>
+                    @endauth
+                </li>
+                <li><a href="{{ route('pages.contact') }}">Contact </a></li>
               </ul>
             </div>
-  
+
             <div class="col-md-6 col-lg-3">
               <div class="block-5 mb-5">
                 <h3 class="footer-heading mb-4">Contact Info</h3>
@@ -149,13 +156,13 @@
                 <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
               </p>
             </div>
-  
+
           </div>
         </div>
     </footer>
 </div>
 
-  
+
     <script src="{{ asset('js/jquery-3.3.1.min.js') }}"></script>
     <script src="{{ asset('js/jquery-ui.js') }}"></script>
     <script src="{{ asset('js/popper.min.js') }}"></script>
@@ -163,8 +170,9 @@
     <script src="{{ asset('js/owl.carousel.min.js') }}"></script>
     <script src="{{ asset('js/jquery.magnific-popup.min.js') }}"></script>
     <script src="{{ asset('js/aos.js') }}"></script>
-  
     <script src="{{ asset('js/main.js') }}"></script>
+
+    @yield('script')
 
 </body>
 

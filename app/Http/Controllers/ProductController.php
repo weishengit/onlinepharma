@@ -107,6 +107,26 @@ class ProductController extends Controller
             $products = Product::where('is_active', 0)->get() ?? null;
             $title = 'Inactive';
         }
+        else if ($product == 'untaxed') {
+            // GETS UNTAXED CATEGORIES
+            $products = Product::where('is_active', 1)
+                                    ->where(function($query) {
+                                        $query->where('tax_id', 0)
+                                                ->orWhere('tax_id', 1)
+                                                ->orWhere('tax_id', null);
+                                })->get() ?? null;
+            $title = 'No Tax Set';
+        }
+        else if ($product == 'uncategorized') {
+            // GETS UNTAXED CATEGORIES
+            $products = Product::where('is_active', 1)
+                                    ->where(function($query){
+                                        $query->where('category_id', 0)
+                                                ->orWhere('category_id', 1)
+                                                ->orWhere('category_id', null);
+                                    })->get() ?? null;
+            $title = 'No Category Set';
+        }
         else{
             // GETS ALL ACTIVE CATEGORIES
             $products = Product::where('is_active', '1')->get() ?? null;

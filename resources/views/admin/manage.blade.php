@@ -39,67 +39,37 @@
             </a>
             /&nbsp;
             <p class="text-indigo-700">
-                Products
+                Management
             </p>
 		</h1>
 
         {{-- Cards --}}
         <div class="flex flex-col">
-            {{-- Active Products --}}
+            {{-- Taxes --}}
             <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                 <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
                     <a
-                        href="{{ route('admin.product.show', ['product' => 'all']) }}">
+                        href="{{ route('admin.tax.index') }}">
 
                         <div class="max-w-2xl bg-white border-2 border-gray-300 p-5 rounded-md tracking-wide shadow-lg">
                             <div id="header" class="">
-                                <h4 id="name" class="text-blue-500 text-2xl font-semibold mb-2">Active Products</h4>
-                                <p id="job" class="text-gray-800 mt-2 text-sm">Show all active products.</p>
+                                <h4 id="name" class="text-blue-500 text-2xl font-semibold mb-2">Taxes</h4>
+                                <p id="job" class="text-gray-800 mt-2 text-sm">Manage Taxes.</p>
                             </div>
                         </div>
                     </a>
                 </div>
             </div>
-            {{-- Uncategorized Products --}}
+            {{-- Categories --}}
             <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                 <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
                     <a
-                        href="{{ route('admin.product.show', ['product' => 'uncategorized']) }}">
+                        href="{{ route('admin.category.index') }}">
 
                         <div class="max-w-2xl bg-white border-2 border-gray-300 p-5 rounded-md tracking-wide shadow-lg">
                             <div id="header" class="">
-                                <h4 id="name" class="text-blue-500 text-2xl font-semibold mb-2">Uncategorized Products</h4>
-                                <p id="job" class="text-gray-800 mt-2 text-sm">Show all products with no categories set.</p>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            {{-- Untaxed Products --}}
-            <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-                <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-                    <a
-                        href="{{ route('admin.product.show', ['product' => 'untaxed']) }}">
-
-                        <div class="max-w-2xl bg-white border-2 border-gray-300 p-5 rounded-md tracking-wide shadow-lg">
-                            <div id="header" class="">
-                                <h4 id="name" class="text-blue-500 text-2xl font-semibold mb-2">Untaxed Products</h4>
-                                <p id="job" class="text-gray-800 mt-2 text-sm">Show all products with no tax set.</p>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            {{-- Inactive Products --}}
-            <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-                <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-                    <a
-                        href="{{ route('admin.product.show', ['product' => 'inactive']) }}">
-
-                        <div class="max-w-2xl bg-white border-2 border-gray-300 p-5 rounded-md tracking-wide shadow-lg">
-                            <div id="header" class="">
-                                <h4 id="name" class="text-blue-500 text-2xl font-semibold mb-2">Inactive Products</h4>
-                                <p id="job" class="text-gray-800 mt-2 text-sm">Show all inactive products.</p>
+                                <h4 id="name" class="text-blue-500 text-2xl font-semibold mb-2">Categories</h4>
+                                <p id="job" class="text-gray-800 mt-2 text-sm">Manage Categories.</p>
                             </div>
                         </div>
                     </a>

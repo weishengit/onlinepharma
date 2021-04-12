@@ -10,6 +10,18 @@
 </div>
 
 <div class="site-section">
+    {{-- SEARCH --}}
+    <div class="container" width="30%">
+        <div class="input-group mb-3">
+            <input id="search" name="search" type="text" class="form-control" placeholder="Search product...">
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="button"><span class="icon-search"></span></button>
+            </div>
+        </div>
+        {{-- RESULT --}}
+        <ul id="result" class="list-group">
+        </ul>
+    </div>
   <div class="container">
 
     <div class="row">
@@ -18,14 +30,15 @@
         <button type="button" class="btn btn-secondary btn-md dropdown-toggle px-4" id="dropdownMenuReference"
           data-toggle="dropdown">Reference</button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuReference">
-          <a class="dropdown-item" href="#">Relevance</a>
-          <a class="dropdown-item" href="#">Name, A to Z</a>
-          <a class="dropdown-item" href="#">Name, Z to A</a>
+          <a class="dropdown-item" href="{{ route('pages.shop') }}">Relevance</a>
+          <a class="dropdown-item" href="{{ route('pages.shop', ['filter' => 'name_asc']) }}">Name, A to Z</a>
+          <a class="dropdown-item" href="{{ route('pages.shop', ['filter' => 'name_desc']) }}">Name, Z to A</a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#">Price, low to high</a>
-          <a class="dropdown-item" href="#">Price, high to low</a>
+          <a class="dropdown-item" href="{{ route('pages.shop', ['filter' => 'price_asc']) }}">Price, low to high</a>
+          <a class="dropdown-item" href="{{ route('pages.shop', ['filter' => 'price_desc']) }}">Price, high to low</a>
         </div>
       </div>
+
     </div>
 
     {{-- Products --}}
@@ -34,17 +47,19 @@
       @foreach ($products as $product)
       {{-- Container --}}
       <div class="col-sm-6 col-lg-4 text-center item mb-4">
-        <a href="{{ route('pages.show', ['product' => $product->id]) }}"> 
+        <a href="{{ route('pages.show', ['product' => $product->id]) }}">
           {{-- Image --}}
-          <img 
-            width="300" 
-            height="300" 
-            src="{{ asset('images/' . $product->image) }}" 
+          <img
+            width="300"
+            height="300"
+            src="{{ asset('images/' . $product->image) }}"
             alt="Image">
           {{-- Name --}}
           <h3 class="text-dark">
             {{ $product->name }}
           </h3>
+          {{-- Generic Name --}}
+          <span class="price">{{ $product->generic_name }}</span>
           {{-- Price --}}
           <p class="price">&#8369;{{ $product->price }}</p>
         </a>
@@ -58,75 +73,57 @@
     <div class="d-flex justify-content-center">
       {{ $products->links() }}
     </div>
-    
-      {{-- <div class="col-sm-6 col-lg-4 text-center item mb-4">
 
-        <a href="shop-single.php"> <img src="{{ asset('images/product_04.png') }}" alt="Image"></a>
-        <h3 class="text-dark"><a href="shop-single.php">Cetyl Pure</a></h3>
-        <p class="price"><del>45.00</del> &mdash; $20.00</p>
-      </div>
-      <div class="col-sm-6 col-lg-4 text-center item mb-4">
-        <a href="shop-single.php"> <img src="{{ asset('images/product_05.png') }}" alt="Image"></a>
-        <h3 class="text-dark"><a href="shop-single.php">CLA Core</a></h3>
-        <p class="price">$38.00</p>
-      </div>
-      <div class="col-sm-6 col-lg-4 text-center item mb-4">
-        <span class="tag">Sale</span>
-        <a href="shop-single.php"> <img src="{{ asset('images/product_06.png') }}" alt="Image"></a>
-        <h3 class="text-dark"><a href="shop-single.php">Poo Pourri</a></h3>
-        <p class="price"><del>$89</del> &mdash; $38.00</p>
-      </div>
 
-      <div class="col-sm-6 col-lg-4 text-center item mb-4">
-        <span class="tag">Sale</span>
-        <a href="shop-single.php"> <img src="{{ asset('images/product_01.png') }}" alt="Image"></a>
-        <h3 class="text-dark"><a href="shop-single.php">Bioderma</a></h3>
-        <p class="price"><del>95.00</del> &mdash; $55.00</p>
-      </div>
-      <div class="col-sm-6 col-lg-4 text-center item mb-4">
-        <a href="shop-single.php"> <img src="{{ asset('images/product_02.png') }}" alt="Image"></a>
-        <h3 class="text-dark"><a href="shop-single.php">Chanca Piedra</a></h3>
-        <p class="price">$70.00</p>
-      </div>
-      <div class="col-sm-6 col-lg-4 text-center item mb-4">
-        <a href="shop-single.php"> <img ˀsrc="{{ asset('images/product_03.png') }}" alt="Image"></a>
-        <h3 class="text-dark"><a href="shop-single.php">Umcka Cold Care</a></h3>
-        <p class="price">$120.00</p>
-      </div>
 
-      <div class="col-sm-6 col-lg-4 text-center item mb-4">
-
-        <a href="shop-single.php"> <img src="{{ asset('images/product_04.png') }}" alt="Image"></a>
-        <h3 class="text-dark"><a href="shop-single.php">Cetyl Pure</a></h3>
-        <p class="price"><del>45.00</del> &mdash; $20.00</p>
-      </div>
-      <div class="col-sm-6 col-lg-4 text-center item mb-4">
-        <a href="shop-single.php"> <img src="{{ asset('images/product_05.png') }}" alt="Image"></a>
-        <h3 class="text-dark"><a href="shop-single.php">CLA Core</a></h3>
-        <p class="price">$38.00</p>
-      </div>
-      <div class="col-sm-6 col-lg-4 text-center item mb-4">
-        <span class="tag">Sale</span>
-        <a href="shop-single.php"> <img src="{{ asset('images/product_06.png') }}" alt="Image"></a>
-        <h3 class="text-dark"><a href="shop-single.php">Poo Pourri</a></h3>
-        <p class="price"><del>$89</del> &mdash; $38.00</p>
-      </div>
-    </div>
-    <div class="row mt-5">
-      <div class="col-md-12 text-center">
-        <div class="site-block-27">
-          <ul>
-            <li><a href="#">&lt;</a></li>
-            <li class="active"><span>1</span></li>
-            <li><a href="#">2</a></li>
-            <li><a href="#">3</a></li>
-            <li><a href="#">4</a></li>
-            <li><a href="#">5</a></li>
-            <li><a href="#">&gt;</a></li>
-          </ul>
-        </div>
-      </div> --}}
-    {{-- </div> --}}
   </div>
 </div>
+@endsection
+
+@section('script')
+{{-- AJAX SEARCH SCRIPT --}}
+<script>
+
+    document.getElementById('search').addEventListener('keyup', searchProducts);
+
+    function searchProducts() {
+        // GET TEXT IN SEARCH
+        var filter =  document.getElementById('search').value;
+
+        // CREATE XHR
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "/pages/shop/search/?filter=" + filter, true);
+
+        // CLEAR ITEMS IF SEARCH IT EMPTY
+        if (filter == '') {
+            document.getElementById('result').innerHTML = '';
+        }
+
+        xhr.onload = function() {
+            if (this.status == 200) {
+                var products = JSON.parse(this.responseText);
+                var output = '';
+
+                for(var i in products){
+                    output += `
+                    <a href="/pages/show/${products[i].id}">
+                        <li class="list-group-item">
+                            <img src="/images/${products[i].image}" alt="image" height="40" width="40">
+                            <span>Name: ${products[i].name}</span> &nbsp;&nbsp;&nbsp;
+                            <span>Generic Name: ${products[i].generic_name}</span> &nbsp;&nbsp;&nbsp;
+                            <span>Class: ${products[i].drug_class}</span> &nbsp;&nbsp;&nbsp;
+                            <span>Price: ${products[i].price}</span>
+                        </li>
+                    </a>`;
+                }
+
+                document.getElementById('result').innerHTML = output;
+
+            }
+        }
+
+        xhr.send();
+    }
+</script>
+
 @endsection
