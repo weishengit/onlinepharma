@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Cart;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -11,8 +10,13 @@ class PagesController extends Controller
 {
     public function index()
     {
+        $topProducts = Product::orderBy('name', 'ASC')->limit(6)->get();
+        $newProducts = Product::orderBy('created_at', 'DESC')->limit(6)->get();
+
         return view('index')
-            ->with('metaTitle', 'Home');
+            ->with('metaTitle', 'Home')
+            ->with('topProducts', $topProducts)
+            ->with('newProducts', $newProducts);
     }
     public function contact()
     {
