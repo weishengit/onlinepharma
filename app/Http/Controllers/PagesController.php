@@ -102,51 +102,46 @@ class PagesController extends Controller
          *
          * set $db to 'mysql' or 'pgsql'
          */
-        $db = 'pgsql';
 
-        if ($db = 'mysql') {
-            //-----------------------MYSQL CODE--------------------------//
-            //CHECK NAME
-            $name = Product::where('is_available', 1)
-                ->where('is_active', 1)
-                ->where('name', 'like', '%' . $newstr . '%')
-                ->limit(10)->get();
+        //-----------------------MYSQL CODE--------------------------//
+        // //CHECK NAME
+        // $name = Product::where('is_available', 1)
+        //     ->where('is_active', 1)
+        //     ->where('name', 'like', '%' . $newstr . '%')
+        //     ->limit(10)->get();
 
-            //CHECK GENERIC NAME
-            $generic = Product::where('is_available', 1)
+        // //CHECK GENERIC NAME
+        // $generic = Product::where('is_available', 1)
+        // ->where('is_active', 1)
+        // ->where('generic_name', 'like', '%' . $newstr . '%')
+        // ->limit(10)->get();
+
+        // //CHECK DRUG CLASS
+        // $class = Product::where('is_available', 1)
+        // ->where('is_active', 1)
+        // ->where('drug_class', 'like', '%' . $newstr . '%')
+        // ->limit(10)->get();
+        //-----------------------MYSQL CODE--------------------------//
+
+        //-----------------------PGSQL CODE--------------------------//
+        //CHECK NAME
+        $name = Product::where('is_available', 1)
             ->where('is_active', 1)
-            ->where('generic_name', 'like', '%' . $newstr . '%')
+            ->where('name', 'ILIKE', "'%" . $newstr . "%'")
             ->limit(10)->get();
 
-            //CHECK DRUG CLASS
-            $class = Product::where('is_available', 1)
-            ->where('is_active', 1)
-            ->where('drug_class', 'like', '%' . $newstr . '%')
-            ->limit(10)->get();
-            //-----------------------MYSQL CODE--------------------------//
-        }
-        else
-        {
-            //-----------------------PGSQL CODE--------------------------//
-            //CHECK NAME
-            $name = Product::where('is_available', 1)
-                ->where('is_active', 1)
-                ->where('name', 'ilike', '%' . $newstr . '%')
-                ->limit(10)->get();
+        //CHECK GENERIC NAME
+        $generic = Product::where('is_available', 1)
+        ->where('is_active', 1)
+        ->where('generic_name', 'ILIKE', "'%" . $newstr . "%'")
+        ->limit(10)->get();
 
-            //CHECK GENERIC NAME
-            $generic = Product::where('is_available', 1)
-            ->where('is_active', 1)
-            ->where('generic_name', 'ilike', '%' . $newstr . '%')
-            ->limit(10)->get();
-
-            //CHECK DRUG CLASS
-            $class = Product::where('is_available', 1)
-            ->where('is_active', 1)
-            ->where('drug_class', 'ilike', '%' . $newstr . '%')
-            ->limit(10)->get();
-            //-----------------------PGSQL CODE--------------------------//
-        }
+        //CHECK DRUG CLASS
+        $class = Product::where('is_available', 1)
+        ->where('is_active', 1)
+        ->where('drug_class', 'ILIKE', "'%" . $newstr . "%'")
+        ->limit(10)->get();
+        //-----------------------PGSQL CODE--------------------------//
 
 
         //-----------------------OLD CODE--------------------------//
