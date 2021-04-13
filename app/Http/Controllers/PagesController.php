@@ -102,7 +102,7 @@ class PagesController extends Controller
          *
          * set $db to 'mysql' or 'pgsql'
          */
-        $db = 'mysql';
+        $db = 'pgsql';
 
         if ($db = 'mysql') {
             //-----------------------MYSQL CODE--------------------------//
