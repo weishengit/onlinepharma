@@ -104,27 +104,61 @@
                 var res = this.responseText;
                 var output = '';
 
+
                 if(res){
                     var products = JSON.parse(this.responseText);
+                    var name = products.name;
+                    var generic = products.generic;
+                    var drug_class = products.class;
 
-                    if (products.length !== 0) {
-                        for(var i in products){
-                        output += `
-                        <a href="/pages/show/${products[i].id}">
-                            <li class="list-group-item">
-                                <img src="/images/${products[i].image}" alt="image" height="40" width="40">
-                                <span>Name: ${products[i].name}</span> &nbsp;&nbsp;&nbsp;
-                                <span>Generic Name: ${products[i].generic_name}</span> &nbsp;&nbsp;&nbsp;
-                                <span>Drug Class: ${products[i].drug_class}</span> &nbsp;&nbsp;&nbsp;
-                                <span>Price: ${products[i].price}</span>
-                            </li>
-                        </a>`;
-                        }
-                    }else{
-                        console.log('array is empty')
-                        output = '<h2 class="text-center">Nothing Found</h2>';
+                    // NAME LOOP
+                    output += '<h6 class="text-left text-info">Product Name</h6>';
+                    for(var i in name){
+                    output += `
+                    <a href="/pages/show/${name[i].id}">
+                        <li class="list-group-item">
+                            <img src="/images/${name[i].image}" alt="image" height="40" width="40">
+                            <span>Name: ${name[i].name}</span> &nbsp;&nbsp;&nbsp;
+                            <span>Generic Name: ${name[i].generic_name}</span> &nbsp;&nbsp;&nbsp;
+                            <span>Drug Class: ${name[i].drug_class}</span> &nbsp;&nbsp;&nbsp;
+                            <span>Price: ${name[i].price}</span>
+                        </li>
+                    </a>`;
+                    }
+
+                    // GENERIC LOOP
+                    output += '<br><br><h6 class="text-left text-success">Generic Name</h6>';
+                    for(var i in generic){
+                    output += `
+                    <a href="/pages/show/${generic[i].id}">
+                        <li class="list-group-item">
+                            <img src="/images/${generic[i].image}" alt="image" height="40" width="40">
+                            <span>Name: ${generic[i].name}</span> &nbsp;&nbsp;&nbsp;
+                            <span>Generic Name: ${generic[i].generic_name}</span> &nbsp;&nbsp;&nbsp;
+                            <span>Drug Class: ${generic[i].drug_class}</span> &nbsp;&nbsp;&nbsp;
+                            <span>Price: ${generic[i].price}</span>
+                        </li>
+                    </a>`;
+                    }
+
+                    // CLASS LOOP
+                    output += '<br><br><h6 class="text-left text-warning">Drug Class</h6>';
+                    for(var i in drug_class){
+                    output += `
+                    <a href="/pages/show/${drug_class[i].id}">
+                        <li class="list-group-item">
+                            <img src="/images/${drug_class[i].image}" alt="image" height="40" width="40">
+                            <span>Name: ${drug_class[i].name}</span> &nbsp;&nbsp;&nbsp;
+                            <span>Generic Name: ${drug_class[i].generic_name}</span> &nbsp;&nbsp;&nbsp;
+                            <span>Drug Class: ${drug_class[i].drug_class}</span> &nbsp;&nbsp;&nbsp;
+                            <span>Price: ${drug_class[i].price}</span>
+                        </li>
+                    </a>`;
                     }
                 }
+                else{
+                        output = '<h2 class="text-center">Nothing Found</h2>';
+                    }
 
                 document.getElementById('result').innerHTML = output;
 

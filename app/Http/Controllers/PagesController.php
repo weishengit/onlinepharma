@@ -86,46 +86,44 @@ class PagesController extends Controller
     {
         $filter = $request->input('filter');
         $newstr = filter_var($filter, FILTER_SANITIZE_STRING);
-        $products = '';
 
         if ($filter == '') {
             return '';
         }
 
-        if ($filter != '') {
-            //CHECK NAME
-            $products = Product::where('is_available', 1)
-                ->where('is_active', 1)
-                ->where('name', 'like', '%'.$newstr.'%')
-                ->limit(10)->get();
+        $name = '';
+        $generic = '';
+        $class = '';
 
-            //CHECK GENERIC NAME
-            if ($products->count() == 0) {
-                $products = Product::where('is_available', 1)
-                ->where('is_active', 1)
-                ->where('generic_name', 'like', '%'.$newstr.'%')
-                ->limit(10)->get();
-            }
+        //CHECK NAME
+        $name = Product::where('is_available', 1)
+            ->where('is_active', 1)
+            ->where('name', 'like', '%'.$newstr.'%')
+            ->limit(10)->get();
 
-            //CHECK DRUG CLASS
-            if ($products->count() == 0) {
-                $products = Product::where('is_available', 1)
-                ->where('is_active', 1)
-                ->where('drug_class', 'like', '%'.$newstr.'%')
-                ->limit(10)->get();
-            }
+        //CHECK GENERIC NAME
+        $generic = Product::where('is_available', 1)
+        ->where('is_active', 1)
+        ->where('generic_name', 'like', '%'.$newstr.'%')
+        ->limit(10)->get();
 
-            //  OLD CODE DOES NOT WORK ON HEROKU PGSQL ONLY FILTERS BY DRUGCLASS
-            // $products = Product::where('is_available', 1)
-            // ->where('is_active', 1)
-            // ->where(function($query) use($newstr) {
-            //     $query->orwhere('name', 'like', '%'.$newstr.'%')
-            //     ->orwhere('generic_name', 'like', '%'.$newstr.'%')
-            //     ->orwhere('drug_class', 'like', '%'.$newstr.'%');
-            // })->limit(10)->get();
-        }
+        //CHECK DRUG CLASS
+        $class = Product::where('is_available', 1)
+        ->where('is_active', 1)
+        ->where('drug_class', 'like', '%'.$newstr.'%')
+        ->limit(10)->get();
 
-        $json = json_encode($products);
+
+        //  OLD CODE DOES NOT WORK ON HEROKU PGSQL ONLY FILTERS BY DRUGCLASS
+        // $products = Product::where('is_available', 1)
+        // ->where('is_active', 1)
+        // ->where(function($query) use($newstr) {
+        //     $query->orwhere('name', 'like', '%'.$newstr.'%')
+        //     ->orwhere('generic_name', 'like', '%'.$newstr.'%')
+        //     ->orwhere('drug_class', 'like', '%'.$newstr.'%');
+        // })->limit(10)->get();
+        $popo = ['name' => $name, 'generic' => $generic, 'class' => $class];
+        $json = json_encode($popo);
 
         return $json;
     }
