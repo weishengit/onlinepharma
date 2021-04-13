@@ -92,7 +92,7 @@
 
         // CREATE XHR
         var xhr = new XMLHttpRequest();
-        xhr.open("GET", "/pages/shop/search/?filter=" + filter, true);
+        xhr.open("GET", "{{ route('pages.search') }}" + '?filter=' + filter, true);
 
         // CLEAR ITEMS IF SEARCH IT EMPTY
         if (filter == '') {
