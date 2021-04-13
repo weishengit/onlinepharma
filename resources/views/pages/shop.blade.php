@@ -101,20 +101,29 @@
 
         xhr.onload = function() {
             if (this.status == 200) {
-                var products = JSON.parse(this.responseText);
+                var res = this.responseText;
                 var output = '';
 
-                for(var i in products){
-                    output += `
-                    <a href="/pages/show/${products[i].id}">
-                        <li class="list-group-item">
-                            <img src="/images/${products[i].image}" alt="image" height="40" width="40">
-                            <span>Name: ${products[i].name}</span> &nbsp;&nbsp;&nbsp;
-                            <span>Generic Name: ${products[i].generic_name}</span> &nbsp;&nbsp;&nbsp;
-                            <span>Drug Class: ${products[i].drug_class}</span> &nbsp;&nbsp;&nbsp;
-                            <span>Price: ${products[i].price}</span>
-                        </li>
-                    </a>`;
+                if(res){
+                    var products = JSON.parse(this.responseText);
+
+                    if (products.length !== 0) {
+                        for(var i in products){
+                        output += `
+                        <a href="/pages/show/${products[i].id}">
+                            <li class="list-group-item">
+                                <img src="/images/${products[i].image}" alt="image" height="40" width="40">
+                                <span>Name: ${products[i].name}</span> &nbsp;&nbsp;&nbsp;
+                                <span>Generic Name: ${products[i].generic_name}</span> &nbsp;&nbsp;&nbsp;
+                                <span>Drug Class: ${products[i].drug_class}</span> &nbsp;&nbsp;&nbsp;
+                                <span>Price: ${products[i].price}</span>
+                            </li>
+                        </a>`;
+                        }
+                    }else{
+                        console.log('array is empty')
+                        output = '<h2 class="text-center">Nothing Found</h2>';
+                    }
                 }
 
                 document.getElementById('result').innerHTML = output;
