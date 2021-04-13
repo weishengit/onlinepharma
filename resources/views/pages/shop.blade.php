@@ -111,7 +111,7 @@
                             <img src="/images/${products[i].image}" alt="image" height="40" width="40">
                             <span>Name: ${products[i].name}</span> &nbsp;&nbsp;&nbsp;
                             <span>Generic Name: ${products[i].generic_name}</span> &nbsp;&nbsp;&nbsp;
-                            <span>Class: ${products[i].drug_class}</span> &nbsp;&nbsp;&nbsp;
+                            <span>Drug Class: ${products[i].drug_class}</span> &nbsp;&nbsp;&nbsp;
                             <span>Price: ${products[i].price}</span>
                         </li>
                     </a>`;

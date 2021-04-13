@@ -95,7 +95,7 @@ class PagesController extends Controller
             $products = Product::where('is_available', 1)
                 ->where('is_active', 1)
                 ->where(function($query) use($newstr) {
-                    $query->where('name', 'like', '%'.$newstr.'%')
+                    $query->orwhere('name', 'like', '%'.$newstr.'%')
                     ->orwhere('generic_name', 'like', '%'.$newstr.'%')
                     ->orwhere('drug_class', 'like', '%'.$newstr.'%');
                 })->limit(10)->get();
