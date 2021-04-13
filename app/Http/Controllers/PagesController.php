@@ -127,19 +127,19 @@ class PagesController extends Controller
         //CHECK NAME
         $name = Product::where('is_available', 1)
             ->where('is_active', 1)
-            ->where('name', 'ILIKE', "'%" . $newstr . "%'")
+            ->where('name', 'ILIKE', '%' . $newstr . '%')
             ->limit(10)->get();
 
         //CHECK GENERIC NAME
         $generic = Product::where('is_available', 1)
         ->where('is_active', 1)
-        ->where('generic_name', 'ILIKE', "'%" . $newstr . "%'")
+        ->where('generic_name', 'ILIKE', '%' . $newstr . '%')
         ->limit(10)->get();
 
         //CHECK DRUG CLASS
         $class = Product::where('is_available', 1)
         ->where('is_active', 1)
-        ->where('drug_class', 'ILIKE', "'%" . $newstr . "%'")
+        ->where('drug_class', 'ILIKE', '%' . $newstr . '%')
         ->limit(10)->get();
         //-----------------------PGSQL CODE--------------------------//
 
