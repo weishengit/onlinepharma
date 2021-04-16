@@ -7,9 +7,31 @@
       <div class="col-md-12 mb-0"><a href="{{ route('home') }}">Home</a> <span class="mx-2 mb-0">/</span> <strong class="text-black">Store</strong></div>
     </div>
   </div>
+
 </div>
 
 <div class="site-section">
+    @if (session()->has('message'))
+      <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            {{ session()->get('message') }}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+          </button>
+      </div>
+    @endif
+    @if ($errors->any())
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @endif
     {{-- SEARCH --}}
     <div class="container" width="30%">
         <div class="input-group mb-3">
@@ -25,12 +47,12 @@
   <div class="container">
 
     <div class="row">
-      <div class="col-lg-6">
-        <h3 class="mb-3 h6 text-uppercase text-black d-block">Filter by Reference</h3>
+      <div class="col-lg-2">
+        <h3 class="mb-3 h6 text-uppercase text-black d-block">Filter by</h3>
         <button type="button" class="btn btn-secondary btn-md dropdown-toggle px-4" id="dropdownMenuReference"
           data-toggle="dropdown">Reference</button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuReference">
-          <a class="dropdown-item" href="{{ route('pages.shop') }}">Relevance</a>
+          <a class="dropdown-item" href="{{ route('pages.shop') }}">Show All</a>
           <a class="dropdown-item" href="{{ route('pages.shop', ['filter' => 'name_asc']) }}">Name, A to Z</a>
           <a class="dropdown-item" href="{{ route('pages.shop', ['filter' => 'name_desc']) }}">Name, Z to A</a>
           <div class="dropdown-divider"></div>
@@ -38,8 +60,25 @@
           <a class="dropdown-item" href="{{ route('pages.shop', ['filter' => 'price_desc']) }}">Price, high to low</a>
         </div>
       </div>
+      <div class="col-lg-2">
+        <h3 class="mb-3 h6 text-uppercase text-black d-block">Filter by Category</h3>
+        <button type="button" class="btn btn-secondary btn-md dropdown-toggle px-4" id="dropdownMenuReference"
+          data-toggle="dropdown">Category</button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuReference">
+            @forelse ($categories as $category)
+                <a class="dropdown-item" href="{{ route('pages.shop', ['category' => $category->name]) }}">{{ $category->name }}</a>
+            @empty
+                <a class="dropdown-item">No Categories Found</a>
+            @endforelse
+        </div>
+      </div>
+
 
     </div>
+
+    @if (isset($filterName))
+        <h2>Filtering By: {{ $filterName }}</h2>
+    @endif
 
     {{-- Products --}}
     <div class="row">

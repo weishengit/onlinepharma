@@ -20,7 +20,7 @@ class CheckoutCheck
             return redirect('register');
         }
 
-        if(is_null(auth()->user()->address)){
+        if(is_null(auth()->user()->address) || is_null(auth()->user()->contact)){
             return redirect('/profile/edit')->with('message', 'Please set up your profile to recieve deliveries');
         }
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -39,23 +40,45 @@ class PagesController extends Controller
     public function shop($filter = 'none')
     {
         $products = Product::where('is_active', 1)->where('is_available', 1)->paginate(12);
+        $categories = Category::where('is_active', 1)->where('id', '!=', 1)->get();
+        $filterName = null;
 
         if ($filter == 'name_asc') {
             $products = Product::where('is_active', 1)->where('is_available', 1)->orderBy('name', 'asc')->paginate(12);
+            $filterName = 'Name, A-Z';
+
         }
         if ($filter == 'name_desc') {
             $products = Product::where('is_active', 1)->where('is_available', 1)->orderBy('name', 'desc')->paginate(12);
+            $filterName = 'Name, Z-A';
         }
         if ($filter == 'price_asc') {
             $products = Product::where('is_active', 1)->where('is_available', 1)->orderBy('price', 'asc')->paginate(12);
+            $filterName = 'Price, Low-High';
         }
         if ($filter == 'price_desc') {
             $products = Product::where('is_active', 1)->where('is_available', 1)->orderBy('price', 'desc')->paginate(12);
+            $filterName = 'Price, High-Low';
         }
+        if (isset($_GET['category'])) {
+
+            $newstr = filter_var($_GET['category'], FILTER_SANITIZE_STRING);
+            $category = Category::where('name', $newstr)->first();
+
+            if($category == null){
+                return redirect()->route('pages.shop')->with('message', 'category not found');
+            }
+            $filterName = 'Category, ' . $category->name;
+            $products = Product::where('is_active', 1)->where('is_available', 1)->where('category_id', $category->id)->paginate(12);
+
+        }
+
 
         return view('pages.shop')
             ->with('metaTitle', 'Shop')
-            ->with('products', $products);
+            ->with('products', $products)
+            ->with('categories', $categories)
+            ->with('filterName', $filterName);
     }
 
     public function checkout()

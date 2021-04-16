@@ -37,7 +37,7 @@ class CartController extends Controller
         $cart->add($product, $product->id, $request->quantity);
 
         $request->session()->put('cart', $cart);
-        
+
         return view('pages.show')
             ->with('metaTitle', 'Shop - ' . $product->name)
             ->with('product', $product)
@@ -55,7 +55,7 @@ class CartController extends Controller
         $cart = new Cart($oldCart);
 
         $cart->remove($id, $quantity);
-        
+
 
         // Overwrite the product session
         Session::put('cart', $cart);
@@ -74,7 +74,7 @@ class CartController extends Controller
         $cart = new Cart($oldCart);
 
         $cart->increase($id);
-        
+
         // Overwrite the product session
         Session::put('cart', $cart);
 
@@ -92,7 +92,7 @@ class CartController extends Controller
         $cart = new Cart($oldCart);
 
         $hasItems = $cart->decrease($id);
-        
+
         // Overwrite the product session
         if ($hasItems == false) {
             session()->forget('cart');
@@ -100,7 +100,7 @@ class CartController extends Controller
         else{
             Session::put('cart', $cart);
         }
-        
+
 
         return redirect()->route('cart');
     }
@@ -111,6 +111,6 @@ class CartController extends Controller
             session()->forget('cart');
         }
 
-        return redirect()->route('home')->with('message', 'cart cleared');
+        return redirect()->route('home')->with('message', 'Your has been cart cleared');
     }
 }
