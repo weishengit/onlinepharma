@@ -177,7 +177,7 @@
             </div>
             <div class="block-38-body">
               <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae aut minima nihil sit distinctio
-                recusandae doloribus ut fugit officia voluptate soluta. </p>
+                recusandae doloribus ut fugit officia voluptate soluta.</p>
             </div>
           </div>
         </div>
