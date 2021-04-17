@@ -1,17 +1,18 @@
 <?php
 
-use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BanController;
-use App\Http\Controllers\CartController;
 use App\Http\Controllers\ProfileDelete;
+use App\Http\Controllers\TaxController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\PagesController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\DiscountController;
 use App\Http\Controllers\PasswordController;
-use App\Http\Controllers\TaxController;
 
 /*
 |--------------------------------------------------------------------------
@@ -103,6 +104,9 @@ Route::middleware(['admin', 'active'])->name('admin.')->prefix('admin')->group(f
     //TAX
     Route::put('tax/{product}/activate', [TaxController::class, 'activate'])->name('tax.activate');
     Route::resource('tax', TaxController::class);
+    //DISCOUNTS
+    Route::put('discount/{discount}/activate', [DiscountController::class, 'activate'])->name('discount.activate');
+    Route::resource('discount', DiscountController::class);
     //PRODUCTS
     Route::put('product/{product}/activate', [ProductController::class, 'activate'])->name('product.activate');
     Route::put('product/{product}/not-available', [ProductController::class, 'markNotForSale'])->name('product.notavailable');
