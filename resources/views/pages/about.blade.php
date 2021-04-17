@@ -36,9 +36,7 @@
         </div>
         <p>This Website is a Template Website of a Pharmaceutical Online Store that is purposely created
             to be a capstone project and at the same time, a fully functioning online drugstore.</p>
-            <p>This Website is a Template Website of a Pharmaceutical Online Store that is purposely created
-            to be a capstone project and at the same time, a fully functioning online drugstore.</p>
-
+           
       </div>
     </div>
   </div>
@@ -67,8 +65,7 @@
             </div>
           <p>This Website is a Template Website of a Pharmaceutical Online Store that is purposely created
             to be a capstone project and at the same time, a fully functioning online drugstore.</p>
-            <p>This Website is a Template Website of a Pharmaceutical Online Store that is purposely created
-            to be a capstone project and at the same time, a fully functioning online drugstore.</p>
+            
           
         </div>
         <p class="text-black">.</p>
