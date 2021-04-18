@@ -36,7 +36,7 @@
             <a href="{{ route('pages.shop') }}" class="h-100">
               <h5>Free <br> Delivery</h5>
               <p>
-                On selected Areas
+                On fol Areas
 
               </p>
             </a>
