@@ -1,0 +1,28 @@
++--- REQUIREMENTS ---+
+
+ * XAMPP(PHP8) - https://www.apachefriends.org/download.html
+ 
+ * GIT - https://git-scm.com/
+ 
+ * Composer 2 - https://getcomposer.org/download/
+ 
+ * VSCode - https://code.visualstudio.com/Download
+ 
+	Install the following extensions for vscode
+	
+	* Laravel Extension Pack
+	* Laravel Extra Intellisence
+	* Path Intellisence
+	* PHP DocBlocker
+	* PHP Intelephense
+	* PHP Namespace Resolver
+	* VSCode Great Icons
+	* Laravel Blade Spacer
+	* Github
+	* GitLens
+	* Auto Rename Tag
+	* Auto Close Tag
+	* Auto Complete Tag
+	
+	
+ 
