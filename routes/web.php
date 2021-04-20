@@ -87,7 +87,7 @@ Route::middleware(['auth', 'active'])->prefix('profile')->name('profile.')->grou
 Route::middleware(['admin', 'active'])->name('admin.')->prefix('admin')->group(function () {
 
     //DASHBOARD
-    Route::view('/', 'admin.index')->name('index');
+    Route::get('/', [PagesController::class, 'admin'])->name('index');
     Route::get('/manage', [AdminController::class, 'manage'])->name('manage');
     //CATEGORY
     Route::put('category/{id}/activate', [CategoryController::class, 'activate'])->name('category.activate');
