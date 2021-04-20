@@ -36,6 +36,7 @@ class UserFactory extends Factory
                 'Brgy ' . $this->faker->cityPrefix . ', ' .
                 $this->faker->city . ' City',
             'scid' => $this->faker->randomNumber(8),
+            'created_at' => $this->faker->dateTimeThisYear(),
             'is_active' => 1,
             'remember_token' => Str::random(10),
         ];
