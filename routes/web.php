@@ -12,6 +12,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DiscountController;
+use App\Http\Controllers\GoogleLogin;
 use App\Http\Controllers\PasswordController;
 
 /*
@@ -29,7 +30,9 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
-
+// SOCIAL LOGIN
+Route::get('/login/google', [GoogleLogin::class, 'google'])->name('google.login');
+Route::get('/login/google/redirect', [GoogleLogin::class, 'redirect'])->name('google.redirect');
 
 // PAGES ROUTE
 Route::get('/', [PagesController::class, 'index'])->name('home');
