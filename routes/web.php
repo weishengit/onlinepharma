@@ -12,6 +12,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DiscountController;
+use App\Http\Controllers\FacebookLogin;
 use App\Http\Controllers\GoogleLogin;
 use App\Http\Controllers\PasswordController;
 
@@ -31,8 +32,11 @@ Route::get('/dashboard', function () {
 })->middleware(['auth'])->name('dashboard');
 
 // SOCIAL LOGIN
-Route::get('/login/google', [GoogleLogin::class, 'google'])->name('google.login');
-Route::get('/login/google/redirect', [GoogleLogin::class, 'redirect'])->name('google.redirect');
+Route::get('/login/google', [GoogleLogin::class, 'redirect'])->name('google.login');
+Route::get('/login/google/callback', [GoogleLogin::class, 'callback'])->name('google.callback');
+
+Route::get('/login/facebook', [FacebookLogin::class, 'redirect'])->name('facebook.login');
+Route::get('/login/facebook/callback', [FacebookLogin::class, 'callback'])->name('facebook.callback');
 
 // PAGES ROUTE
 Route::get('/', [PagesController::class, 'index'])->name('home');

@@ -37,10 +37,10 @@
                 <button type="submit" class="block w-full px-4 py-3 mt-6 font-semibold text-white transition duration-500 ease-in-out transform bg-black rounded-lg hover:bg-gray-800 hover:to-black focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 ">Log In</button>
             </form>
             <hr class="w-full my-6 border-gray-300">
+            <a href="{{ route('google.login') }}">
             <div class="flex justify-enter">
                 <button type="button"
                     class="inline-flex w-full px-4 py-3 font-semibold text-black transition duration-500 ease-in-out transform bg-white border border-gray-300 rounded-lg hover:bg-black hover:text-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ">
-                    <a href="{{ route('google.login') }}">
                     <div class="flex items-center justify-center">
                         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                             class="w-6 h-6" viewBox="0 0 48 48">
@@ -61,9 +61,23 @@
                             Google
                         </span>
                     </div>
-                    </a>
                 </button>
             </div>
+            </a>
+            <a href="{{ route('facebook.login') }}">
+                <div class="flex justify-enter">
+                    <button type="button"
+                        class="inline-flex w-full px-4 py-3 font-semibold text-black transition duration-500 ease-in-out transform bg-white border border-gray-300 rounded-lg hover:bg-black hover:text-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ">
+                        <div class="flex items-center justify-center">
+                            <i class="fab fa-facebook"></i>
+                            <span class="ml-4">
+                                Log in with
+                                Facebook
+                            </span>
+                        </div>
+                    </button>
+                </div>
+                </a>
             <p class="mt-8 text-center">Need an account? <a href="{{ route('register') }}"
                     class="font-semibold text-blue-500 hover:text-blue-700">Sign Up</a></p>
         </div>

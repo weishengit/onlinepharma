@@ -9,16 +9,16 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Socialite\Facades\Socialite;
 
-class GoogleLogin extends Controller
+class FacebookLogin extends Controller
 {
     public function redirect()
     {
-        return Socialite::driver('google')->stateless()->redirect();
+        return Socialite::driver('facebook')->stateless()->redirect();
     }
 
     public function callback()
     {
-        $user = Socialite::driver('google')->stateless()->user();
+        $user = Socialite::driver('facebook')->stateless()->user();
 
         $user = User::firstOrCreate(
             [
