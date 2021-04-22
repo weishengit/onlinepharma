@@ -24,16 +24,9 @@
   <link rel="stylesheet" href="{{ asset('css/aos.css') }}">
 
   <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-</head>
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-LRLVEJC1ZM"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
 
-  gtag('config', 'G-LRLVEJC1ZM');
-</script>
+</head>
+
 <body>
 
 <div class="site-wrap">
