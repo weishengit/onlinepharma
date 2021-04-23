@@ -67,9 +67,9 @@
             <a href="{{ route('facebook.login') }}">
                 <div class="flex justify-enter">
                     <button type="button"
-                        class="inline-flex w-full px-4 py-3 font-semibold text-black transition duration-500 ease-in-out transform bg-white border border-gray-300 rounded-lg hover:bg-black hover:text-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ">
+                        class="text-white bg-blue-600 inline-flex w-full px-4 py-3 font-semibold text-black transition duration-500 ease-in-out transform bg-white border border-gray-300 rounded-lg hover:bg-black hover:text-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ">
                         <div class="flex items-center justify-center">
-                            <i class="fab fa-facebook"></i>
+                            <i class="fab fa-facebook fa-fw"></i>
                             <span class="ml-4">
                                 Log in with
                                 Facebook
