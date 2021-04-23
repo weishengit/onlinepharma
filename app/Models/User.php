@@ -25,6 +25,7 @@ class User extends Authenticatable
         'address',
         'contact',
         'scid',
+        'email_verified_at',
     ];
 
     /**

@@ -26,7 +26,8 @@ class GoogleLogin extends Controller
             ],
             [
                 'name' => $user->name,
-                'password' => Hash::make(Str::random(24))
+                'password' => Hash::make(Str::random(24)),
+                'email_verified_at' => now(),
             ]);
 
         Auth::login($user, true);
