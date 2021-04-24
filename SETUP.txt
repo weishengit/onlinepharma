@@ -1,15 +1,17 @@
 +--- REQUIREMENTS ---+
 
  * XAMPP(PHP8) - https://www.apachefriends.org/download.html
- 
+
  * GIT - https://git-scm.com/
- 
+
  * Composer 2 - https://getcomposer.org/download/
- 
+
+ * Node - https://nodejs.org/en/
+
  * VSCode - https://code.visualstudio.com/Download
- 
+
 	Install the following extensions for vscode
-	
+
 	* Laravel Extension Pack
 	* Laravel Extra Intellisence
 	* Path Intellisence
@@ -23,6 +25,68 @@
 	* Auto Rename Tag
 	* Auto Close Tag
 	* Auto Complete Tag
-	
-	
- 
+
+=============================================================
+
++--- SETUP ---+
+!Make sure the requirements are Complete
+
+1. Open VS Code and create a project folder
+2. Open the Vscode terminal
+3. Download the files by typing "git clone https://github.com/weishengit/onlinepharma.git"
+4. start git by typing "git init"
+4. Create a copy of .env.example and rename it to .env
+5. Open the .env and change/add the following
+
+    APP_NAME="Online Pharma"
+    APP_ENV=local
+    APP_KEY=base64:V6+VF7UyQ5Ibhe8k2CjgaHE1MLnil3AXO0ZJDWf8P/A=
+    APP_DEBUG=true
+    APP_URL=http://onlinepharma.test
+
+    DB_CONNECTION=mysql
+    DB_HOST=127.0.0.1
+    DB_PORT=3306
+    DB_DATABASE=onlinepharma
+    DB_USERNAME=root
+    DB_PASSWORD=
+
+    GOOGLE_CLIENT_ID="1065302981988-86s4p1hu835e5sse2qga3llbbdnbtji7.apps.googleusercontent.com"
+    GOOGLE_CLIENT_SECRET="yIXevynxuJslCNcpxuFlAbvA"
+    GOOGLE_REDIRECT="http://127.0.0.1:8000/login/google/callback"
+
+    FACEBOOK_CLIENT_ID="152461363391251"
+    FACEBOOK_CLIENT_SECRET="6710e6bbcb1862f17aefa5e0453d0680"
+    FACEBOOK_REDIRECT="http://127.0.0.1:8000/login/facebook/callback"
+
+6. Open XAMPP and create a database called "onlinepharma"
+7. Go back to the terminal and type "composer Install"
+8. Next type "php artisan migrate"
+9. Then type "npm install && npm run dev"
+
+NOTE: If you get errors on "npm run dev" and "npm run watch"
+      type "npm install laravel-mix@latest --save-dev" on the terminal.
+
+
+=========================================================================
+
+
++--- Coding ---+
+!Make sure you follwed the setup so you don't get errors.
+
+Follow these steps to start Coding
+
+1. Open apache and mysql on XAMPP.
+2. Open Vscode and type "php artisan serve" on the terminal.
+3. Create a new terminal on vscode and type "npm run watch".
+4. Start Coding.
+
+==========================================================================
+
++--- Saving ---+
+
+1. type "git status" to check your repository.
+2. type "git add ." to add all files.
+3. type "git commit -m "added feature" " to create a save point,
+        change the text inside the quoutes to describe your save.
+4. Ask me for more details.
