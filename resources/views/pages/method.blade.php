@@ -6,7 +6,6 @@
     <h2 class="text-primary text-center ml-4 mt-2">Checkout Method</h2>
 </div>
 <div class="container">
-    {{ dd(session()->get('cart')) }}
     {{-- PICKUP --}}
     <div class="card">
     <h5 class="card-header bg-success text-white">Pick Up</h5>
@@ -27,7 +26,7 @@
                 </li>
             </ul>
             <div class="text-center">
-                <a href="#" class="btn btn-primary">Pick Up Order In Store</a>
+                <a href="{{ route('cart.pickup') }}" class="btn btn-primary">Pick Up Order In Store</a>
             </div>
         </div>
     </div>
@@ -51,7 +50,7 @@
                 </li>
             </ul>
             <div class="text-center">
-                <a href="" class="btn btn-primary">Deliver To My Address</a>
+                <a href="{{ route('cart.delivery') }}" class="btn btn-primary">Deliver To My Address</a>
             </div>
         </div>
     </div>

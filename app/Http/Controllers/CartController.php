@@ -139,7 +139,7 @@ class CartController extends Controller
             Session::put('cart', $cart);
         }
 
-        return view('pages.discount');
+        return redirect()->route('cart.discount');
     }
 
     public function discount()
@@ -147,7 +147,23 @@ class CartController extends Controller
         return view('pages.discount');
     }
 
-    public function senior(Request $request)
+
+    public function regular_checkout()
+    {
+        // GET THE OLD CART
+        $oldCart = Session::get('cart');
+        $cart = new Cart($oldCart);
+
+        // CHANGE THE MODEL
+        $cart->calculate_regular();
+
+        // Overwrite the cart session
+        Session::put('cart', $cart);
+
+        return redirect()->route('cart.method');
+    }
+
+    public function senior_checkout(Request $request)
     {
         $newImageName = null;
 
@@ -162,10 +178,58 @@ class CartController extends Controller
             // CHANGE THE MODEL
             $cart->setSCImage($newImageName);
             $cart->is_SC = true;
+            $cart->calculate_senior();
 
             // Overwrite the cart session
             Session::put('cart', $cart);
         }
-        return view('pages.method');
+
+        return redirect()->route('cart.method');
+    }
+
+    public function delivery()
+    {
+        // GET THE OLD CART
+        $oldCart = Session::get('cart');
+        $cart = new Cart($oldCart);
+
+        // CHANGE THE MODEL
+        $cart->setToDelivery();
+
+        // Overwrite the cart session
+        Session::put('cart', $cart);
+
+        return redirect()->route('cart.finalize');
+    }
+
+    public function pickup()
+    {
+        // GET THE OLD CART
+        $oldCart = Session::get('cart');
+        $cart = new Cart($oldCart);
+
+        // CHANGE THE MODEL
+        $cart->setToPickup();
+
+        // Overwrite the cart session
+        Session::put('cart', $cart);
+
+        return redirect()->route('cart.finalize');
+    }
+
+    public function finalize()
+    {
+        // GET THE OLD CART
+        $oldCart = Session::get('cart');
+        $cart = new Cart($oldCart);
+
+        // CHANGE THE MODEL
+        $cart->finalize();
+
+        // Overwrite the cart session
+        Session::put('cart', $cart);
+
+        return view('pages.finalize')
+            ->with('cart', session()->get('cart'));
     }
 }

@@ -74,10 +74,20 @@ Route::get('/remove-from-cart/{id}/{quantity}', [CartController::class, 'remove'
 Route::get('/cart/increase/{id}', [CartController::class, 'increase'])->name('cart.increase');
 Route::get('/cart/decrease/{id}', [CartController::class, 'decrease'])->name('cart.decrease');
 Route::get('/clear-cart', [CartController::class, 'clear'])->name('cart.clear');
-Route::post('/cart/prescription', [CartController::class, 'prescription'])->name('cart.prescription');
-Route::get('/cart/discount', [CartController::class, 'discount'])->name('cart.discount');
-Route::post('/cart/senior', [CartController::class, 'senior'])->name('cart.senior');
-Route::get('/cart/method', [CartController::class, 'method'])->name('cart.method');
+
+Route::middleware(['auth', 'active', 'checkout'])->group(function () {
+
+    Route::post('/cart/prescription', [CartController::class, 'prescription'])->name('cart.prescription');
+    Route::get('/cart/discount', [CartController::class, 'discount'])->name('cart.discount');
+    Route::post('/cart/senior', [CartController::class, 'senior'])->name('cart.senior');
+    Route::get('/cart/method', [CartController::class, 'method'])->name('cart.method');
+    Route::get('/cart/checkout/regular', [CartController::class, 'regular_checkout'])->name('cart.checkout.regular');
+    Route::get('/cart/checkout/senior', [CartController::class, 'senior_checkout'])->name('cart.checkout.senior');
+    Route::get('/cart/checkout/delivery', [CartController::class, 'delivery'])->name('cart.delivery');
+    Route::get('/cart/checkout/pickup', [CartController::class, 'pickup'])->name('cart.pickup');
+    Route::get('/cart/finalize', [CartController::class, 'finalize'])->name('cart.finalize');
+    Route::get('/cart/confirm', [CartController::class, 'confirm'])->name('cart.confirm');
+});
 
 // PROFILE ROUTE
 Route::middleware(['auth', 'active'])->prefix('profile')->name('profile.')->group(function () {

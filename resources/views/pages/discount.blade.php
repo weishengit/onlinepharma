@@ -11,7 +11,7 @@
         <h5 class="card-header bg-success text-white">Regular</h5>
         <div class="card-body text-center">
             <h5 class="card-title">Regular Customer</h5>
-            <a href="{{ route('cart.method') }}" class="btn btn-primary">Select</a>
+            <a href="{{ route('cart.checkout.regular') }}" class="btn btn-primary">Select</a>
         </div>
     </div>
     {{-- DELIVERY --}}
@@ -32,7 +32,7 @@
                 </li>
             </ul>
             <form
-                action="{{ route('cart.senior') }}"
+                action="{{ route('cart.checkout.senior') }}"
                 method="post"
                 enctype="multipart/form-data">
                 @csrf

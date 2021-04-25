@@ -20,8 +20,13 @@ class CheckoutCheck
             return redirect('register');
         }
 
-        if(is_null(auth()->user()->address) || is_null(auth()->user()->contact)){
-            return redirect('/profile/edit')->with('message', 'Please set up your profile to recieve deliveries');
+        if(is_null(auth()->user()->address) ||
+            is_null(auth()->user()->contact) ||
+            is_null(auth()->user()->first_name)||
+            is_null(auth()->user()->last_name) ||
+            is_null(auth()->user()->scid)
+        ){
+            return redirect()->route('profile.edit')->with('message', 'Please set up your profile to continue checkout');
         }
 
         return $next($request);
