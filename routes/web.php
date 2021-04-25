@@ -14,7 +14,9 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DiscountController;
 use App\Http\Controllers\FacebookLogin;
 use App\Http\Controllers\GoogleLogin;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PasswordController;
+use App\Models\Cart;
 
 /*
 |--------------------------------------------------------------------------
@@ -67,11 +69,15 @@ Route::prefix('pages')->name('pages.')->group(function () {
 
 // CART ROUTE
 Route::get('/cart', [CartController::class, 'getCart'])->name('cart');
-Route::post('/add-to-cart/{id}', [CartController::class, 'add'])->name('cart.add');
+Route::post('/add-to-cart/{id}/{rx}', [CartController::class, 'add'])->name('cart.add');
 Route::get('/remove-from-cart/{id}/{quantity}', [CartController::class, 'remove'])->name('cart.remove');
 Route::get('/cart/increase/{id}', [CartController::class, 'increase'])->name('cart.increase');
 Route::get('/cart/decrease/{id}', [CartController::class, 'decrease'])->name('cart.decrease');
 Route::get('/clear-cart', [CartController::class, 'clear'])->name('cart.clear');
+Route::post('/cart/prescription', [CartController::class, 'prescription'])->name('cart.prescription');
+Route::get('/cart/discount', [CartController::class, 'discount'])->name('cart.discount');
+Route::post('/cart/senior', [CartController::class, 'senior'])->name('cart.senior');
+Route::get('/cart/method', [CartController::class, 'method'])->name('cart.method');
 
 // PROFILE ROUTE
 Route::middleware(['auth', 'active'])->prefix('profile')->name('profile.')->group(function () {
@@ -119,6 +125,8 @@ Route::middleware(['admin', 'active'])->name('admin.')->prefix('admin')->group(f
     Route::put('product/{product}/not-available', [ProductController::class, 'markNotForSale'])->name('product.notavailable');
     Route::put('product/{product}/available', [ProductController::class, 'markForSale'])->name('product.available');
     Route::resource('product', ProductController::class);
+    //ORDERS
+    Route::resource('order', OrderController::class);
 });
 
 require __DIR__.'/auth.php';

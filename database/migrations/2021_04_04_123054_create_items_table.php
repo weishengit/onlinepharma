@@ -16,13 +16,14 @@ class CreateItemsTable extends Migration
         Schema::create('items', function (Blueprint $table) {
             $table->id();
             $table->foreignId('order_id');
-            $table->string('quantity');
+            $table->integer('quantity');
             $table->foreignId('product_id');
             $table->string('name');
             $table->string('description');
-            $table->string('price');
-            $table->string('total_price');
-            $table->string('vatable');
+            $table->decimal('price');
+            $table->decimal('total_price');
+            $table->integer('vat_type');
+            $table->integer('is_prescription');
             $table->timestamps();
         });
     }

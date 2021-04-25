@@ -39,7 +39,7 @@
 </div>
 <form
       method="post"
-      action="{{ route('cart.add', ['id' => $product->id]) }}">
+      action="{{ route('cart.add', ['id' => $product->id, 'rx' => $product->is_prescription]) }}">
       @csrf
 <div class="site-section">
   <div class="container">
@@ -137,11 +137,6 @@
                 </button>
             </a>
           </span>
-
-
-
-
-
 
       </div>
     </div>

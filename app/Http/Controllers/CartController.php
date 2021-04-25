@@ -24,7 +24,7 @@ class CartController extends Controller
             ->with('cart', $cart);
     }
 
-    public function add(Request $request, $id)
+    public function add(Request $request, $id, $rx)
     {
         $request->validate([
             'quantity' => 'numeric|min:1'
@@ -34,7 +34,7 @@ class CartController extends Controller
 
         $oldCart = Session::has('cart') ? Session::get('cart') : null;
         $cart = new Cart($oldCart);
-        $cart->add($product, $product->id, $request->quantity);
+        $cart->add($product, $product->id, $request->quantity, $rx);
 
         $request->session()->put('cart', $cart);
 
@@ -112,5 +112,60 @@ class CartController extends Controller
         }
 
         return redirect()->route('home')->with('message', 'Your has been cart cleared');
+    }
+
+    public function method()
+    {
+        return view('pages.method');
+    }
+
+    public function prescription(Request $request)
+    {
+        $newImageName = null;
+
+        if ($request->image != null) {
+            $newImageName = uniqid() . '-rx-' . auth()->user()->name . '.' . $request->image->extension();
+            $request->image->move(public_path('images/temp/rx'), $newImageName);
+
+            // GET THE OLD CART
+            $oldCart = Session::get('cart');
+            $cart = new Cart($oldCart);
+
+            // CHANGE THE MODEL
+            $cart->setRxImage($newImageName);
+            $cart->has_RX = true;
+
+            // Overwrite the cart session
+            Session::put('cart', $cart);
+        }
+
+        return view('pages.discount');
+    }
+
+    public function discount()
+    {
+        return view('pages.discount');
+    }
+
+    public function senior(Request $request)
+    {
+        $newImageName = null;
+
+        if ($request->image != null) {
+            $newImageName = uniqid() . '-sc-' . auth()->user()->name . '.' . $request->image->extension();
+            $request->image->move(public_path('images/temp/sc'), $newImageName);
+
+            // GET THE OLD CART
+            $oldCart = Session::get('cart');
+            $cart = new Cart($oldCart);
+
+            // CHANGE THE MODEL
+            $cart->setSCImage($newImageName);
+            $cart->is_SC = true;
+
+            // Overwrite the cart session
+            Session::put('cart', $cart);
+        }
+        return view('pages.method');
     }
 }

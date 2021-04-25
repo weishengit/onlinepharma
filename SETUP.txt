@@ -27,7 +27,6 @@
 	* Auto Complete Tag
 
 =============================================================
-
 +--- SETUP ---+
 !Make sure the requirements are Complete
 
@@ -69,8 +68,6 @@ NOTE: If you get errors on "npm run dev" and "npm run watch"
 
 
 =========================================================================
-
-
 +--- Coding ---+
 !Make sure you follwed the setup so you don't get errors.
 
@@ -82,7 +79,6 @@ Follow these steps to start Coding
 4. Start Coding.
 
 ==========================================================================
-
 +--- Saving ---+
 
 1. type "git status" to check your repository.

@@ -14,28 +14,29 @@ class CreateOrdersTable extends Migration
     public function up()
     {
         Schema::create('orders', function (Blueprint $table) {
-            $table->string('id')->primary();
+            $table->id();
             $table->string('status');
             $table->string('message')->nullable();
-            $table->string('customer');
-            $table->string('address');
-            $table->string('contact');
-            $table->string('scid');
-            $table->string('scid_image');
-            $table->string('prescription_image');
-            $table->string('cashier');
-            $table->string('delivery_mode');
-            $table->integer('total_items');
-            $table->string('vatable_sale');
-            $table->string('vat_ammount');
-            $table->string('vat_exempt');
-            $table->string('zero_rated');
-            $table->string('subtotal');
-            $table->integer('is_sc');
-            $table->string('sc_discount');
-            $table->string('other_discount_rate');
-            $table->string('other_discount');
-            $table->string('amount_due');
+            $table->string('customer')->nullable();
+            $table->string('address')->nullable();
+            $table->string('contact')->nullable();
+            $table->string('scid')->nullable();
+            $table->string('scid_image')->nullable();
+            $table->string('prescription_image')->nullable();
+            $table->string('cashier')->nullable();
+            $table->string('delivery_mode')->nullable();
+            $table->integer('total_items')->nullable();
+            $table->decimal('vatable_sale')->nullable();
+            $table->decimal('vat_amount')->nullable();
+            $table->decimal('vat_exempt')->nullable();
+            $table->decimal('zero_rated')->nullable();
+            $table->decimal('subtotal')->nullable();
+            $table->integer('is_sc')->nullable();
+            $table->decimal('sc_discount')->nullable();
+            $table->decimal('other_discount_rate')->nullable();
+            $table->string('other_discount')->nullable();
+            $table->decimal('amount_due')->nullable();
+            $table->integer('is_void');
             $table->timestamps();
         });
     }

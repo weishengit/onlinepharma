@@ -22,7 +22,14 @@ class ItemFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'quantity' => $this->faker->numberBetween(1, 30),
+            'product_id' => $this->faker->numberBetween(1, 30),
+            'name' => $this->faker->unique->streetSuffix,
+            'description' => $this->faker->realText(140),
+            'price' => $this->faker->numberBetween(20, 100),
+            'total_price' => $this->faker->randomFloat(2, 5, 200),
+            'vat_type' => $this->faker->numberBetween(2, 4),
+            'is_prescription' => $this->faker->biasedNumberBetween($min = 0, $max = 1, $function = 'sqrt')
         ];
     }
 }
