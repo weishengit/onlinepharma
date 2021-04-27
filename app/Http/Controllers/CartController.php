@@ -3,9 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cart;
+use App\Models\Item;
+use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+
 class CartController extends Controller
 {
     public function getCart()
@@ -44,7 +48,7 @@ class CartController extends Controller
             ->with('message', $product->name . ' added to cart.');
     }
 
-    public function remove($id, $quantity)
+    public function remove($id)
     {
         $product = Product::find($id);
         // Get id of product
@@ -54,8 +58,7 @@ class CartController extends Controller
         $oldCart = Session::get('cart');
         $cart = new Cart($oldCart);
 
-        $cart->remove($id, $quantity);
-
+        $cart->remove($id);
 
         // Overwrite the product session
         Session::put('cart', $cart);
@@ -91,16 +94,9 @@ class CartController extends Controller
         $oldCart = Session::get('cart');
         $cart = new Cart($oldCart);
 
-        $hasItems = $cart->decrease($id);
+        $cart->decrease($id);
 
-        // Overwrite the product session
-        if ($hasItems == false) {
-            session()->forget('cart');
-        }
-        else{
-            Session::put('cart', $cart);
-        }
-
+        Session::put('cart', $cart);
 
         return redirect()->route('cart');
     }
@@ -111,12 +107,17 @@ class CartController extends Controller
             session()->forget('cart');
         }
 
-        return redirect()->route('home')->with('message', 'Your has been cart cleared');
+        return redirect()->route('cart')->with('message', 'Your has been cart cleared');
     }
 
     public function method()
     {
         return view('pages.method');
+    }
+
+    public function discount()
+    {
+        return view('pages.discount');
     }
 
     public function prescription(Request $request)
@@ -132,8 +133,7 @@ class CartController extends Controller
             $cart = new Cart($oldCart);
 
             // CHANGE THE MODEL
-            $cart->setRxImage($newImageName);
-            $cart->has_RX = true;
+            $cart->setRx_image($newImageName);
 
             // Overwrite the cart session
             Session::put('cart', $cart);
@@ -142,28 +142,7 @@ class CartController extends Controller
         return redirect()->route('cart.discount');
     }
 
-    public function discount()
-    {
-        return view('pages.discount');
-    }
-
-
-    public function regular_checkout()
-    {
-        // GET THE OLD CART
-        $oldCart = Session::get('cart');
-        $cart = new Cart($oldCart);
-
-        // CHANGE THE MODEL
-        $cart->calculate_regular();
-
-        // Overwrite the cart session
-        Session::put('cart', $cart);
-
-        return redirect()->route('cart.method');
-    }
-
-    public function senior_checkout(Request $request)
+    public function senior(Request $request)
     {
         $newImageName = null;
 
@@ -176,15 +155,14 @@ class CartController extends Controller
             $cart = new Cart($oldCart);
 
             // CHANGE THE MODEL
-            $cart->setSCImage($newImageName);
-            $cart->is_SC = true;
-            $cart->calculate_senior();
+            $cart->setSc_image($newImageName);
+            $cart->setIs_SC(true);
 
             // Overwrite the cart session
             Session::put('cart', $cart);
         }
 
-        return redirect()->route('cart.method');
+        return redirect()->route('cart.discount');
     }
 
     public function delivery()
@@ -194,8 +172,8 @@ class CartController extends Controller
         $cart = new Cart($oldCart);
 
         // CHANGE THE MODEL
-        $cart->setToDelivery();
-
+        $cart->setClaim_type('delivery');
+        $cart->setDeliveryFee(30);
         // Overwrite the cart session
         Session::put('cart', $cart);
 
@@ -209,12 +187,27 @@ class CartController extends Controller
         $cart = new Cart($oldCart);
 
         // CHANGE THE MODEL
-        $cart->setToPickup();
+        $cart->setClaim_type('pickup');
 
         // Overwrite the cart session
         Session::put('cart', $cart);
 
         return redirect()->route('cart.finalize');
+    }
+
+    public function checkout(Request $request)
+    {
+        // GET THE OLD CART
+        $oldCart = Session::get('cart');
+        $cart = new Cart($oldCart);
+
+        // CHANGE THE MODEL
+        $cart->calculate();
+
+        // Overwrite the cart session
+        Session::put('cart', $cart);
+
+        return redirect()->route('cart.method');
     }
 
     public function finalize()
@@ -231,5 +224,60 @@ class CartController extends Controller
 
         return view('pages.finalize')
             ->with('cart', session()->get('cart'));
+    }
+
+    public function confirm()
+    {
+        // GET THE OLD CART
+        $oldCart = Session::get('cart');
+        $cart = new Cart($oldCart);
+
+        DB::transaction(function () use($cart) {
+
+            $order = Order::create([
+                'user_id' => auth()->user()->id,
+                'customer' => auth()->user()->first_name . ' ' . auth()->user()->last_name,
+                'address' => auth()->user()->address,
+                'contact' => auth()->user()->contact,
+                'scid' => auth()->user()->scid,
+                'scid_image' => $cart->getSc_image(),
+                'prescription_image' => $cart->getRx_image(),
+                'delivery_mode' => $cart->getClaim_type(),
+                'delivery_fee' => $cart->getDeliveryFee(),
+                'total_items' => $cart->getTotalCartQty(),
+                'vatable_sale' => $cart->getTotal_vat_able(),
+                'vat_amount' => $cart->getTotal_vat_amount(),
+                'vat_exempt' => $cart->getTotal_vat_exempt(),
+                'is_sc' => $cart->getIs_SC(),
+                'sc_discount' => $cart->getSeniorDiscount(),
+                'other_discount_rate' => $cart->getOtherDiscountRate(),
+                'other_discount' => $cart->getOtherDiscount(),
+                'amount_due' => $cart->final_price(),
+            ]);
+
+            foreach ($cart->getItems() as $item) {
+                $product = Product::find($item['item']['id']);
+
+                if ($product == null) {
+                    return redirect()->route('cart')->with('message', 'error cart product not found, clear your cart and try again');
+                }
+
+                Item::create([
+                    'order_id' => $order->id,
+                    'quantity' => $item['qty'],
+                    'product_id' => $product->id,
+                    'name' => $product->name,
+                    'description' => $product->description,
+                    'price' => $product->price,
+                    'total_price' => $product->price * $item['qty'],
+                    'vat_type' => $product->tax->name,
+                    'is_prescription' => $product->is_prescription,
+                ]);
+            }
+        });
+
+        session()->forget('cart');
+
+        return view('pages.confirmation');
     }
 }

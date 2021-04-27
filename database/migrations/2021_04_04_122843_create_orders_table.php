@@ -15,6 +15,7 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id');
             $table->string('status');
             $table->string('message')->nullable();
             $table->string('customer')->nullable();
@@ -25,11 +26,11 @@ class CreateOrdersTable extends Migration
             $table->string('prescription_image')->nullable();
             $table->string('cashier')->nullable();
             $table->string('delivery_mode')->nullable();
+            $table->integer('delivery_fee')->nullable();
             $table->integer('total_items')->nullable();
             $table->decimal('vatable_sale')->nullable();
             $table->decimal('vat_amount')->nullable();
             $table->decimal('vat_exempt')->nullable();
-            $table->decimal('zero_rated')->nullable();
             $table->decimal('subtotal')->nullable();
             $table->integer('is_sc')->nullable();
             $table->decimal('sc_discount')->nullable();

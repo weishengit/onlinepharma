@@ -40,7 +40,7 @@
                     </thead>
                     <tbody>
 
-                        @foreach ($cart->items as $item)
+                        @foreach ($cart->getItems() as $item)
                         <tr>
                             <td class="product-thumbnail">
                             <img src="{{ asset('images/' . $item['item']->image) }}" alt="Image" class="img-fluid">
@@ -113,7 +113,7 @@
                     </tr>
                     <tr>
                         <th>Subtotal</th>
-                        <td>&#8369;{{ number_format($cart->getSubTotal(), 2) ?? 'error' }}</td>
+                        <td>&#8369;{{ $cart->getSubTotal() ?? 'error' }}</td>
                     </tr>
                     <tr>
                         <th>Requires Prescription<span class="text-danger">*</span></th>
@@ -133,7 +133,7 @@
                         <div class="card-body">
                             <h5 class="card-title">One or more of your order requires a prescription. Attach a picture of your doctor's prescription to continue</h5>
                             <div class="text-center"><span>Upload a file</span>
-                                <input id="prescription_image" name="image" type="file" required>
+                                <input id="prescription_image" name="image" type="file" value={{ old('image') }} required>
                             </div>
                             <div class="text-center">
                                 <br><br>

@@ -16,6 +16,7 @@ class Order extends Model
 
 
     protected $fillable = [
+        'user_id',
         'status',
         'message',
         'customer',
@@ -30,7 +31,6 @@ class Order extends Model
         'vatable_sale',
         'vat_amount',
         'vat_exempt',
-        'zero_rated',
         'is_sc',
         'sc_discount',
         'other_discount_rate',

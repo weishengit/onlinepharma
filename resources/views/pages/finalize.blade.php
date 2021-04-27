@@ -7,7 +7,7 @@
         <div class="card-header">
             Invoice
             <strong>#</strong>
-            <span class="float-right"> <strong>Date: </strong>{{ session()->get('cart')->date }}</span>
+            <span class="float-right"> <strong>Date: </strong>{{ session()->get('cart')->getDate() }}</span>
             <br>
             <span class="float-right"> <strong>Status: </strong>Pending</span>
         </div>
@@ -44,7 +44,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (session()->get('cart')->items as $item)
+                        @foreach (session()->get('cart')->getItems() as $item)
                         <tr>
                             <td class="center">{{ $item['item']['id'] }}</td>
                             <td class="left strong">{{ $item['item']['name'] }}</td>
@@ -70,44 +70,51 @@
                             </tr>
                             <tr>
                                 <td class="left"><strong>Vatable</strong></td>
-                                <td class="right">&#8369;{{ $cart->total_vat_able }}</td>
+                                <td class="right">&#8369;{{ $cart->getTotal_vat_able() }}</td>
                             </tr>
                             <tr>
                                 <td class="left"><strong>VAT Amount</strong></td>
-                                <td class="right">&#8369;{{ $cart->total_vat_amount}}</td>
+                                <td class="right">&#8369;{{ $cart->getTotal_vat_amount() }}</td>
                             </tr>
                             <tr>
                                 <td class="left"><strong>VAT Exempt</strong></td>
-                                <td class="right">&#8369;{{ $cart->total_vat_exempt }}</td>
+                                <td class="right">&#8369;{{ $cart->getTotal_vat_exempt() }}</td>
                             </tr>
+                            @if ($cart->getIs_SC() == true)
                             <tr>
                                 <td class="left"><strong>SC/PWD Discount</strong></td>
-                                <td class="right">&#8369;{{ $cart->seniorDiscount }}</td>
+                                <td class="right">&#8369;{{ $cart->getSeniorDiscount() }}</td>
                             </tr>
+                            @endif
+                            @if ($cart->getOtherDiscount() != null)
                             <tr>
                                 <td class="left"><strong>Other Discount</strong></td>
-                                <td class="right">&#8369;{{ $cart->otherDiscount }}</td>
+                                <td class="right">&#8369;{{ $cart->getOtherDiscount() }}</td>
                             </tr>
-                            @if ($cart->is_delivery == true)
+                            @endif
+                            @if ($cart->getClaim_type() == 'delivery')
                             <tr>
-                                <td class="left"><strong>Other Discount</strong></td>
-                                <td class="right">&#8369;{{ $cart->deliveryFee }}</td>
+                                <td class="left"><strong>Delivery Fee</strong></td>
+                                <td class="right">&#8369;{{ $cart->getDeliveryFee() }}</td>
                             </tr>
                             @endif
                             <tr>
                                 <td class="left"><strong>Total</strong></td>
-                                <td class="right">&#8369;{{ $cart->getTotal() }}</td>
+                                <td class="right">&#8369;{{ $cart->final_price() }}</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
-            <a href="{{ route('cart.discount') }}">
+            <form 
+                action="{{ route('cart.confirm') }}"
+                method="post">
+                @csrf
                 <div class="text-center">
                     <br><br>
-                    <button class="btn btn-success btn-md">Complete Order</button>
+                    <button type="submit" class="btn btn-success btn-md">Complete Order</button>
                 </div>
-            </a>
+            </form>
         </div>
     </div>
 </div>

@@ -24,10 +24,10 @@ class ProductFactory extends Factory
         return [
             'name' => $this->faker->unique()->streetSuffix,
             'category_id' => $this->faker->numberBetween(2, 8),
-            'tax_id' => $this->faker->numberBetween(2, 5),
+            'tax_id' => 3,
             'generic_name' => $this->faker->lastName,
             'drug_class' => $this->faker->citySuffix,
-            'description' => $this->faker->realText(140),
+            'description' => $this->faker->realText(40),
             'price' => $this->faker->randomFloat(2, 5, 200),
             'measurement' => $this->faker->numberBetween(5, 1000) . $this->faker->randomElement($array = array('mg', 'ml', 'g')),
             'stock' => $this->faker->numberBetween(1000, 10000),

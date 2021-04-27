@@ -22,7 +22,7 @@ class CreateItemsTable extends Migration
             $table->string('description');
             $table->decimal('price');
             $table->decimal('total_price');
-            $table->integer('vat_type');
+            $table->string('vat_type');
             $table->integer('is_prescription');
             $table->timestamps();
         });
