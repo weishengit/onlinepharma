@@ -10,24 +10,24 @@ namespace App\Models;
  */
 class Cart
 {
-    public $items = null;
-    public $totalQty = 0;
-    public $totalCartQty = 0;
-    public $subTotal = 0;
-    public $seniorDiscount = 0;
-    public $otherDiscount = 0;
-    public $deliveryFee = 30;
-    public $total_vat_able = 0;
-    public $total_vat_amount = 0;
-    public $total_vat_exempt = 0;
-    public $totalPrice = 0;
-    public $sc_image = '';
-    public $rx_image = '';
-    public $is_SC = false;
-    public $has_RX = false;
-    public $is_delivery = false;
-    public $is_pickup = false;
-    public $date = '';
+    private $items = [];
+    private $totalQty = 0;
+    private $totalCartQty = 0;
+    private $subTotal = 0;
+    private $seniorDiscount = 0;
+    private $otherDiscount = null;
+    private $otherDiscountRate = 0;
+    private $deliveryFee = 0;
+    private $total_vat_able = 0;
+    private $total_vat_amount = 0;
+    private $total_vat_exempt = 0;
+    private $totalPrice = 0;
+    private $sc_image = '';
+    private $rx_image = '';
+    private $is_SC = false;
+    private $claim_type = '';
+    private $date = '';
+    private $final_price = 0;
 
     public function __construct($oldCart) {
 
@@ -42,58 +42,16 @@ class Cart
             $this->sc_image = $oldCart->sc_image;
             $this->rx_image = $oldCart->rx_image;
             $this->is_SC = $oldCart->is_SC;
-            $this->has_RX = $oldCart->has_RX;
-            $this->is_delivery = $oldCart->is_delivery;
-            $this->is_pickup = $oldCart->is_pickup;
+            $this->claim_type = $oldCart->claim_type;
             $this->total_vat_able = $oldCart->total_vat_able;
             $this->total_vat_amount = $oldCart->total_vat_amount;
             $this->total_vat_exempt = $oldCart->total_vat_exempt;
+            $this->date = $oldCart->date;
+            $this->final_price = $oldCart->final_price;
         }
     }
 
-    public function setRxImage($name)
-    {
-        $this->rx_image = $name;
-    }
-
-    public function getRxImage()
-    {
-        return $this->rx_image;
-    }
-
-    public function setSCImage($name)
-    {
-        $this->sc_image = $name;
-    }
-
-    public function getSCImage()
-    {
-        return $this->sc_image;
-    }
-
-    public function check_RX()
-    {
-        foreach ($this->items as $item) {
-            if ($item['rx'] == 1) {
-                return true;
-            }
-        }
-    }
-
-    public function recalculate()
-    {
-        $this->totalQty = 0;
-        $this->totalCartQty = 0;
-        $this->subTotal = 0;
-
-        foreach ($this->items as $item) {
-            $this->totalQty += 1;
-            $this->totalCartQty += $item['qty'];
-            $this->subTotal += $item['price'] * $item['qty'];
-        }
-
-    }
-
+    // ADD ITEM TO CART
     public function add($item, $id, $quantity, $rx)
     {
         $storedItem = ['qty' => 0, 'price' => $item->price, 'item' => $item, 'rx' => $rx];
@@ -107,18 +65,15 @@ class Cart
         $storedItem['qty'] += $quantity;
         $storedItem['price'] = $item->price;
         $this->items[$id] = $storedItem;
-
-        $this->recalculate();
     }
 
-    public function remove($id, $quantity)
+    // REMOVE ITEM FROM CART
+    public function remove($id)
     {
         unset($this->items[$id]);
-        $this->totalQty -= $quantity;
-
-        $this->recalculate();
     }
 
+    // INCREASE QUANTITY
     public function increase($id)
     {
         $storedItem = $this->items[$id];
@@ -130,10 +85,9 @@ class Cart
         $this->totalPrice += $storedItem['item']->price;
 
         $this->items[$id] = $storedItem;
-
-        $this->recalculate();
     }
 
+    // DECREASE QUANTITY
     public function decrease($id)
     {
         $storedItem = $this->items[$id];
@@ -141,171 +95,440 @@ class Cart
         $storedItem['qty'] -= 1;
 
         if ($storedItem['qty'] <= 0) {
-
             unset($this->items[$id]);
-
-            if (count($this->items) <= 0) {
-                return false;
-            }
-
-            return true;
         }
-
-        $this->totalQty = $storedItem['qty'];
-
-        $this->totalPrice += $storedItem['item']->price;
-
-        $this->items[$id] = $storedItem;
-
-        $this->recalculate();
-
-        return true;
     }
 
+    // FINALIZE ORDER
+    public function finalize()
+    {
+        $this->calculate();
+        $this->date = now();
+
+    }
+
+    // CHECK IF ORDER NEEDS PRESCRIPTION
+    public function check_RX()
+    {
+        foreach ($this->items as $item) {
+            if ($item['rx'] == 1) {
+                return true;
+            }
+        }
+    }
+
+    // CALCULATE SUBTOTAL
+    public function calculate_subtotal()
+    {
+        $this->subTotal = 0;
+        foreach ($this->items as $item) {
+            $this->totalQty += 1;
+            $this->totalCartQty += $item['qty'];
+            $this->subTotal += $item['price'] * $item['qty'];
+        }
+    }
+
+    // CALCULATE ALL
+    public function calculate()
+    {
+        // RESET TOTALS
+        $this->totalQty = 0;
+        $this->totalCartQty = 0;
+        $this->subTotal = 0;
+        $this->total_vat_able = 0;
+        $this->total_vat_amount = 0;
+        $this->total_vat_exempt = 0;
+
+        $this->calculate_subtotal();
+
+        // CALCULATE EACH ITEM
+        foreach ($this->items as $item) {
+            // FIND IF PRODUCT EXIST
+            $product = Product::find($item['item']['id']);
+            if ($product == null) {
+                return redirect()->route('cart')->with('message', 'error cart product not found, clear your cart and try again');
+            }
+
+            // UPDATE CART COUNT
+            $this->calculate_subtotal();
+
+            // IF SENIOR SET TAX TO VAT EXEMPT
+            if($this->is_SC == true) {
+                $this->total_vat_exempt += $product->price * $item['qty'];
+            }
+
+            // IF REGULAR CALCULATE VAT
+            if($this->is_SC == false) {
+                $tax_rate = $product->tax->rate;
+                // IF VAT IS ZERO
+                if ($tax_rate == 0) {
+                    $this->total_vat_exempt += $product->price * $item['qty'];
+                }
+                else{
+                    $this->total_vat_able += $product->price * $item['qty'];
+                }
+            }
+        }
+
+        // COMPUTE TOTAL VAT
+        $this->total_vat_amount = ($this->total_vat_able * 0.12) / (1 + 0.12);
+        $this->total_vat_able -= $this->total_vat_amount;
+
+        $this->total_vat_exempt = round($this->total_vat_exempt, 2);
+        $this->total_vat_amount = round($this->total_vat_amount, 2);
+        $this->total_vat_able = round($this->total_vat_able, 2);
+
+        $this->totalPrice = $this->total_vat_able + $this->total_vat_amount + $this->total_vat_exempt ;
+    }
+
+    /**
+     * Get the value of items
+     */
+    public function getItems()
+    {
+        return $this->items;
+    }
+
+    /**
+     * Set the value of items
+     *
+     * @return  self
+     */
+    public function setItems($items)
+    {
+        $this->items = $items;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of totalQty
+     */
+    public function getTotalQty()
+    {
+        $this->totalQty = 0;
+        foreach ($this->items as $item) {
+            $this->totalQty += 1;
+        }
+        return $this->totalQty;
+    }
+
+    /**
+     * Get the value of totalCartQty
+     */
     public function getTotalCartQty()
     {
-        $this->recalculate();
-
+        $this->totalCartQty = 0;
+        foreach ($this->items as $item) {
+            $this->totalCartQty += $item['qty'];
+        }
         return $this->totalCartQty;
     }
 
+
+    /**
+     * Get the value of subTotal
+     */
     public function getSubTotal()
     {
-        $this->recalculate();
-
+        $this->calculate_subtotal();
         return $this->subTotal;
     }
 
+    /**
+     * Get the value of seniorDiscount
+     */
+    public function getSeniorDiscount()
+    {
+        $this->setSeniorDiscount(0.20);
+        return $this->seniorDiscount;
+    }
 
-    public function getDiscount()
+    /**
+     * Set the value of seniorDiscount
+     *
+     * @return  self
+     */
+    public function setSeniorDiscount($seniorDiscount)
+    {
+        $this->seniorDiscount = $seniorDiscount;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of otherDiscount
+     */
+    public function getOtherDiscount()
     {
         return $this->otherDiscount;
     }
 
-    public function getDelivery()
+    /**
+     * Set the value of otherDiscount
+     *
+     * @return  self
+     */
+    public function setOtherDiscount($otherDiscount)
     {
+        $this->otherDiscount = $otherDiscount;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of otherDiscountRate
+     */
+    public function getOtherDiscountRate()
+    {
+        return $this->otherDiscountRate;
+    }
+
+    /**
+     * Set the value of otherDiscountRate
+     *
+     * @return  self
+     */
+    public function setOtherDiscountRate($otherDiscountRate)
+    {
+        $this->otherDiscountRate = $otherDiscountRate;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of deliveryFee
+     */
+    public function getDeliveryFee()
+    {
+        $this->setDeliveryFee(30);
         return $this->deliveryFee;
     }
 
-    public function setSC()
+    /**
+     * Set the value of deliveryFee
+     *
+     * @return  self
+     */
+    public function setDeliveryFee($deliveryFee)
     {
-        $total = $this->getTotal();
-        $discount = $total * 0.20;
-        $scDiscount = $total - $discount;
-        $this->totalPrice -= $discount;
+        $this->deliveryFee = $deliveryFee;
+
+        return $this;
     }
 
-    public function getTotal()
+    /**
+     * Get the value of total_vat_able
+     */
+    public function getTotal_vat_able()
     {
-        $this->totalPrice = 0;
-        $this->recalculate();
+        return $this->total_vat_able;
+    }
 
-        $this->totalPrice = $this->total_vat_amount + $this->total_vat_exempt + $this->total_vat_able;
+    /**
+     * Set the value of total_vat_able
+     *
+     * @return  self
+     */
+    public function setTotal_vat_able($total_vat_able)
+    {
+        $this->total_vat_able = $total_vat_able;
 
-        if ($this->seniorDiscount) {
-            $this->setSC();
-        }
+        return $this;
+    }
 
-        if ($this->is_delivery == true && $this->is_pickup == false) {
-            $this->totalPrice += $this->deliveryFee;
-        }
+    /**
+     * Get the value of total_vat_amount
+     */
+    public function getTotal_vat_amount()
+    {
+        return $this->total_vat_amount;
+    }
 
+    /**
+     * Set the value of total_vat_amount
+     *
+     * @return  self
+     */
+    public function setTotal_vat_amount($total_vat_amount)
+    {
+        $this->total_vat_amount = $total_vat_amount;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of total_vat_exempt
+     */
+    public function getTotal_vat_exempt()
+    {
+        return $this->total_vat_exempt;
+    }
+
+    /**
+     * Set the value of total_vat_exempt
+     *
+     * @return  self
+     */
+    public function setTotal_vat_exempt($total_vat_exempt)
+    {
+        $this->total_vat_exempt = $total_vat_exempt;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of totalPrice
+     */
+    public function getTotalPrice()
+    {
         return $this->totalPrice;
     }
 
-    public function setToDelivery()
+    /**
+     * Set the value of totalPrice
+     *
+     * @return  self
+     */
+    public function setTotalPrice($totalPrice)
     {
-        $this->is_delivery = true;
-        $this->is_pickup = false;
-        $this->recalculate();
+        $this->totalPrice = $totalPrice;
+
+        return $this;
     }
 
-    public function setToPickup()
+    /**
+     * Get the value of sc_image
+     */
+    public function getSc_image()
     {
-        $this->is_delivery = false;
-        $this->is_pickup = true;
-        $this->recalculate();
+        return $this->sc_image;
     }
 
-    public function calculate_regular()
+    /**
+     * Set the value of sc_image
+     *
+     * @return  self
+     */
+    public function setSc_image($sc_image)
     {
-        if ($this->is_SC == true) {
-            return redirect()->route('cart')->with('message', 'calution does not match customer status');
-        }
+        $this->sc_image = $sc_image;
 
-        $products = null;
-        $this->total_vat_amount = 0;
-        $this->total_vat_able = 0;
-        $this->total_vat_exempt = 0;
-        $vatAmount = 0;
-        $vatAble = 0;
-        $vatExempt = 0;
-
-        foreach ($this->items as $item) {
-
-            $products[$item['item']['id']] = Product::find($item['item']['id']);
-            if ($products[$item['item']['id']] == null) {
-                return redirect()->route('cart')->with('message', 'error cart product not found, clear your cart and try again');
-            }
-            $tax_rate = $products[$item['item']['id']]->tax->rate;
-            if ($tax_rate == 0) {
-                $exempt = $products[$item['item']['id']]->price * $item['qty'];
-                $vatExempt += $exempt;
-            }
-            else{
-                $vatAmount  += (($products[$item['item']['id']]->price * $item['qty']) * $tax_rate) / (1 + $tax_rate);
-                $vatAble += ($products[$item['item']['id']]->price * $item['qty']) - $vatAmount;
-
-
-            }
-        }
-
-        $this->total_vat_exempt = round($vatExempt, 2);
-        $this->total_vat_amount = round($vatAmount, 2);
-        $this->total_vat_able = round($vatAble, 2);
-
-        $this->recalculate();
+        return $this;
     }
 
-    public function calculate_senior()
+    /**
+     * Get the value of rx_image
+     */
+    public function getRx_image()
     {
-        if ($this->is_SC == false) {
-            return redirect()->route('cart')->with('message', 'calution does not match customer status');
-        }
-
-        $products = null;
-        $this->total_vat_exempt = 0;
-        $vatExempt = 0;
-
-        foreach ($this->items as $item) {
-            $products[$item['item']['id']] = Product::find($item['item']['id']);
-
-            if ($products[$item['item']['id']] == null) {
-                return redirect()->route('cart')->with('message', 'error cart product not found, clear your cart and try again');
-            }
-
-            $exempt = $products[$item['item']['id']]->price * $item['qty'];
-            $vatExempt += $exempt;
-        }
-
-        $this->total_vat_exempt = round($vatExempt, 2);
-        $this->recalculate();
+        return $this->rx_image;
     }
 
-    public function finalize()
+    /**
+     * Set the value of rx_image
+     *
+     * @return  self
+     */
+    public function setRx_image($rx_image)
     {
-        $this->recalculate();
+        $this->rx_image = $rx_image;
 
-        if ($this->is_SC == true) {
-            $this->calculate_senior();
-        }
-
-        if ($this->is_SC == false) {
-            $this->calculate_regular();
-        }
-
-        $this->date = now();
-
-        $this->getTotal();
+        return $this;
     }
+
+    /**
+     * Get the value of is_SC
+     */
+    public function getIs_SC()
+    {
+        return $this->is_SC;
+    }
+
+    /**
+     * Set the value of is_SC
+     *
+     * @return  self
+     */
+    public function setIs_SC($is_SC)
+    {
+        $this->is_SC = $is_SC;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of claim_type
+     */
+    public function getClaim_type()
+    {
+        return $this->claim_type;
+    }
+
+    /**
+     * Set the value of claim_type
+     *
+     * @return  self
+     */
+    public function setClaim_type($claim_type)
+    {
+        $this->claim_type = $claim_type;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of date
+     */
+    public function getDate()
+    {
+        $this->setDate(now());
+        return $this->date;
+    }
+
+    /**
+     * Set the value of date
+     *
+     * @return  self
+     */
+    public function setDate($date)
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
+    public function final_price()
+    {
+        // CALCULATE
+        $this->final_price = 0;
+        $sc_discount = 0;
+        $other_discount = 0;
+        $fee = 0;
+        $this->calculate();
+        $price = $this->totalPrice;
+        
+        // SENIOR DISCOUNT
+        if($this->getIs_SC()){
+            $this->setSeniorDiscount = $total_price / 0.20;
+            $sc_discount = $price - $this->getSeniorDiscount;
+            $price -=  $sc_discount;
+        }
+
+        // OTHER DISCOUNT
+        if($this->getOtherDiscount() != null){
+            $discount = $price / $this->getOtherDiscountRate();
+            $other_discount = $price - $discount;
+            $price -=  $other_discount;
+        }
+
+        // DELIVERY FEE
+        if ($this->getClaim_type() == 'delivery') {
+            $price += $this->getDeliveryFee();
+        }
+
+        $this->final_price = $price;
+        return $this->final_price;
+    }
+
 }

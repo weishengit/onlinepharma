@@ -26,9 +26,8 @@ class CreateTaxesTable extends Migration
         // DEFAULT TAXES
         Tax::create(['id' => 1, 'name' => 'none', 'rate' => 0]);
         Tax::create(['id' => 2, 'name' => 'VAT Exempt', 'rate' => 0]);
-        Tax::create(['id' => 3, 'name' => 'VAT Zero Rated', 'rate' => 0]);
-        Tax::create(['id' => 4, 'name' => 'VAT 12%', 'rate' => 0.12]);
-        Tax::create(['id' => 5, 'name' => 'VAT 5%', 'rate' => 0.05]);
+        Tax::create(['id' => 3, 'name' => 'VAT 12%', 'rate' => 0.12]);
+        Tax::create(['id' => 4, 'name' => 'VAT 5%', 'rate' => 0.05]);
     }
 
     /**
