@@ -133,6 +133,7 @@ class CartController extends Controller
             $cart = new Cart($oldCart);
 
             // CHANGE THE MODEL
+            $cart->setHas_RX(true);
             $cart->setRx_image($newImageName);
 
             // Overwrite the cart session
@@ -158,11 +159,12 @@ class CartController extends Controller
             $cart->setSc_image($newImageName);
             $cart->setIs_SC(true);
 
+
             // Overwrite the cart session
             Session::put('cart', $cart);
         }
 
-        return redirect()->route('cart.discount');
+        return redirect()->route('cart.method');
     }
 
     public function delivery()
@@ -195,7 +197,7 @@ class CartController extends Controller
         return redirect()->route('cart.finalize');
     }
 
-    public function checkout(Request $request)
+    public function checkout()
     {
         // GET THE OLD CART
         $oldCart = Session::get('cart');
@@ -232,6 +234,19 @@ class CartController extends Controller
         $oldCart = Session::get('cart');
         $cart = new Cart($oldCart);
 
+        // CHECK FOR SC
+        if ($cart->getIs_SC()) {
+            if ($cart->getSc_image() == null) {
+                return redirect()->route('cart')->with('message', 'You must provide a photo of your SC/PWD ID to avail the discount.');
+            }
+        }
+        // CHECK FOR RX
+        if ($cart->getHas_RX()) {
+            if ($cart->getRx_image() == null) {
+                return redirect()->route('cart')->with('message', 'You must provide a photo of your prescription to continue.');
+            }
+        }
+
         DB::transaction(function () use($cart) {
 
             $order = Order::create([
@@ -245,6 +260,7 @@ class CartController extends Controller
                 'delivery_mode' => $cart->getClaim_type(),
                 'delivery_fee' => $cart->getDeliveryFee(),
                 'total_items' => $cart->getTotalCartQty(),
+                'subtotal' => $cart->getSubTotal(),
                 'vatable_sale' => $cart->getTotal_vat_able(),
                 'vat_amount' => $cart->getTotal_vat_amount(),
                 'vat_exempt' => $cart->getTotal_vat_exempt(),

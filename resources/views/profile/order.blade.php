@@ -6,27 +6,27 @@
         {{-- STATUS BAR --}}
         <div class="card-header">
             Invoice
-            <strong>#</strong>
-            <span class="float-right"> <strong>Date: </strong>{{ session()->get('cart')->getDate() }}</span>
+            <strong>#{{ $order->id }}</strong>
+            <span class="float-right"> <strong>Date: </strong>{{ $order->created_at }}</span>
             <br>
-            <span class="float-right"> <strong>Status: </strong>Pending</span>
+            <span class="float-right"> <strong>Status: </strong>{{ $order->status }}</span>
         </div>
         {{-- HEADER --}}
         <div class="card-body">
             <div class="row mb-4">
                 <div class="col-sm-6">
                     <h6 class="mb-3">From:</h6>
-                    <div><strong>{{ env('APP_NAME') ?? Store }}</strong></div>
+                    <div><strong>{{ $order->cashier }}</strong></div>
                     <div>Cabanatuan City</div>
                     <div>Email: shop@onlinepharma.com</div>
                     <div>Contact: +64 444 666 3333</div>
                 </div>
                 <div class="col-sm-6">
                     <h6 class="mb-3">To:</h6>
-                    <div><strong>{{ auth()->user()->first_name . ' ' . auth()->user()->last_name }}</strong></div>
-                    <div>{{ auth()->user()->address }}</div>
-                    <div>Email: {{ auth()->user()->email }}</div>
-                    <div>Phone: {{ auth()->user()->contact }}</div>
+                    <div><strong>{{ $order->customer }}</strong></div>
+                    <div>{{ $order->address }}</div>
+                    <div>Email: {{ $order->user->email }}</div>
+                    <div>Phone: {{ $order->user->contact }}</div>
                 </div>
             </div>
             {{-- TABLE --}}
@@ -44,15 +44,15 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (session()->get('cart')->getItems() as $item)
+                        @foreach ($items as $item)
                         <tr>
-                            <td class="center">{{ $item['item']['id'] }}</td>
-                            <td class="left strong">{{ $item['item']['name'] }}</td>
-                            <td class="left">{{ $item['item']['description'] }}</td>
+                            <td class="center">{{ $item->id }}</td>
+                            <td class="left strong">{{ $item->name }}</td>
+                            <td class="left">{{ $item->description }}</td>
 
-                            <td class="right">{{ $item['item']['price'] }}</td>
-                            <td class="center">{{ $item['qty'] }}</td>
-                            <td class="right">{{ $item['item']['price'] * $item['qty']}}</td>
+                            <td class="right">{{ $item->price }}</td>
+                            <td class="center">{{ $item->quantity }}</td>
+                            <td class="right">{{ $item->total_price }}</td>
                         </tr>
                         @endforeach
                     </tbody>
@@ -66,59 +66,56 @@
                         <tbody>
                             <tr>
                                 <td class="left"><strong>Subtotal</strong></td>
-                                <td class="right">&#8369;{{ $cart->getSubtotal() }}</td>
+                                <td class="right">&#8369;{{ $order->subtotal }}</td>
                             </tr>
                             <tr>
                                 <td class="left"><strong>Vatable</strong></td>
-                                <td class="right">&#8369;{{ $cart->getTotal_vat_able() }}</td>
+                                <td class="right">&#8369;{{ $order->vatable_sale }}</td>
                             </tr>
                             <tr>
                                 <td class="left"><strong>VAT Amount</strong></td>
-                                <td class="right">&#8369;{{ $cart->getTotal_vat_amount() }}</td>
+                                <td class="right">&#8369;{{ $order->vat_amount }}</td>
                             </tr>
                             <tr>
                                 <td class="left"><strong>VAT Exempt</strong></td>
-                                <td class="right">&#8369;{{ $cart->getTotal_vat_exempt() }}</td>
+                                <td class="right">&#8369;{{ $order->vat_exempt }}</td>
                             </tr>
-                            @if ($cart->getIs_SC() == true)
+                            @if ($order->is_sc == true)
                             <tr>
-                                <td class="left"><strong>SC/PWD Discount</strong></td>
-                                <td class="right">&#8369;{{ $cart->getSeniorDiscount() }}</td>
+                                <td class="left"><strong>SC/PWD Discount(20%)</strong></td>
+                                <td class="right">&#8369;{{ $order->sc_discount }}</td>
                             </tr>
                             @endif
-                            @if ($cart->getOtherDiscount() != null)
+                            @if ($order->other_discount != null)
                             <tr>
                                 <td class="left"><strong>Other Discount</strong></td>
-                                <td class="right">&#8369;{{ $cart->getOtherDiscount() }}</td>
+                                <td class="right">&#8369;{{ $order->other_discount }} - {{ $order->other_discount_rate }}</td>
                             </tr>
                             @endif
-                            @if ($cart->getClaim_type() == 'delivery')
+                            @if ($order->delivery_mode == 'delivery')
                             <tr>
                                 <td class="left"><strong>Delivery Fee</strong></td>
-                                <td class="right">&#8369;{{ $cart->getDeliveryFee() }}</td>
+                                <td class="right">&#8369;{{ $order->delivery_fee }}</td>
                             </tr>
                             @endif
                             <tr>
                                 <td class="left"><strong>Total</strong></td>
-                                <td class="right">&#8369;{{ $cart->final_price() }}</td>
+                                <td class="right">&#8369;{{ $order->amount_due }}</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
-            <form
-                action="{{ route('cart.confirm') }}"
-                method="post">
-                @csrf
+            <a href="{{ route('profile.orders') }}">
                 <div class="text-center">
                     <br><br>
-                    <button type="submit" class="btn btn-success btn-md">Submit Order</button>
+                    <button type="submit" class="btn btn-primary btn-md">Done</button>
                 </div>
-            </form>
-            <a href="{{ route('cart.clear') }}">
+            </a>
+            <a href="#">
                 <div class="text-center">
-                    <br><br>
-                    <button type="submit" class="btn btn-danger btn-md">Start Over</button>
+                    <br>
+                    <button class="btn btn-success btn-md">Download PDF</button>
                 </div>
             </a>
         </div>

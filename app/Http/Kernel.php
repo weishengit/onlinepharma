@@ -66,5 +66,6 @@ class Kernel extends HttpKernel
         'customer' => \App\Http\Middleware\IsCustomer::class,
         'checkout' => \App\Http\Middleware\CheckoutCheck::class,
         'active' => \App\Http\Middleware\IsActive::class,
+        'cart' => \App\Http\Middleware\CartCheck::class,
     ];
 }

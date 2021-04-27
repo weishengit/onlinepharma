@@ -22,11 +22,12 @@ class Cart
     private $total_vat_amount = 0;
     private $total_vat_exempt = 0;
     private $totalPrice = 0;
-    private $sc_image = '';
-    private $rx_image = '';
+    private $sc_image = null;
+    private $rx_image = null;
     private $is_SC = false;
-    private $claim_type = '';
-    private $date = '';
+    private $has_RX = false;
+    private $claim_type = null;
+    private $date = null;
     private $final_price = 0;
 
     public function __construct($oldCart) {
@@ -42,6 +43,7 @@ class Cart
             $this->sc_image = $oldCart->sc_image;
             $this->rx_image = $oldCart->rx_image;
             $this->is_SC = $oldCart->is_SC;
+            $this->has_RX = $oldCart->has_RX;
             $this->claim_type = $oldCart->claim_type;
             $this->total_vat_able = $oldCart->total_vat_able;
             $this->total_vat_amount = $oldCart->total_vat_amount;
@@ -103,6 +105,7 @@ class Cart
     public function finalize()
     {
         $this->calculate();
+        $this->final_price();
         $this->date = now();
 
     }
@@ -173,6 +176,8 @@ class Cart
         // COMPUTE TOTAL VAT
         $this->total_vat_amount = ($this->total_vat_able * 0.12) / (1 + 0.12);
         $this->total_vat_able -= $this->total_vat_amount;
+        $vatExemption = ($this->total_vat_exempt * 0.12) / (1 + 0.12);
+        $this->total_vat_exempt -= $vatExemption;
 
         $this->total_vat_exempt = round($this->total_vat_exempt, 2);
         $this->total_vat_amount = round($this->total_vat_amount, 2);
@@ -187,18 +192,6 @@ class Cart
     public function getItems()
     {
         return $this->items;
-    }
-
-    /**
-     * Set the value of items
-     *
-     * @return  self
-     */
-    public function setItems($items)
-    {
-        $this->items = $items;
-
-        return $this;
     }
 
     /**
@@ -225,7 +218,6 @@ class Cart
         return $this->totalCartQty;
     }
 
-
     /**
      * Get the value of subTotal
      */
@@ -240,7 +232,6 @@ class Cart
      */
     public function getSeniorDiscount()
     {
-        $this->setSeniorDiscount(0.20);
         return $this->seniorDiscount;
     }
 
@@ -251,7 +242,7 @@ class Cart
      */
     public function setSeniorDiscount($seniorDiscount)
     {
-        $this->seniorDiscount = $seniorDiscount;
+        $this->seniorDiscount = round($seniorDiscount, 2);
 
         return $this;
     }
@@ -301,7 +292,6 @@ class Cart
      */
     public function getDeliveryFee()
     {
-        $this->setDeliveryFee(30);
         return $this->deliveryFee;
     }
 
@@ -507,28 +497,45 @@ class Cart
         $fee = 0;
         $this->calculate();
         $price = $this->totalPrice;
-        
+
         // SENIOR DISCOUNT
         if($this->getIs_SC()){
-            $this->setSeniorDiscount = $total_price / 0.20;
-            $sc_discount = $price - $this->getSeniorDiscount;
-            $price -=  $sc_discount;
+            $this->setSeniorDiscount($price * 0.2);
+            $sc_discount = $this->getSeniorDiscount();
         }
 
         // OTHER DISCOUNT
         if($this->getOtherDiscount() != null){
-            $discount = $price / $this->getOtherDiscountRate();
-            $other_discount = $price - $discount;
-            $price -=  $other_discount;
+            $other_discount = $price / $this->getOtherDiscountRate();
         }
 
         // DELIVERY FEE
         if ($this->getClaim_type() == 'delivery') {
-            $price += $this->getDeliveryFee();
+            $fee = $this->getDeliveryFee();
         }
 
-        $this->final_price = $price;
+        $this->final_price = $price - $sc_discount - $other_discount + $fee;
         return $this->final_price;
     }
 
+
+    /**
+     * Get the value of has_RX
+     */
+    public function getHas_RX()
+    {
+        return $this->has_RX;
+    }
+
+    /**
+     * Set the value of has_RX
+     *
+     * @return  self
+     */
+    public function setHas_RX($has_RX)
+    {
+        $this->has_RX = $has_RX;
+
+        return $this;
+    }
 }

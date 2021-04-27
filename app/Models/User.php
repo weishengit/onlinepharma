@@ -62,4 +62,9 @@ class User extends Authenticatable
         return $this->hasOne(Ban::class);
     }
 
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+
 }

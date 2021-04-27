@@ -192,6 +192,43 @@
                         @endif
                     </form>
                     @if ($order->is_void != 1)
+                        @if ($order->status == 'new')
+                            {{-- ACCEPT FORM --}}
+                            <form action="{{ route('admin.order.accept', ['id' => $order->id]) }}" method="POST">
+                                @csrf
+                                @method('post')
+                                <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                    <dt class="text-xl font-medium text-gray-500">
+                                        Accept
+                                    </dt>
+                                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                        <button type="submit"
+                                            class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                            Accept
+                                        </button>
+                                    </dd>
+                                </div>
+                            </form>
+                        @endif
+                        @if ($order->status == 'pending')
+                            {{-- COMPLETE FORM --}}
+                            <form action="{{ route('admin.order.complete', ['id' => $order->id]) }}" method="POST">
+                                @csrf
+                                @method('post')
+                                <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                    <dt class="text-xl font-medium text-gray-500">
+                                        Complete
+                                    </dt>
+                                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                        <button type="submit"
+                                            class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                            Complete
+                                        </button>
+                                    </dd>
+                                </div>
+                            </form>
+                        @endif
+
                     {{-- DISABLE FORM --}}
                     <form action="{{ route('admin.order.destroy', ['order' => $order->id]) }}" method="POST">
                         @csrf
@@ -201,6 +238,7 @@
                                 Void
                             </dt>
                             <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                <input type="text" name="reason" placeholder="reason for voiding">
                                 <button type="submit"
                                     class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                                     Void
@@ -213,6 +251,30 @@
             </div>
         </div>
         {{-- ITEMS --}}
+        {{-- IMAGES --}}
+        <div class="album py-5 bg-light">
+            <div class="container">
+                {{-- SC PHOTTO --}}
+                <div class="col-md-4">
+                    <div class="card mb-4 box-shadow">
+                        <img class="card-img-top" width="300" height="300" src="{{ asset('images/temp/sc/' . $order->scid_image) }}" alt="scid image">
+                        <div class="card-body">
+                            SC/PWD ID Photo
+                        </div>
+                    </div>
+                </div>
+                {{-- RXX PHOTO --}}
+                <div class="col-md-4">
+                    <div class="card mb-4 box-shadow">
+                        <img class="card-img-top" width="300" height="300" src="{{ asset('images/temp/rx/' . $order->prescription_image) }}" alt="Card image cap">
+                        <div class="card-body">
+                            Prescription Photo
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
         {{-- Table --}}
         <div>
             <h1 class="font-bold text-3xl">Items</h1>

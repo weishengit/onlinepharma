@@ -1,6 +1,27 @@
 @extends('layouts.front')
 
 @section('content')
+@if (session()->has('message'))
+      <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            {{ session()->get('message') }}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+          </button>
+      </div>
+    @endif
+    @if ($errors->any())
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @endif
 {{-- CHECKOUT --}}
 <div>
     <h2 class="text-primary text-center ml-4 mt-2">Select Status</h2>
@@ -32,7 +53,7 @@
                 </li>
             </ul>
             <form
-                action="{{ route('cart.checkout.senior') }}"
+                action="{{ route('cart.senior') }}"
                 method="post"
                 enctype="multipart/form-data">
                 @csrf

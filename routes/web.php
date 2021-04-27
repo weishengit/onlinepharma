@@ -86,7 +86,7 @@ Route::middleware(['auth', 'active', 'checkout'])->group(function () {
     Route::get('/cart/checkout/delivery', [CartController::class, 'delivery'])->name('cart.delivery');
     Route::get('/cart/checkout/pickup', [CartController::class, 'pickup'])->name('cart.pickup');
     Route::get('/cart/finalize', [CartController::class, 'finalize'])->name('cart.finalize');
-    Route::post('/cart/confirm', [CartController::class, 'confirm'])->name('cart.confirm');
+    Route::post('/cart/confirm', [CartController::class, 'confirm'])->name('cart.confirm')->middleware(['cart']);;
 });
 
 // PROFILE ROUTE
@@ -104,6 +104,9 @@ Route::middleware(['auth', 'active'])->prefix('profile')->name('profile.')->grou
         ->middleware(['password.confirm'])
         ->name('delete.show');
     Route::delete('/delete', [ProfileDelete::class, 'destroy']);
+
+    Route::get('/orders', [ProfileController::class, 'orders'])->name('orders');
+    Route::get('/orders/{order?}', [ProfileController::class, 'order'])->name('order');
 });
 
 // ADMIN ROUTE
@@ -136,6 +139,8 @@ Route::middleware(['admin', 'active'])->name('admin.')->prefix('admin')->group(f
     Route::put('product/{product}/available', [ProductController::class, 'markForSale'])->name('product.available');
     Route::resource('product', ProductController::class);
     //ORDERS
+    Route::post('/order/{id}/accept', [OrderController::class, 'accept'])->name('order.accept');
+    Route::post('/order/{id}/complete', [OrderController::class, 'complete'])->name('order.complete');
     Route::resource('order', OrderController::class);
 });
 

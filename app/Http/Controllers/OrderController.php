@@ -49,9 +49,23 @@ class OrderController extends Controller
         return view('admin.order.create');
     }
 
-    public function store()
+    public function accept($id)
     {
-        # code...
+        $order = Order::find($id);
+
+        if ($order == null) {
+            return redirect()->route('admin.order.index')->with('message', 'Order not found.');
+        }
+
+        // MARK AS PENDING
+        Order::where('id', $order->id)
+        ->update([
+            'status' => 'pending',
+        ]);
+
+        return redirect()
+            ->route('admin.order.index')
+            ->with('message', 'Order #' . $order->id . ' has been accepted and now pending for dispatch.');
     }
 
     public function edit($id)
@@ -68,12 +82,27 @@ class OrderController extends Controller
             ->with('items', $items);
     }
 
-    public function update()
+    public function complete(Request $request, $id)
     {
-        # code...
+        $order = Order::find($id);
+
+        if ($order == null) {
+            return redirect()->route('admin.order.index')->with('message', 'Order not found.');
+        }
+
+        // MARK AS PENDING
+        Order::where('id', $order->id)
+        ->update([
+            'message' => $request->input('reason'),
+            'status' => 'completed',
+        ]);
+
+        return redirect()
+            ->route('admin.order.index')
+            ->with('message', 'Order #' . $order->id . ' has been marked as complete.');
     }
 
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         $order = Order::find($id);
 
@@ -84,6 +113,7 @@ class OrderController extends Controller
         // DISABLE DISCOUNT
         Order::where('id', $order->id)
         ->update([
+            'message' => $request->input('reason'),
             'status' => 'void',
             'is_void' => 1,
         ]);

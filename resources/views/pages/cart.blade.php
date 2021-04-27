@@ -8,6 +8,27 @@
     </div>
   </div>
 </div>
+@if (session()->has('message'))
+      <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            {{ session()->get('message') }}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+          </button>
+      </div>
+    @endif
+    @if ($errors->any())
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @endif
 @if ($cart == null)
     <div class="container text-center">
       <br><br><br>
@@ -133,7 +154,7 @@
                         <div class="card-body">
                             <h5 class="card-title">One or more of your order requires a prescription. Attach a picture of your doctor's prescription to continue</h5>
                             <div class="text-center"><span>Upload a file</span>
-                                <input id="prescription_image" name="image" type="file" value={{ old('image') }} required>
+                                <input id="prescription_image" name="image" type="file" required>
                             </div>
                             <div class="text-center">
                                 <br><br>
