@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\ReportController;
+use App\Http\Controllers\UserReportController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,5 +19,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/dashboard/users', [ReportController::class, 'dashboard_users'])->name('dash_users');
-
+Route::get('/v1/dashboard/users', [UserReportController::class, 'dashboard_users'])->name('dash_users');
+Route::get('/v1/users/yearly', [UserReportController::class, 'user_yearly'])->name('users.yearly');

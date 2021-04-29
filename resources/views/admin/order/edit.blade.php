@@ -103,7 +103,7 @@
                                 Address
                             </dt>
                             <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                {{ $order->Address }}
+                                {{ $order->address }}
                             </dd>
                         </div>
 
@@ -145,7 +145,7 @@
                         {{-- IS SC --}}
                         <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                             <dt class="text-xl font-medium text-gray-500">
-                                is SC
+                                Senior/PWD
                             </dt>
                             <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                                 @if ($order->is_sc)
@@ -159,7 +159,7 @@
                         @if ($order->is_sc)
                         <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                             <dt class="text-xl font-medium text-gray-500">
-                                Senior Discount
+                                Senior/PWD Discount
                             </dt>
                             <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                                 {{ $order->sc_discount }}
@@ -179,8 +179,6 @@
                                 @endif
                             </dd>
                         </div>
-                        {{-- SC DISCOUNT --}}
-                        @if ($order->other_discount)
                         <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                             <dt class="text-xl font-medium text-gray-500">
                                 Other Discount Amount
@@ -189,7 +187,6 @@
                                 {{ $order->other_discount_rate }}
                             </dd>
                         </div>
-                        @endif
                     </form>
                     @if ($order->is_void != 1)
                         @if ($order->status == 'new')
@@ -202,6 +199,7 @@
                                         Accept
                                     </dt>
                                     <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                        <input type="text" name="reason" placeholder="note...">
                                         <button type="submit"
                                             class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                                             Accept
@@ -220,6 +218,7 @@
                                         Complete
                                     </dt>
                                     <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                        <input type="text" name="reason" placeholder="message...">
                                         <button type="submit"
                                             class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                                             Complete
@@ -238,7 +237,7 @@
                                 Void
                             </dt>
                             <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                <input type="text" name="reason" placeholder="reason for voiding">
+                                <input type="text" name="reason" placeholder="reason...">
                                 <button type="submit"
                                     class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                                     Void
@@ -252,28 +251,21 @@
         </div>
         {{-- ITEMS --}}
         {{-- IMAGES --}}
-        <div class="album py-5 bg-light">
-            <div class="container">
-                {{-- SC PHOTTO --}}
-                <div class="col-md-4">
-                    <div class="card mb-4 box-shadow">
-                        <img class="card-img-top" width="300" height="300" src="{{ asset('images/temp/sc/' . $order->scid_image) }}" alt="scid image">
-                        <div class="card-body">
-                            SC/PWD ID Photo
-                        </div>
-                    </div>
-                </div>
-                {{-- RXX PHOTO --}}
-                <div class="col-md-4">
-                    <div class="card mb-4 box-shadow">
-                        <img class="card-img-top" width="300" height="300" src="{{ asset('images/temp/rx/' . $order->prescription_image) }}" alt="Card image cap">
-                        <div class="card-body">
-                            Prescription Photo
-                        </div>
-                    </div>
-                </div>
-
+        {{-- SC PHOTTO --}}
+        <div class="flex flex-row flex-wrap border border-solid text-center items-center justify-items-center place-content-center">
+            @if ($order->is_sc != 0)
+            <div class="flex-grow">
+                <h2 class="text-blue-900 text-3xl">SC/PWD ID Photo</h2>
+                <img src="{{ asset('images/temp/sc/' . $order->scid_image) }}" alt="scid image">
             </div>
+            @endif
+            @if ($order->prescription_image != null)
+            {{-- RXX PHOTO --}}
+            <div class="flex-grow">
+                <h2 class="text-green-900 text-3xl">Prescription Photo</h2>
+                <img src="{{ asset('images/temp/rx/' . $order->prescription_image) }}" alt="rx image">
+            </div>
+            @endif
         </div>
         {{-- Table --}}
         <div>

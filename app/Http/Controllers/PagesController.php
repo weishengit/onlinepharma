@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Product;
 use App\Models\Category;
+use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Session;
@@ -27,11 +28,15 @@ class PagesController extends Controller
         $totalUsers = User::count();
         $newUsers = User::where('created_at', '>=', Carbon::today()->subDays(7))->count();
         $totalProducts = Product::count();
+        $new_orders = Order::where('is_void', 0)->where('status', 'new')->count();
+        $pending_orders = Order::where('is_void', 0)->where('status', 'pending')->count();
 
 
         return view('admin.index')
             ->with('totalProducts', $totalProducts)
             ->with('totalUsers', $totalUsers)
+            ->with('new_orders', $new_orders)
+            ->with('pending_orders', $pending_orders)
             ->with('newUsers', $newUsers);
     }
 

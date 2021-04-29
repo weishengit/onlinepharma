@@ -1,22 +1,24 @@
 <?php
 
+use App\Models\Cart;
+use App\Http\Controllers\GoogleLogin;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BanController;
+use App\Http\Controllers\FacebookLogin;
 use App\Http\Controllers\ProfileDelete;
 use App\Http\Controllers\TaxController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PagesController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DiscountController;
-use App\Http\Controllers\FacebookLogin;
-use App\Http\Controllers\GoogleLogin;
-use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PasswordController;
-use App\Models\Cart;
+use App\Http\Controllers\UserReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -142,6 +144,9 @@ Route::middleware(['admin', 'active'])->name('admin.')->prefix('admin')->group(f
     Route::post('/order/{id}/accept', [OrderController::class, 'accept'])->name('order.accept');
     Route::post('/order/{id}/complete', [OrderController::class, 'complete'])->name('order.complete');
     Route::resource('order', OrderController::class);
+    // REPORTS
+    Route::get('/reports', [ReportController::class, 'index'])->name('report');
+    Route::get('/reports/{report?}', [ReportController::class, 'show'])->name('report.show');
 });
 
 require __DIR__.'/auth.php';

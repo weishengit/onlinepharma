@@ -22,6 +22,10 @@ class OrderController extends Controller
             $orders = Order::all() ?? null;
             $title = 'All';
         }
+        if ($search == 'pending') {
+            $orders = Order::where('status', 'pending')->where('is_void', 0)->get() ?? null;
+            $title = 'Pending';
+        }
         if ($search == 'new') {
             $orders = Order::where('status', 'new')->where('is_void', 0)->get() ?? null;
             $title = 'New';
@@ -49,7 +53,7 @@ class OrderController extends Controller
         return view('admin.order.create');
     }
 
-    public function accept($id)
+    public function accept(Request $request, $id)
     {
         $order = Order::find($id);
 
@@ -60,6 +64,7 @@ class OrderController extends Controller
         // MARK AS PENDING
         Order::where('id', $order->id)
         ->update([
+            'message' => $request->input('reason'),
             'status' => 'pending',
         ]);
 

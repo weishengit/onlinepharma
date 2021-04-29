@@ -41,6 +41,7 @@
             </div>
             <div class="w-full md:w-1/2 xl:w-1/3 p-3">
                 <!--Metric Card-->
+                <a href="{{ route('admin.user.index') }}">
                 <div class="bg-white border rounded shadow p-2">
                     <div class="flex flex-row items-center">
                         <div class="flex-shrink pr-4">
@@ -52,6 +53,7 @@
                         </div>
                     </div>
                 </div>
+                </a>
                 <!--/Metric Card-->
             </div>
             <div class="w-full md:w-1/2 xl:w-1/3 p-3">
@@ -73,6 +75,7 @@
             </div>
             <div class="w-full md:w-1/2 xl:w-1/3 p-3">
                 <!--Metric Card-->
+                <a href="{{ route('admin.order.show', ['order' => 'new']) }}">
                 <div class="bg-white border rounded shadow p-2">
                     <div class="flex flex-row items-center">
                         <div class="flex-shrink pr-4">
@@ -80,14 +83,16 @@
                         </div>
                         <div class="flex-1 text-right md:text-center">
                             <h5 class="font-bold uppercase text-gray-500">NEW ORDERS</h5>
-                            <h3 class="font-bold text-3xl">7</h3>
+                            <h3 class="font-bold text-3xl">{{ $new_orders }}</h3>
                         </div>
                     </div>
                 </div>
+                </a>
                 <!--/Metric Card-->
             </div>
             <div class="w-full md:w-1/2 xl:w-1/3 p-3">
                 <!--Metric Card-->
+                <a href="{{ route('admin.order.show', ['order' => 'pending']) }}">
                 <div class="bg-white border rounded shadow p-2">
                     <div class="flex flex-row items-center">
                         <div class="flex-shrink pr-4">
@@ -95,10 +100,11 @@
                         </div>
                         <div class="flex-1 text-right md:text-center">
                             <h5 class="font-bold uppercase text-gray-500">READY FOR PICK-UP / DELIVERY</h5>
-                            <h3 class="font-bold text-3xl">3 <span class="text-red-500"><i class="fas fa-caret-up"></i></span></h3>
+                            <h3 class="font-bold text-3xl">{{ $pending_orders }} <span class="text-red-500"><i class="fas fa-caret-up"></i></span></h3>
                         </div>
                     </div>
                 </div>
+                </a>
                 <!--/Metric Card-->
             </div>
         </div>
@@ -183,28 +189,28 @@
                                 }
 
                                 new Chart(document.getElementById("chartjs-0"), {
-                                "type": "bar",
-                                "data": {
-                                    "labels": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-                                    "datasets": [{
-                                        "label": "{{ now()->year }}",
-                                        "data": userData,
-                                        "fill": false,
-                                        "backgroundColor": ["rgba(255, 99, 132, 0.2)", "rgba(255, 159, 64, 0.2)", "rgba(255, 205, 86, 0.2)", "rgba(75, 192, 192, 0.2)", "rgba(54, 162, 235, 0.2)", "rgba(153, 102, 255, 0.2)", "rgba(201, 203, 207, 0.2)","rgba(255, 99, 132, 0.2)", "rgba(255, 159, 64, 0.2)", "rgba(255, 205, 86, 0.2)", "rgba(75, 192, 192, 0.2)", "rgba(54, 162, 235, 0.2)"],
-                                        "borderColor": ["rgb(255, 99, 132)", "rgb(255, 159, 64)", "rgb(255, 205, 86)", "rgb(75, 192, 192)", "rgb(54, 162, 235)", "rgb(153, 102, 255)", "rgb(201, 203, 207)","rgb(255, 99, 132)", "rgb(255, 159, 64)", "rgb(255, 205, 86)", "rgb(75, 192, 192)", "rgb(54, 162, 235)", "rgb(153, 102, 255)"],
-                                        "borderWidth": 1
-                                    }]
-                                },
-                                "options": {
-                                "scales": {
-                                    "yAxes": [{
-                                        "ticks": {
-                                            "beginAtZero": true
+                                    "type": "bar",
+                                    "data": {
+                                        "labels": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+                                        "datasets": [{
+                                            "label": "Registrations",
+                                            "data": userData,
+                                            "fill": false,
+                                            "backgroundColor": ["rgba(255, 99, 132, 0.2)", "rgba(255, 159, 64, 0.2)", "rgba(255, 205, 86, 0.2)", "rgba(75, 192, 192, 0.2)", "rgba(54, 162, 235, 0.2)", "rgba(153, 102, 255, 0.2)", "rgba(201, 203, 207, 0.2)","rgba(255, 99, 132, 0.2)", "rgba(255, 159, 64, 0.2)", "rgba(255, 205, 86, 0.2)", "rgba(75, 192, 192, 0.2)", "rgba(54, 162, 235, 0.2)"],
+                                            "borderColor": ["rgb(255, 99, 132)", "rgb(255, 159, 64)", "rgb(255, 205, 86)", "rgb(75, 192, 192)", "rgb(54, 162, 235)", "rgb(153, 102, 255)", "rgb(201, 203, 207)","rgb(255, 99, 132)", "rgb(255, 159, 64)", "rgb(255, 205, 86)", "rgb(75, 192, 192)", "rgb(54, 162, 235)", "rgb(153, 102, 255)"],
+                                            "borderWidth": 1
+                                        }]
+                                    },
+                                    "options": {
+                                        "scales": {
+                                            "yAxes": [{
+                                                "ticks": {
+                                                    "beginAtZero": true
+                                                }
+                                            }]
                                         }
-                                    }]
-                                }
-                            }
-                            });
+                                    }
+                                });
 
                             }
 
