@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-
 /**
  * Cart
  *
@@ -11,6 +10,7 @@ namespace App\Models;
 class Cart
 {
     private $items = [];
+    private $ref_no = null;
     private $totalQty = 0;
     private $totalCartQty = 0;
     private $subTotal = 0;
@@ -34,6 +34,7 @@ class Cart
 
         if ($oldCart) {
             $this->items = $oldCart->items;
+            $this->ref_no = $oldCart->ref_no;
             $this->totalQty = $oldCart->totalQty;
             $this->subTotal = $oldCart->subTotal;
             $this->seniorDiscount = $oldCart->seniorDiscount;
@@ -50,6 +51,8 @@ class Cart
             $this->total_vat_exempt = $oldCart->total_vat_exempt;
             $this->date = $oldCart->date;
             $this->final_price = $oldCart->final_price;
+        } else {
+            $this->ref_no = uniqid();
         }
     }
 
@@ -137,7 +140,6 @@ class Cart
         // RESET TOTALS
         $this->totalQty = 0;
         $this->totalCartQty = 0;
-        $this->subTotal = 0;
         $this->total_vat_able = 0;
         $this->total_vat_amount = 0;
         $this->total_vat_exempt = 0;
@@ -537,5 +539,13 @@ class Cart
         $this->has_RX = $has_RX;
 
         return $this;
+    }
+
+    /**
+     * Get the value of ref_no
+     */
+    public function getRef_no()
+    {
+        return $this->ref_no;
     }
 }

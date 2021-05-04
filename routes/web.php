@@ -8,6 +8,7 @@ use App\Http\Controllers\FacebookLogin;
 use App\Http\Controllers\ProfileDelete;
 use App\Http\Controllers\TaxController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\SaleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\OrderController;
@@ -144,7 +145,15 @@ Route::middleware(['admin', 'active'])->name('admin.')->prefix('admin')->group(f
     Route::post('/order/{id}/accept', [OrderController::class, 'accept'])->name('order.accept');
     Route::post('/order/{id}/complete', [OrderController::class, 'complete'])->name('order.complete');
     Route::resource('order', OrderController::class);
-    // REPORTS
+    //SALES
+    Route::get('/sale', [SaleController::class, 'index'])->name('sale.index');
+    Route::get('/sale/{product}', [SaleController::class, 'show'])->name('sale.show');
+    Route::get('/sale/{product}/edit', [SaleController::class, 'edit'])->name('sale.edit');
+    Route::put('/sale/{product}/edit', [SaleController::class, 'update'])->name('sale.update');
+    Route::get('/sale/{product}/create', [SaleController::class, 'create'])->name('sale.create');
+    Route::post('/sale/{product}', [SaleController::class, 'store'])->name('sale.store');
+    Route::delete('/sale/{id}/destroy', [SaleController::class, 'destroy'])->name('sale.destroy');
+    //REPORTS
     Route::get('/reports', [ReportController::class, 'index'])->name('report');
     Route::get('/reports/{report?}', [ReportController::class, 'show'])->name('report.show');
 });

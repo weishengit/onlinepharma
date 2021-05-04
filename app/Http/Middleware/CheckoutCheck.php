@@ -26,7 +26,7 @@ class CheckoutCheck
             is_null(auth()->user()->last_name) ||
             is_null(auth()->user()->scid)
         ){
-            return redirect()->route('profile.edit')->with('message', 'Please set up your profile to continue checkout');
+            return redirect()->route('profile.edit')->with('message', 'Please set up your profile to continue checkout, Fill all fields.');
         }
 
         return $next($request);

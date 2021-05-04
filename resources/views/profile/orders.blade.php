@@ -1,26 +1,66 @@
 @extends('layouts.front')
 
 @section('content')
-<div class="container text-center"><!--left col-->
     {{-- NEW --}}
-    <h2 class="tex-center">Pending Orders</h2>
-    <ul class="list-group">
-        @foreach ($new_orders as $new_order)
-        <a href="{{ route('profile.order', ['order' => $new_order->id]) }}">
-            <li class="list-group-item text-center text-success">ID: {{ $new_order->id }} - {{ $new_order->created_at }}</li>
-        </a>
-        @endforeach
-    </ul>
+    <div class="card ml-5 mr-5">
+        <div class="card-header">
+            Active Orders
+        </div>
+        <ul class="list-group list-group-flush">
+            @foreach ($new_orders as $new_order)
+                <a href="{{ route('profile.order', ['order' => $new_order->id]) }}">
+                    @if ($new_order->status == 'void')
+                    <li class="list-group-item border text-danger">
+                    @elseif ($new_order->status == 'pending')
+                    <li class="list-group-item border text-success">
+                    @elseif ($new_order->status == 'completed')
+                    <li class="list-group-item border text-info">
+                    @else
+                    <li class="list-group-item border text-dark">
+                    @endif
+                    ID: {{ $new_order->ref_no }}
+                        <br>
+                        <strong>Date: {{ $new_order->created_at }}</strong>
+                        <span class="float-right">
+                            {{ $new_order->status }}
+                        </span>
+                    </li>
+                </a>
+            @endforeach
+        </ul>
+      </div>
 
     <br>
     {{-- OLD --}}
-    <h2 class="tex-center">Old Orders</h2>
-    <ul class="list-group">
-        @foreach ($old_orders as $old_order)
-        <a href="{{ route('profile.order', ['order' => $old_order->id]) }}">
-            <li class="list-group-item text-center">ID: {{ $old_order->id }} - {{ $old_order->created_at }}</li>
-        </a>
-        @endforeach
-    </ul>
+    <div class="card ml-5 mr-5">
+        <div class="card-header">
+            Archived Orders
+        </div>
+        <ul class="list-group list-group-flush">
+
+            @foreach ($old_orders as $old_order)
+            <a href="{{ route('profile.order', ['order' => $old_order->id]) }}">
+                @if ($old_order->status == 'void')
+                    <li class="list-group-item border text-danger">
+                    @elseif ($old_order->status == 'pending')
+                    <li class="list-group-item border text-success">
+                    @elseif ($old_order->status == 'completed')
+                    <li class="list-group-item border text-info">
+                    @else
+                    <li class="list-group-item border text-dark">
+                    @endif
+                    ID: {{ $old_order->ref_no }}
+                    <br>
+                    <strong>Date: {{ $old_order->created_at }}</strong>
+                    <span class="float-right">
+                        Status: {{ $old_order->status }}
+                    </span>
+                </li>
+            </a>
+            @endforeach
+        </ul>
+      </div>
+
+
 </div><!--/col-3-->
 @endsection

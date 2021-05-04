@@ -6,8 +6,10 @@
         {{-- STATUS BAR --}}
         <div class="card-header">
             Invoice
-            <strong>#</strong>
+            <strong>#{{ session()->get('cart')->getRef_no() }}</strong>
             <span class="float-right"> <strong>Date: </strong>{{ session()->get('cart')->getDate() }}</span>
+            <br>
+            <span class="float-right"> <strong>Claim Type: {{ ucwords(session()->get('cart')->getClaim_type()) }}</strong></span>
             <br>
             <span class="float-right"> <strong>Status: </strong>Pending</span>
         </div>

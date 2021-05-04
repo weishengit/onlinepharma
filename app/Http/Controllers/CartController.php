@@ -125,12 +125,12 @@ class CartController extends Controller
         $newImageName = null;
 
         if ($request->image != null) {
-            $newImageName = uniqid() . '-rx-' . auth()->user()->name . '.' . $request->image->extension();
-            $request->image->move(public_path('images/temp/rx'), $newImageName);
-
             // GET THE OLD CART
             $oldCart = Session::get('cart');
             $cart = new Cart($oldCart);
+
+            $newImageName = $cart->getRef_no() . '-rx-' . auth()->user()->name . '.' . $request->image->extension();
+            $request->image->move(public_path('images/temp/rx'), $newImageName);
 
             // CHANGE THE MODEL
             $cart->setHas_RX(true);
@@ -148,12 +148,12 @@ class CartController extends Controller
         $newImageName = null;
 
         if ($request->image != null) {
-            $newImageName = uniqid() . '-sc-' . auth()->user()->name . '.' . $request->image->extension();
-            $request->image->move(public_path('images/temp/sc'), $newImageName);
-
             // GET THE OLD CART
             $oldCart = Session::get('cart');
             $cart = new Cart($oldCart);
+
+            $newImageName = $cart->getRef_no() . '-sc-' . auth()->user()->name . '.' . $request->image->extension();
+            $request->image->move(public_path('images/temp/sc'), $newImageName);
 
             // CHANGE THE MODEL
             $cart->setSc_image($newImageName);
@@ -176,6 +176,7 @@ class CartController extends Controller
         // CHANGE THE MODEL
         $cart->setClaim_type('delivery');
         $cart->setDeliveryFee(30);
+
         // Overwrite the cart session
         Session::put('cart', $cart);
 
@@ -190,7 +191,7 @@ class CartController extends Controller
 
         // CHANGE THE MODEL
         $cart->setClaim_type('pickup');
-
+        $cart->setDeliveryFee(0);
         // Overwrite the cart session
         Session::put('cart', $cart);
 
@@ -257,6 +258,7 @@ class CartController extends Controller
                 'scid' => auth()->user()->scid,
                 'scid_image' => $cart->getSc_image(),
                 'prescription_image' => $cart->getRx_image(),
+                'ref_no' => $cart->getRef_no(),
                 'delivery_mode' => $cart->getClaim_type(),
                 'delivery_fee' => $cart->getDeliveryFee(),
                 'total_items' => $cart->getTotalCartQty(),

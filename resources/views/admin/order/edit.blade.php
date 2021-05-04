@@ -62,210 +62,253 @@
                     <form action="{{ route('admin.order.update', ['order' => $order->id]) }}" method="POST">
                         @csrf
                         @method('put')
-                        <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                            <dt class="text-xl font-medium text-gray-500">
-                                ID
-                            </dt>
-                            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                {{ $order->id }}
-                            </dd>
-                        </div>
+                        <div class="flex flex-wrap overflow-hidden">
+                            {{-- COL 1 --}}
+                            <div class="w-1/2 overflow-hidden">
+                                <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 border">
+                                    <dt class="text-xl font-medium text-gray-500">
+                                        ID
+                                    </dt>
+                                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                        {{ $order->id }}
+                                    </dd>
+                                </div>
+                                <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 border">
+                                    <dt class="text-xl font-medium text-gray-500">
+                                        Reference Number
+                                    </dt>
+                                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                        {{ $order->ref_no }}
+                                    </dd>
+                                </div>
+                                <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 border">
+                                    <dt class="text-xl font-medium text-gray-500">
+                                        Order Status
+                                    </dt>
+                                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                        {{ $order->status }}
+                                    </dd>
+                                </div>
 
-                        <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                            <dt class="text-xl font-medium text-gray-500">
-                                Order Status
-                            </dt>
-                            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                {{ $order->status }}
-                            </dd>
-                        </div>
+                                <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 border">
+                                    <dt class="text-xl font-medium text-gray-500">
+                                        Message
+                                    </dt>
+                                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                        {{ $order->message }}
+                                    </dd>
+                                </div>
 
-                        <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                            <dt class="text-xl font-medium text-gray-500">
-                                Message
-                            </dt>
-                            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                {{ $order->message }}
-                            </dd>
-                        </div>
+                                <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 border">
+                                    <dt class="text-xl font-medium text-gray-500">
+                                        Customer
+                                    </dt>
+                                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                        {{ $order->customer }}
+                                    </dd>
+                                </div>
 
-                        <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                            <dt class="text-xl font-medium text-gray-500">
-                                Customer
-                            </dt>
-                            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                {{ $order->customer }}
-                            </dd>
-                        </div>
+                                <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 border">
+                                    <dt class="text-xl font-medium text-gray-500">
+                                        Address
+                                    </dt>
+                                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                        {{ $order->address }}
+                                    </dd>
+                                </div>
 
-                        <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                            <dt class="text-xl font-medium text-gray-500">
-                                Address
-                            </dt>
-                            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                {{ $order->address }}
-                            </dd>
-                        </div>
+                                <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 border">
+                                    <dt class="text-xl font-medium text-gray-500">
+                                        Contact
+                                    </dt>
+                                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                        {{ $order->contact }}
+                                    </dd>
+                                </div>
 
-                        <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                            <dt class="text-xl font-medium text-gray-500">
-                                Contact
-                            </dt>
-                            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                {{ $order->contact }}
-                            </dd>
-                        </div>
+                                <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 border">
+                                    <dt class="text-xl font-medium text-gray-500">
+                                        Senior ID
+                                    </dt>
+                                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                        {{ $order->scid }}
+                                    </dd>
+                                </div>
 
-                        <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                            <dt class="text-xl font-medium text-gray-500">
-                                Senior ID
-                            </dt>
-                            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                {{ $order->scid }}
-                            </dd>
-                        </div>
-
-                        <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                            <dt class="text-xl font-medium text-gray-500">
-                                Cashier
-                            </dt>
-                            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                {{ $order->cashier }}
-                            </dd>
-                        </div>
-
-                        <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                            <dt class="text-xl font-medium text-gray-500">
-                                Delivery Mode
-                            </dt>
-                            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                {{ $order->delivery_mode }}
-                            </dd>
-                        </div>
-                        {{-- IS SC --}}
-                        <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                            <dt class="text-xl font-medium text-gray-500">
-                                Senior/PWD
-                            </dt>
-                            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 border">
+                                    <dt class="text-xl font-medium text-gray-500">
+                                        Cashier
+                                    </dt>
+                                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                        {{ $order->cashier }}
+                                    </dd>
+                                </div>
+                            </div>
+                            {{-- COL 2 --}}
+                            <div class="w-1/2 overflow-hidden">
+                                <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 border">
+                                    <dt class="text-xl font-medium text-gray-500">
+                                        Delivery Mode
+                                    </dt>
+                                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                        {{ $order->delivery_mode }} - {{ $order->delivery_fee ?? '' }}
+                                    </dd>
+                                </div>
+                                {{-- IS SC --}}
+                                <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 border">
+                                    <dt class="text-xl font-medium text-gray-500">
+                                        Senior/PWD
+                                    </dt>
+                                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                        @if ($order->is_sc)
+                                            Yes
+                                        @else
+                                            No
+                                        @endif
+                                    </dd>
+                                </div>
+                                {{-- SC DISCOUNT --}}
                                 @if ($order->is_sc)
-                                    Yes
-                                @else
-                                    No
-                                @endif
-                            </dd>
-                        </div>
-                        {{-- SC DISCOUNT --}}
-                        @if ($order->is_sc)
-                        <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                            <dt class="text-xl font-medium text-gray-500">
-                                Senior/PWD Discount
-                            </dt>
-                            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                {{ $order->sc_discount }}
-                            </dd>
-                        </div>
-                        @endif
-                        {{-- OTHER DISCOUNT --}}
-                        <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                            <dt class="text-xl font-medium text-gray-500">
-                                Other Discount
-                            </dt>
-                            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                @if ($order->other_discount)
-                                    {{ $order->other_discount }}
-                                @else
-                                    None
-                                @endif
-                            </dd>
-                        </div>
-                        <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                            <dt class="text-xl font-medium text-gray-500">
-                                Other Discount Amount
-                            </dt>
-                            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                {{ $order->other_discount_rate }}
-                            </dd>
-                        </div>
-                    </form>
-                    @if ($order->is_void != 1)
-                        @if ($order->status == 'new')
-                            {{-- ACCEPT FORM --}}
-                            <form action="{{ route('admin.order.accept', ['id' => $order->id]) }}" method="POST">
-                                @csrf
-                                @method('post')
-                                <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 border">
                                     <dt class="text-xl font-medium text-gray-500">
-                                        Accept
+                                        Senior/PWD Discount
                                     </dt>
                                     <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                        <input type="text" name="reason" placeholder="note...">
-                                        <button type="submit"
-                                            class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                                            Accept
-                                        </button>
+                                        {{ $order->sc_discount }}
+                                    </dd>
+                                </div>
+                                @endif
+                                {{-- OTHER DISCOUNT --}}
+                                <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 border">
+                                    <dt class="text-xl font-medium text-gray-500">
+                                        Other Discount
+                                    </dt>
+                                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                        @if ($order->other_discount)
+                                            {{ $order->other_discount }}
+                                        @else
+                                            None
+                                        @endif
+                                    </dd>
+                                </div>
+                                <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 border">
+                                    <dt class="text-xl font-medium text-gray-500">
+                                        Other Discount Amount
+                                    </dt>
+                                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                        {{ $order->other_discount_rate }}
+                                    </dd>
+                                </div>
+                                <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 border">
+                                    <dt class="text-xl font-medium text-gray-500">
+                                        Total
+                                    </dt>
+                                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                        &#8369;{{ $order->amount_due }}
                                     </dd>
                                 </div>
                             </form>
-                        @endif
-                        @if ($order->status == 'pending')
-                            {{-- COMPLETE FORM --}}
-                            <form action="{{ route('admin.order.complete', ['id' => $order->id]) }}" method="POST">
-                                @csrf
-                                @method('post')
-                                <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                    <dt class="text-xl font-medium text-gray-500">
-                                        Complete
-                                    </dt>
-                                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                        <input type="text" name="reason" placeholder="message...">
-                                        <button type="submit"
-                                            class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                                            Complete
-                                        </button>
-                                    </dd>
-                                </div>
-                            </form>
-                        @endif
+                            @if ($order->is_void != 1)
+                                @if ($order->status == 'new')
+                                    {{-- ACCEPT FORM --}}
+                                    <form action="{{ route('admin.order.accept', ['id' => $order->id]) }}" method="POST">
+                                        @csrf
+                                        @method('post')
+                                        <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 border">
+                                            <dt class="text-xl font-medium text-gray-500">
+                                                Accept
+                                            </dt>
+                                            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                                <input type="text" name="reason" placeholder="note...">
+                                                <button type="submit"
+                                                    class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                                    Accept
+                                                </button>
+                                            </dd>
+                                        </div>
+                                    </form>
+                                @endif
+                                @if ($order->status == 'pending')
+                                    {{-- COMPLETE FORM --}}
+                                    <form action="{{ route('admin.order.complete', ['id' => $order->id]) }}" method="POST">
+                                        @csrf
+                                        @method('post')
+                                        <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 border">
+                                            <dt class="text-xl font-medium text-gray-500">
+                                                Complete
+                                            </dt>
+                                            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                                <input type="text" name="reason" placeholder="message...">
+                                                <button type="submit"
+                                                    class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                                    Complete
+                                                </button>
+                                            </dd>
+                                        </div>
+                                    </form>
+                                @endif
 
-                    {{-- DISABLE FORM --}}
-                    <form action="{{ route('admin.order.destroy', ['order' => $order->id]) }}" method="POST">
-                        @csrf
-                        @method('delete')
-                        <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                            <dt class="text-xl font-medium text-gray-500">
-                                Void
-                            </dt>
-                            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                <input type="text" name="reason" placeholder="reason...">
-                                <button type="submit"
-                                    class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                                    Void
-                                </button>
-                            </dd>
+                            {{-- DISABLE FORM --}}
+                            <form action="{{ route('admin.order.destroy', ['order' => $order->id]) }}" method="POST">
+                                @csrf
+                                @method('delete')
+                                <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 border">
+                                    <dt class="text-xl font-medium text-gray-500">
+                                        Void
+                                    </dt>
+                                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                        <input type="text" name="reason" placeholder="reason...">
+                                        <button type="submit"
+                                            class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                            Void
+                                        </button>
+                                    </dd>
+                                </div>
+                            </form>
+                            @endif
+                            </div>
+
                         </div>
-                    </form>
-                    @endif
                 </dl>
             </div>
         </div>
-        {{-- ITEMS --}}
+
         {{-- IMAGES --}}
-        {{-- SC PHOTTO --}}
-        <div class="flex flex-row flex-wrap border border-solid text-center items-center justify-items-center place-content-center">
-            @if ($order->is_sc != 0)
-            <div class="flex-grow">
-                <h2 class="text-blue-900 text-3xl">SC/PWD ID Photo</h2>
-                <img src="{{ asset('images/temp/sc/' . $order->scid_image) }}" alt="scid image">
+        <div class="flex flex-wrap -mx-1 overflow-hidden text-center">
+            {{-- SC PHOTO --}}
+            <div class="my-1 px-1 w-1/2 overflow-hidden border">
+                @if ($order->is_sc != 0)
+                <div>
+                    <h2 class="text-blue-900 text-3xl">SC/PWD ID Photo</h2>
+                    <img src="{{ asset('images/temp/sc/' . $order->scid_image) }}" alt="scid image">
+                </div>
+                <a
+                    href="{{ asset('images/temp/sc/' . $order->scid_image) }}"
+                    class="">
+                    <button type="button"
+                        class="m-5 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        View
+                    </button>
+                </a>
+                @endif
             </div>
-            @endif
-            @if ($order->prescription_image != null)
-            {{-- RXX PHOTO --}}
-            <div class="flex-grow">
-                <h2 class="text-green-900 text-3xl">Prescription Photo</h2>
-                <img src="{{ asset('images/temp/rx/' . $order->prescription_image) }}" alt="rx image">
+            {{-- RX PHOTO --}}
+            <div class="my-1 px-1 w-1/2 overflow-hidden border">
+                @if ($order->prescription_image != null)
+                <div>
+                    <h2 class="text-gray-900 text-3xl">Prescription Photo</h2>
+                    <img src="{{ asset('images/temp/rx/' . $order->prescription_image) }}" alt="rx image">
+                </div>
+                <a
+                    href="{{ asset('images/temp/rx/' . $order->prescription_image) }}"
+                    class="">
+                    <button type="button"
+                        class="m-5 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        View
+                    </button>
+                </a>
+                @endif
             </div>
-            @endif
         </div>
         {{-- Table --}}
         <div>

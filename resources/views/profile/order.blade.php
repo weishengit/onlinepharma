@@ -6,10 +6,12 @@
         {{-- STATUS BAR --}}
         <div class="card-header">
             Invoice
-            <strong>#{{ $order->id }}</strong>
-            <span class="float-right"> <strong>Date: </strong>{{ $order->created_at }}</span>
+            <strong>#{{ $order->ref_no }}</strong>
+            <span class="float-right"> <strong>Date: </strong>{{ $order->date }}</span>
             <br>
-            <span class="float-right"> <strong>Status: </strong>{{ $order->status }}</span>
+            <span class="float-right"> <strong>Claim Type: {{ ucwords($order->claim_type) }}</strong></span>
+            <br>
+            <span class="float-right"> <strong>Status: </strong>Pending</span>
         </div>
         {{-- HEADER --}}
         <div class="card-body">

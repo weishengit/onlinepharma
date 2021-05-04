@@ -17,6 +17,7 @@ class CreateOrdersTable extends Migration
             $table->id();
             $table->foreignId('user_id');
             $table->string('status');
+            $table->string('ref_no');
             $table->string('message')->nullable();
             $table->string('customer')->nullable();
             $table->string('address')->nullable();

@@ -3,11 +3,11 @@
 @section('style')
     {{-- DATATABLES --}}
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
-    
+
     <style>
-    
+
         /*Overrides for Tailwind CSS */
-        
+
         /*Form fields*/
         .dataTables_wrapper select,
         .dataTables_wrapper .dataTables_filter input {
@@ -18,7 +18,7 @@
             padding-bottom: .5rem; 		/*pl-2*/
             line-height: 1.25; 			/*leading-tight*/
             border-width: 2px; 			/*border-2*/
-            border-radius: .25rem; 		
+            border-radius: .25rem;
             border-color: #edf2f7; 		/*border-gray-200*/
             background-color: #edf2f7; 	/*bg-gray-200*/
         }
@@ -27,14 +27,14 @@
         table.dataTable.hover tbody tr:hover, table.dataTable.display tbody tr:hover {
             background-color: #ebf4ff;	/*bg-indigo-100*/
         }
-        
+
         /*Pagination Buttons*/
         .dataTables_wrapper .dataTables_paginate .paginate_button		{
             font-weight: 700;				/*font-bold*/
             border-radius: .25rem;			/*rounded*/
             border: 1px solid transparent;	/*border border-transparent*/
         }
-        
+
         /*Pagination Buttons - Current selected */
         .dataTables_wrapper .dataTables_paginate .paginate_button.current	{
             color: #fff !important;				/*text-white*/
@@ -54,19 +54,19 @@
             background: #667eea !important;		/*bg-indigo-500*/
             border: 1px solid transparent;		/*border border-transparent*/
         }
-        
+
         /*Add padding to bottom border */
         table.dataTable.no-footer {
             border-bottom: 1px solid #e2e8f0;	/*border-b-1 border-gray-300*/
             margin-top: 0.75em;
             margin-bottom: 0.75em;
         }
-        
+
         /*Change colour of responsive icon*/
         table.dataTable.dtr-inline.collapsed>tbody>tr>td:first-child:before, table.dataTable.dtr-inline.collapsed>tbody>tr>th:first-child:before {
             background-color: #667eea !important; /*bg-indigo-500*/
         }
-        
+
       </style>
 @endsection
 
@@ -98,20 +98,20 @@
         @endif
         {{-- Title --}}
         <h1 class="border-2 flex items-center font-sans font-bold break-normal text-gray-900 px-2 py-8 text-lg md:text-2xl">
-			<a 
+			<a
                 href="{{ route('admin.index') }}">
                 <p class="text-blue-500 hover:text-blue-700 font-bold">
                     Dashboard&nbsp;
                 </p>
-                
+
             </a>
             /&nbsp;
-            <a 
+            <a
                 href="{{ route('admin.user.index') }}">
                 <p class="text-blue-500 hover:text-blue-700 font-bold">
                     Accounts&nbsp;
                 </p>
-                
+
             </a>
             /&nbsp;
             <p class="text-indigo-700">
@@ -137,7 +137,7 @@
                     <tr>
                         <td>{{ $user->id }}</td>
                         <td>
-                            <a 
+                            <a
                             href="{{ route('admin.user.edit', ['user' => $user->id]) }}">
                                 <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                                     Options
@@ -146,8 +146,8 @@
                         </td>
                         <td>{{ $user->name }}</td>
                         <td>{{ $user->email }}</td>
-                        <td>{{ $user->reason }}</td>
-                        <td>{{ $user->banned_by }}</td>
+                        <td>{{ $user->ban->reason }}</td>
+                        <td>{{ $user->ban->banned_by }}</td>
                         <td>{{ $user->name }}</td>
                         <td>{{ $user->updated_at }}</td>
                     </tr>
@@ -155,7 +155,7 @@
                 </tbody>
             </table>
         </div>
-        
+
     </div>
 </div>
 @endsection
@@ -166,7 +166,7 @@
 	<script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
     <script>
         $(document).ready(function() {
-			
+
 			var table = $('#data_table').DataTable( {
 					responsive: true
 				} )

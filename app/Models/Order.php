@@ -17,6 +17,7 @@ class Order extends Model
 
     protected $fillable = [
         'user_id',
+        'ref_no',
         'status',
         'message',
         'customer',
@@ -27,6 +28,8 @@ class Order extends Model
         'prescription_image',
         'cashier',
         'delivery_mode',
+        'delivery_fee',
+        'subtotal',
         'total_items',
         'vatable_sale',
         'vat_amount',
