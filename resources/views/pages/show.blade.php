@@ -65,16 +65,26 @@
           {{ $product->description }}
         </p>
         {{-- Price --}}
-        <p>
-          {{-- Old Price --}}
-          <del>
-            &#8369;{{ $product->price }}
-          </del>
-          {{-- New Price --}}
-          <strong class="text-primary h4">
-            &#8369;{{ $product->price }}
-          </strong>
-        </p>
+            @if ($product->sale()->exists())
+            <p>
+            {{-- Old Price --}}
+            <del>
+                &#8369;{{ $product->price }}
+            </del>
+            {{-- New Price --}}
+                <strong class="text-primary h4">
+                    &#8369;
+                    @if ($product->sale->is_percent)
+                    {{ round(($product->price - ($product->price * ($product->sale->rate / 100))),2 )  }}
+                    @else
+                        {{ $product->price - $product->sale->rate }}
+                    @endif
+                </strong>
+            </p>
+            @else
+                <p class="text-dark">&#8369;{{ $product->price }}</p>
+            @endif
+
 
         {{-- Quantity --}}
         <div class="mb-5">

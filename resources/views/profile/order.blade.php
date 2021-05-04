@@ -7,9 +7,9 @@
         <div class="card-header">
             Invoice
             <strong>#{{ $order->ref_no }}</strong>
-            <span class="float-right"> <strong>Date: </strong>{{ $order->date }}</span>
+            <span class="float-right"> <strong>Date: </strong>{{ $order->created_at }}</span>
             <br>
-            <span class="float-right"> <strong>Claim Type: {{ ucwords($order->claim_type) }}</strong></span>
+            <span class="float-right"> <strong>Claim Type: {{ ucwords($order->delivery_mode) }}</strong></span>
             <br>
             <span class="float-right"> <strong>Status: </strong>Pending</span>
         </div>

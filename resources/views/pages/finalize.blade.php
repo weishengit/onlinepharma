@@ -52,9 +52,9 @@
                             <td class="left strong">{{ $item['item']['name'] }}</td>
                             <td class="left">{{ $item['item']['description'] }}</td>
 
-                            <td class="right">{{ $item['item']['price'] }}</td>
+                            <td class="right">{{ $item['price'] }}</td>
                             <td class="center">{{ $item['qty'] }}</td>
-                            <td class="right">{{ $item['item']['price'] * $item['qty']}}</td>
+                            <td class="right">{{ $item['price'] * $item['qty']}}</td>
                         </tr>
                         @endforeach
                     </tbody>

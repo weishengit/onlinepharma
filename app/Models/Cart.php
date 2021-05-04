@@ -59,7 +59,22 @@ class Cart
     // ADD ITEM TO CART
     public function add($item, $id, $quantity, $rx)
     {
-        $storedItem = ['qty' => 0, 'price' => $item->price, 'item' => $item, 'rx' => $rx];
+
+        $price = 0;
+        if ($item->sale()->exists()) {
+            if ($item->sale->is_percent == true) {
+                $price = round(($item->price - ($item->price * ($item->sale->rate / 100))), 2);
+            }
+            else
+            {
+                $price = $item->price - $item->sale->rate;
+            }
+        }
+        else {
+            $price = $item->price;
+        }
+
+        $storedItem = ['qty' => 0, 'price' => $price, 'item' => $item, 'rx' => $rx];
 
         if ($this->items) {
             if (array_key_exists($id, $this->items)) {
@@ -68,7 +83,8 @@ class Cart
         }
         $storedItem['rx'] = $rx;
         $storedItem['qty'] += $quantity;
-        $storedItem['price'] = $item->price;
+        $storedItem['price'] = $price;
+
         $this->items[$id] = $storedItem;
     }
 
@@ -127,10 +143,31 @@ class Cart
     public function calculate_subtotal()
     {
         $this->subTotal = 0;
+
         foreach ($this->items as $item) {
+            // FIND IF PRODUCT EXIST
+            $product = Product::find($item['item']['id']);
+            if ($product == null) {
+                return redirect()->route('cart')->with('message', 'error cart product not found, clear your cart and try again');
+            }
+
+            $price = 0;
+
+            if ($product->sale()->exists()) {
+                if ($product->sale->is_percent == true) {
+                    $price = $product->price - ($product->price * ($product->sale->rate / 100));
+                }
+                else {
+                    $price = $product->price - $product->sale->rate;
+                }
+            }
+            else{
+                $price = $product->price;
+            }
+
             $this->totalQty += 1;
             $this->totalCartQty += $item['qty'];
-            $this->subTotal += $item['price'] * $item['qty'];
+            $this->subTotal += $price * $item['qty'];
         }
     }
 
@@ -159,18 +196,42 @@ class Cart
 
             // IF SENIOR SET TAX TO VAT EXEMPT
             if($this->is_SC == true) {
-                $this->total_vat_exempt += $product->price * $item['qty'];
+                if ($product->sale()->exists()) {
+                    if ($product->sale->is_percent == true) {
+                        $this->total_vat_exempt += (round(($product->price - ($product->price * ($product->sale->rate / 100))), 2) * $item['qty']);
+                    }
+                    else
+                    {
+                        $this->total_vat_exempt += ($product->price - $product->sale->rate) * $item['qty'];
+                    }
+                }
+                else {
+                    $this->total_vat_exempt += $product->price * $item['qty'];
+                }
+
             }
 
             // IF REGULAR CALCULATE VAT
             if($this->is_SC == false) {
                 $tax_rate = $product->tax->rate;
+
+                // CHECK FOR SALE
+                $price = $product->price;
+                if ($product->sale()->exists()) {
+                    if ($product->sale->is_percent == true) {
+                        $price = $product->price - ($product->price * ($product->sale->rate / 100));
+                    }
+                    else {
+                        $price = $product->price - $product->sale->rate;
+                    }
+                }
+
                 // IF VAT IS ZERO
                 if ($tax_rate == 0) {
-                    $this->total_vat_exempt += $product->price * $item['qty'];
+                    $this->total_vat_exempt += $price * $item['qty'];
                 }
                 else{
-                    $this->total_vat_able += $product->price * $item['qty'];
+                    $this->total_vat_able += $price * $item['qty'];
                 }
             }
         }

@@ -100,7 +100,27 @@
           {{-- Generic Name --}}
           <span class="price">{{ $product->generic_name }}</span>
           {{-- Price --}}
-          <p class="price">&#8369;{{ $product->price }}</p>
+          @if ($product->sale()->exists())
+            <p class="price text-dark">
+            {{-- Old Price --}}
+            <del class="text-danger">
+                &#8369;{{ $product->price }}
+            </del>
+            {{-- New Price --}}
+                <strong class="text-dark h4">
+                    &#8369;
+                    @if ($product->sale->is_percent)
+                    {{ round(($product->price - ($product->price * ($product->sale->rate / 100))),2 )  }}
+                    @else
+                        {{ $product->price - $product->sale->rate }}
+                    @endif
+                </strong>
+
+            @else
+            <br>
+                <span class="text-dark">&#8369;{{ $product->price }}</span>
+            @endif
+            </p>
         </a>
       </div>
       {{-- Container End --}}
@@ -154,7 +174,7 @@
                     output += '<h6 class="text-left text-info">Product Name</h6>';
                     for(var i in name){
                     output += `
-                    <a href="/pages/show/${name[i].id}">
+                    <a href="/pages/show/${name[i].id}" class="text-dark">
                         <li class="list-group-item">
                             <img src="/images/${name[i].image}" alt="image" height="40" width="40">
                             <span>Name: ${name[i].name}</span> &nbsp;&nbsp;&nbsp;
@@ -169,7 +189,7 @@
                     output += '<br><br><h6 class="text-left text-success">Generic Name</h6>';
                     for(var i in generic){
                     output += `
-                    <a href="/pages/show/${generic[i].id}">
+                    <a href="/pages/show/${generic[i].id}" class="text-dark>
                         <li class="list-group-item">
                             <img src="/images/${generic[i].image}" alt="image" height="40" width="40">
                             <span>Name: ${generic[i].name}</span> &nbsp;&nbsp;&nbsp;
@@ -184,7 +204,7 @@
                     output += '<br><br><h6 class="text-left text-warning">Drug Class</h6>';
                     for(var i in drug_class){
                     output += `
-                    <a href="/pages/show/${drug_class[i].id}">
+                    <a href="/pages/show/${drug_class[i].id}" class="text-dark>
                         <li class="list-group-item">
                             <img src="/images/${drug_class[i].image}" alt="image" height="40" width="40">
                             <span>Name: ${drug_class[i].name}</span> &nbsp;&nbsp;&nbsp;

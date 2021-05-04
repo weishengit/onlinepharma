@@ -280,14 +280,25 @@ class CartController extends Controller
                     return redirect()->route('cart')->with('message', 'error cart product not found, clear your cart and try again');
                 }
 
+                $price = 0;
+                if ($product->sale()->exists()) {
+                    if ($product->sale->is_percent)
+                        $price = round(($product->price - ($product->price * ($product->sale->rate / 100))),2 );
+                    else
+                        $price = $product->price - $product->sale->rate;
+                }
+                else{
+                    $price = $product->price;
+                }
+
                 Item::create([
                     'order_id' => $order->id,
                     'quantity' => $item['qty'],
                     'product_id' => $product->id,
                     'name' => $product->name,
                     'description' => $product->description,
-                    'price' => $product->price,
-                    'total_price' => $product->price * $item['qty'],
+                    'price' => $price,
+                    'total_price' => $price * $item['qty'],
                     'vat_type' => $product->tax->name,
                     'is_prescription' => $product->is_prescription,
                 ]);

@@ -95,8 +95,12 @@
                             </div>
                             {{-- QUANTITY END --}}
                             </td>
-                            <td>&#8369;{{ $item['item']->price }}</td>
-                            <td>&#8369;{{ $item['qty'] * $item['item']->price }}</td>
+                            <td>
+                                &#8369;{{ $item['price'] }}
+                            </td>
+                            <td>
+                                &#8369;{{ $item['qty'] * $item['price']}}
+                            </td>
                             <td>
                             <a href="{{ route('cart.remove', ['id' => $item['item']->id, 'quantity' => $item['qty']]) }}" class="btn btn-primary height-auto btn-sm">X</a>
                             </td>

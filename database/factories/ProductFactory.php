@@ -22,7 +22,7 @@ class ProductFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->unique()->streetSuffix,
+            'name' => $this->faker->unique()->realText(20),
             'category_id' => $this->faker->numberBetween(2, 8),
             'tax_id' => 3,
             'generic_name' => $this->faker->lastName,
