@@ -116,7 +116,7 @@
             </a>
             /&nbsp;
             <a
-                href="{{ route('admin.index') }}">
+                href="{{ route('admin.product.index') }}">
                 <p class="text-blue-500 hover:text-blue-700 font-bold">
                     Products&nbsp;
                 </p>

@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Item;
+use App\Models\Batch;
 use App\Models\Order;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
@@ -61,6 +63,18 @@ class OrderController extends Controller
             return redirect()->route('admin.order.index')->with('message', 'Order not found.');
         }
 
+        $items = Item::where('order_id', $order->id)->get();
+        foreach ($items as $item) {
+            $stock = Batch::where('product_id', $item->product_id)
+                ->where('is_active', 1)
+                ->groupBy('product_id')
+                ->sum('remaining_quantity');
+
+            if ($stock == null || $stock < $item->quantity) {
+                return redirect()->route('admin.order.index')->with('message', 'Not enough ' . $item->name . ' in stock to complete the order.');
+            }
+        }
+
         // MARK AS PENDING
         Order::where('id', $order->id)
         ->update([
@@ -95,12 +109,53 @@ class OrderController extends Controller
             return redirect()->route('admin.order.index')->with('message', 'Order not found.');
         }
 
-        // MARK AS PENDING
-        Order::where('id', $order->id)
-        ->update([
-            'message' => $request->input('reason'),
-            'status' => 'completed',
-        ]);
+        $items = Item::where('order_id', $order->id)->get();
+        foreach ($items as $item) {
+            $stock = Batch::where('product_id', $item->product_id)
+                ->where('is_active', 1)
+                ->groupBy('product_id')
+                ->sum('remaining_quantity');
+
+            if ($stock == null || $stock < $item->quantity) {
+                return redirect()->route('admin.order.index')->with('message', 'Not enough ' . $item->name . ' in stock to complete the order.');
+            }
+
+            DB::transaction(function () use($item, $order, $request) {
+                $batches = Batch::where('product_id', $item->product_id)
+                ->where('is_active', 1)
+                ->oldest()
+                ->get();
+
+                $qty = $item->quantity;
+
+                foreach ($batches as $batch) {
+                    if ($qty > 0) {
+                        if ($batch->remaining_quantity - $qty < 0) {
+                            $qty -= $batch->remaining_quantity;
+                            $batch->remaining_quantity = 0;
+                            $batch->is_active = false;
+                            $batch->save();
+                        }
+                        else
+                        {
+                            $batch->remaining_quantity = $batch->remaining_quantity - $qty;
+                            $batch->save();
+                            $qty = 0;
+                        }
+
+                    }
+                }
+
+                // MARK AS PENDING
+                Order::where('id', $order->id)
+                ->update([
+                    'message' => $request->input('reason'),
+                    'status' => 'completed',
+                ]);
+            });
+
+        }
+
 
         return redirect()
             ->route('admin.order.index')

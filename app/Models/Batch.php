@@ -16,6 +16,7 @@ class Batch extends Model
         'initial_quantity',
         'remaining_quantity',
         'expiration',
+        'is_active'
     ];
 
     /**
