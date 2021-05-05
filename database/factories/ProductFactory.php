@@ -22,7 +22,7 @@ class ProductFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->unique()->realText(20),
+            'name' => $this->faker->unique()->realText(15),
             'category_id' => $this->faker->numberBetween(2, 8),
             'tax_id' => 3,
             'generic_name' => $this->faker->lastName,
@@ -30,7 +30,7 @@ class ProductFactory extends Factory
             'description' => $this->faker->realText(40),
             'price' => $this->faker->randomFloat(2, 5, 200),
             'measurement' => $this->faker->numberBetween(5, 1000) . $this->faker->randomElement($array = array('mg', 'ml', 'g')),
-            'stock' => $this->faker->numberBetween(1000, 10000),
+            'critical_level' => $this->faker->numberBetween(200, 400),
             'is_prescription' => $this->faker->numberBetween(0, 1),
             'is_available' => 1,
             'is_active' => 1,

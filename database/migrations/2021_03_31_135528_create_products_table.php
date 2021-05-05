@@ -21,12 +21,12 @@ class CreateProductsTable extends Migration
             $table->string('generic_name')->nullable();
             $table->string('drug_class')->nullable();
             $table->string('description');
-            $table->float('price');
+            $table->decimal('price');
             $table->string('measurement')->nullable();
-            $table->unsignedInteger('stock');
-            $table->integer('is_prescription');
-            $table->integer('is_available');
-            $table->integer('is_active');
+            $table->bigInteger('critical_level');
+            $table->boolean('is_prescription');
+            $table->boolean('is_available');
+            $table->boolean('is_active');
             $table->string('image');
             $table->timestamps();
         });

@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Facades\Session;
+
 /**
  * Cart
  *
@@ -101,11 +103,12 @@ class Cart
 
         $storedItem['qty'] += 1;
 
-        $this->totalQty = $storedItem['qty'];
+        $this->totalQty += $storedItem['qty'];
 
         $this->totalPrice += $storedItem['item']->price;
 
         $this->items[$id] = $storedItem;
+
     }
 
     // DECREASE QUANTITY
@@ -115,8 +118,14 @@ class Cart
 
         $storedItem['qty'] -= 1;
 
+        $this->totalQty -= 1;
+
+        $this->totalPrice -= $storedItem['item']->price;
+
+        $this->items[$id] = $storedItem;
+
         if ($storedItem['qty'] <= 0) {
-            unset($this->items[$id]);
+            $this->remove($id);
         }
     }
 
