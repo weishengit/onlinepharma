@@ -45,6 +45,21 @@
 
         {{-- Cards --}}
         <div class="flex flex-col">
+            {{-- Sales --}}
+            <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                    <a
+                        href="{{ route('admin.sale.index') }}">
+
+                        <div class="max-w-2xl bg-white border-2 border-gray-300 p-5 rounded-md tracking-wide shadow-lg">
+                            <div id="header" class="">
+                                <h4 id="name" class="text-blue-500 text-2xl font-semibold mb-2">Sales</h4>
+                                <p id="job" class="text-gray-800 mt-2 text-sm">Manage Ongoing Product Sales..</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
             {{-- Taxes --}}
             <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                 <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
