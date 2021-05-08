@@ -1,6 +1,15 @@
 @extends('layouts.admin')
 
 @section('content')
+@if ($product->batches()->exists())
+    <?php $stock = null; ?>
+    @foreach ($product->batches as $batch)
+        <?php $stock += $batch->remaining_quantity; ?>
+    @endforeach
+
+@else
+    None
+@endif
 <!--Container-->
 <div class="container w-full mx-auto pt-20">
     <div class="w-full px-4 md:px-0 md:mt-8 mb-16 text-gray-800 leading-normal">
@@ -66,6 +75,18 @@
                 @method('put')
                 <div class="shadow sm:rounded-md sm:overflow-hidden">
                     <div class="px-4 py-5 bg-white space-y-6 sm:p-6">
+                        {{-- STOCK --}}
+                        <div class="m-auto">
+                            <label for="company_website" class="block text-sm font-medium text-gray-700">
+                                Stock
+                            </label>
+                            <div class="mt-1 flex rounded-md shadow-sm">
+                                <span class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">
+                                Stock
+                                </span>
+                            <input disabled value="<?php echo $stock ?? 'none' ?>" type="text" name="stock" id="stock" class="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300">
+                            </div>
+                        </div>
                         {{-- PRODUCT NAME --}}
                         <div class="m-auto">
                             <label for="company_website" class="block text-sm font-medium text-gray-700">
@@ -145,6 +166,18 @@
                                     &#8369;
                                 </span>
                             <input value="{{ $product->price }}" type="text" name="price" id="price" class="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300" placeholder="example: 5.00, 80.00">
+                            </div>
+                        </div>
+                        {{-- Stock --}}
+                        <div class="m-auto">
+                            <label for="critical_level" class="block text-sm font-medium text-gray-700">
+                                Critical Level <span class="text-red-600">*</span>
+                            </label>
+                            <div class="mt-1 flex rounded-md shadow-sm">
+                                <span class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">
+                                    Critical Level
+                                </span>
+                            <input value="{{ $product->critical_level }}" type="text" name="critical_level" id="critical_level" class="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300" placeholder="example: 100, 500">
                             </div>
                         </div>
                         {{-- Measurement --}}

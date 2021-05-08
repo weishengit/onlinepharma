@@ -45,75 +45,65 @@
             </a>
             /&nbsp;
             <p class="text-blue-500 hover:text-blue-700 font-bold">
-                Edit&nbsp;
+                Create&nbsp;
             </p>
             /&nbsp;
             <p class="text-indigo-700">
-                ID #{{ $sale->id }}
+                Product ID #{{ $product->id }}
             </p>
         </h1>
         {{-- CONTENT --}}
         <form
-            action="{{ route('admin.sale.update', ['product' => $sale->id]) }}"
+            action="{{ route('admin.sale.store', ['product' => $product->id]) }}"
             method="post">
             @csrf
-            @method('put')
             <div class="flex items-center justify-center h-screen">
 
-                <img src="{{ asset('images/' . $sale->product->image) }}" alt="product image" si>
+                <img src="{{ asset('images/' . $product->image) }}" alt="product image">
 
             </div>
             <div class="flex flex-wrap -mx-1 overflow-hidden text-2xl">
 
                 <div class="my-1 px-1 w-1/2 overflow-hidden border p-5">
                     <strong>Product ID: </strong>
-                    {{ $sale->product->id }}
+                    {{ $product->id }}
                 </div>
 
                 <div class="my-1 px-1 w-1/2 overflow-hidden border p-5">
                     <strong>Discount Rate: </strong>
                     <br>
                     <label for="flat">Flat</label>
-                    <input id="flat" type="radio" name="type" value="0" @if ($sale->is_percent == 0) checked @endif>
+                    <input id="flat" type="radio" name="type" value="0">
                     &nbsp;&nbsp;
                     <label for="percent">Percent</label>
-                    <input id="percent" type="radio" name="type" value="1" @if ($sale->is_percent == 1) checked @endif>
+                    <input id="percent" type="radio" name="type" value="1">
                     <br>
                     <div class="p-4">
                         <label for="rate">Rate</label>
-                        <input id="rate" name="rate" type="text" value="{{ $sale->rate }}" placeholder="Rate...">
+                        <input id="rate" name="rate" type="text" value="{{ old('rate') }}" placeholder="Rate...">
                     </div>
+
                 </div>
 
                 <div class="my-1 px-1 w-1/2 overflow-hidden border p-5">
                     <strong>Product Name: </strong>
-                    {{ $sale->product->name }}
+                    {{ $product->name }}
                 </div>
 
 
 
                 <div class="my-1 px-1 w-1/2 overflow-hidden border p-5">
                     <strong>Price: </strong>
-                    &#8369;{{ $sale->product->price }}
+                    &#8369;{{ $product->price }}
                 </div>
 
                 <div class="my-1 px-1 w-1/2 overflow-hidden border p-5">
                     <strong>Actions:   </strong>
-                        <br>
-                        <button type="submit" class="m-2 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                            Save
-                        </button>
-                        </a>
-                </div>
-
-                <div class="my-1 px-1 w-1/2 overflow-hidden border p-5">
-                    <strong>New Price: </strong>
-                    &#8369;
-                    @if ($sale->is_percent)
-                        {{ round(($sale->product->price - ($sale->product->price * ($sale->rate / 100))),2 )  }}
-                    @else
-                        {{ $sale->product->price - $sale->rate }}
-                    @endif
+                    <br>
+                    <button type="submit" class="m-2 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        Create
+                    </button>
+                    </a>
                 </div>
             </div>
         </form>

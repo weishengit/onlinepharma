@@ -7,6 +7,73 @@
     <div class="w-full px-4 md:px-0 md:mt-8 mb-16 text-gray-800 leading-normal">
 
         <!--Console Content-->
+        <div class="flex flex-wrap -mx-1 overflow-hidden">
+            @if ($new_orders > 0)
+            <div class="my-1 px-1 w-1/2 overflow-hidden">
+                <div class="p-2 flex flex-col space-y-3">
+                    <div class="bg-blue-100 p-5 border-l-4 border-blue-500">
+                      <div class="flex space-x-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="flex-none fill-current text-blue-500 h-4 w-4">
+                          <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-.001 5.75c.69 0 1.251.56 1.251 1.25s-.561 1.25-1.251 1.25-1.249-.56-1.249-1.25.559-1.25 1.249-1.25zm2.001 12.25h-4v-1c.484-.179 1-.201 1-.735v-4.467c0-.534-.516-.618-1-.797v-1h3v6.265c0 .535.517.558 1 .735v.999z" />
+                        </svg>
+                        <div class="flex-1 leading-tight text-sm text-blue-700">
+                            There are new orders.
+                        </div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            @endif
+            @if ($pending_orders > 0)
+            <div class="my-1 px-1 w-1/2 overflow-hidden">
+                <div class="p-2 flex flex-col space-y-3">
+                    <div class="bg-green-100 p-5 w-full  border-l-4 border-green-500">
+                      <div class="flex space-x-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="flex-none fill-current text-green-500 h-4 w-4">
+                          <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-.001 5.75c.69 0 1.251.56 1.251 1.25s-.561 1.25-1.251 1.25-1.249-.56-1.249-1.25.559-1.25 1.249-1.25zm2.001 12.25h-4v-1c.484-.179 1-.201 1-.735v-4.467c0-.534-.516-.618-1-.797v-1h3v6.265c0 .535.517.558 1 .735v.999z" />
+                        </svg>
+                        <div class="flex-1 leading-tight text-sm text-green-700">
+                            There are orders waiting to be completed.
+                        </div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            @endif
+            @if (true)
+            <div class="my-1 px-1 w-1/2 overflow-hidden">
+                <div class="p-2 flex flex-col space-y-3">
+                    <div class="bg-yellow-100 p-5 w-full border-l-4 border-yellow-500">
+                      <div class="flex space-x-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="flex-none fill-current text-yellow-500 h-4 w-4">
+                          <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-.001 5.75c.69 0 1.251.56 1.251 1.25s-.561 1.25-1.251 1.25-1.249-.56-1.249-1.25.559-1.25 1.249-1.25zm2.001 12.25h-4v-1c.484-.179 1-.201 1-.735v-4.467c0-.534-.516-.618-1-.797v-1h3v6.265c0 .535.517.558 1 .735v.999z" />
+                        </svg>
+                        <div class="flex-1 leading-tight text-sm text-yellow-700">
+                            Products are expiring soon.
+                        </div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            @endif
+            @if (true)
+            <div class="my-1 px-1 w-1/2 overflow-hidden">
+                <div class="p-2 flex flex-col space-y-3">
+                    <div class="bg-red-100 p-5 w-full border-l-4 border-red-500">
+                      <div class="flex space-x-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="flex-none fill-current text-red-500 h-4 w-4">
+                          <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-.001 5.75c.69 0 1.251.56 1.251 1.25s-.561 1.25-1.251 1.25-1.249-.56-1.249-1.25.559-1.25 1.249-1.25zm2.001 12.25h-4v-1c.484-.179 1-.201 1-.735v-4.467c0-.534-.516-.618-1-.797v-1h3v6.265c0 .535.517.558 1 .735v.999z" />
+                        </svg>
+                        <div class="flex-1 leading-tight text-sm text-red-700">
+                            Products are in critical level.
+                        </div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            @endif
+
+          </div>
 
         <div class="flex flex-wrap">
             <div class="w-full md:w-1/2 xl:w-1/3 p-3">

@@ -75,7 +75,7 @@
                 <strong class="text-primary h4">
                     &#8369;
                     @if ($product->sale->is_percent)
-                    {{ round(($product->price - ($product->price * ($product->sale->rate / 100))),2 )  }}
+                        {{ round(($product->price - ($product->price * ($product->sale->rate / 100))),2 )  }}
                     @else
                         {{ $product->price - $product->sale->rate }}
                     @endif

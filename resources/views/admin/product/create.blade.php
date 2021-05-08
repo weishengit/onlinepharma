@@ -140,14 +140,14 @@
                     </div>
                     {{-- Stock --}}
                     <div class="m-auto">
-                        <label for="stock" class="block text-sm font-medium text-gray-700">
-                            Initial Stock <span class="text-red-600">*</span>
+                        <label for="critical_level" class="block text-sm font-medium text-gray-700">
+                            Critical Level <span class="text-red-600">*</span>
                         </label>
                         <div class="mt-1 flex rounded-md shadow-sm">
                             <span class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">
-                                Quantity
+                                Critical Level
                             </span>
-                        <input value="{{ old('stock') }}" type="text" name="stock" id="stock" class="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300" placeholder="example: 100, 500">
+                        <input value="{{ old('critical_level') }}" type="text" name="critical_level" id="critical_level" class="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300" placeholder="example: 100, 500">
                         </div>
                     </div>
                     {{-- Measurement --}}

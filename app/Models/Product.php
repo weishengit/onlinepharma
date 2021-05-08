@@ -22,7 +22,7 @@ class Product extends Model
         'drug_class',
         'description',
         'price',
-        'stock',
+        'critical_level',
         'measurement',
         'is_prescription',
         'is_available',
@@ -52,5 +52,10 @@ class Product extends Model
     public function sale()
     {
         return $this->hasOne(Sale::class);
+    }
+
+    public function batches()
+    {
+        return $this->hasMany(Batch::class);
     }
 }
