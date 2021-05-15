@@ -34,10 +34,9 @@
         <div class="col-md-6 col-lg-4 mb-4 mb-lg-0">
           <div class="banner-wrap bg-primary h-100">
             <a href="{{ route('pages.shop') }}" class="h-100">
-              <h5>Free <br> Delivery</h5>
+              <h5>Delivery</h5>
               <p>
                 On selected Areas
-
               </p>
             </a>
           </div>
@@ -45,10 +44,9 @@
         <div class="col-md-6 col-lg-4 mb-4 mb-lg-0">
           <div class="banner-wrap h-100">
             <a href="{{ route('pages.shop') }}" class="h-100">
-              <h5>Season <br> Sale 50% Off</h5>
+              <h5>Sale <br> on select items</h5>
               <p>
                 Amazing Sale
-
               </p>
             </a>
           </div>
@@ -56,7 +54,7 @@
         <div class="col-md-6 col-lg-4 mb-4 mb-lg-0">
           <div class="banner-wrap bg-warning h-100">
             <a href="{{ route('pages.contact') }}" class="h-100">
-              <h5>Buy <br> A Gift Card</h5>
+              <h5>Inquiries? <br> Talk to us</h5>
               <p>
                 Contact Us
 
