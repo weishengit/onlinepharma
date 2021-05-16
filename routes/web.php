@@ -11,6 +11,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\BatchController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PagesController;
 use App\Http\Controllers\ReportController;
@@ -153,6 +154,10 @@ Route::middleware(['admin', 'active'])->name('admin.')->prefix('admin')->group(f
     Route::get('/sale/{product}/create', [SaleController::class, 'create'])->name('sale.create');
     Route::post('/sale/{product}', [SaleController::class, 'store'])->name('sale.store');
     Route::delete('/sale/{id}/destroy', [SaleController::class, 'destroy'])->name('sale.destroy');
+    //BATCH
+    Route::get('/batch/create/{id}', [BatchController::class, 'create'])->name('batch.add');
+    Route::post('/batch/create/{id}', [BatchController::class, 'store'])->name('batch.save');
+    Route::resource('batch', BatchController::class);
     //REPORTS
     Route::get('/reports', [ReportController::class, 'index'])->name('report');
     Route::get('/reports/{report?}', [ReportController::class, 'show'])->name('report.show');

@@ -51,21 +51,11 @@
                     <li class="{{ isset($metaTitle) && $metaTitle == 'Shop' ? 'active' : '' }}"><a href="{{ route('pages.shop') }}">Shop</a></li>
 
                     <li class="has-children">
-                    <a href="#">Popular</a>
+                    <a href="#">More</a>
                     <ul class="dropdown">
-                        <li><a href="#">Supplements</a></li>
-                        <li class="has-children">
-                        <a href="#">Vitamins</a>
-                        <ul class="dropdown">
-                            <li><a href="#">Supplements</a></li>
-                            <li><a href="#">Vitamins</a></li>
-                            <li><a href="#">Diet &amp; Nutrition</a></li>
-                            <li><a href="#">Tea &amp; Coffee</a></li>
-                        </ul>
-                        </li>
-                        <li><a href="#">Diet &amp; Nutrition</a></li>
-                        <li><a href="#">Tea &amp; Coffee</a></li>
-
+                        <li><a href="{{ route('pages.shop', ['filter' => 'on_sale']) }}">On Sale</a></li>
+                        <li><a href="{{ route('pages.shop', ['filter' => 'popular']) }}">Popular</a></li>
+                        <li><a href="{{ route('pages.shop', ['filter' => 'newest']) }}">Newest</a></li>
                     </ul>
                     </li>
 
@@ -135,6 +125,16 @@
                     @endauth
                 </li>
                 <li><a href="{{ route('pages.contact') }}">Contact </a></li>
+                <li><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                    Template by
+                    <a
+                        href="https://colorlib.com"
+                        target="_blank"
+                        >
+                        Colorlib
+                    </a>
+                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                </li>
               </ul>
             </div>
 
@@ -152,12 +152,7 @@
           <div class="row pt-5 mt-5 text-center">
             <div class="col-md-12">
               <p>
-                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                Copyright &copy;
-                <script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made
-                with <i class="icon-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank"
-                  class="text-primary">Colorlib</a>
-                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+
               </p>
             </div>
 

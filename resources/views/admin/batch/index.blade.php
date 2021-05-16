@@ -110,7 +110,7 @@
             /&nbsp;
             <p
                 class="text-blue-500 hover:text-blue-700 font-bold">
-                Sale&nbsp;
+                Inventory&nbsp;
             </p>
 		</h1>
 
@@ -120,44 +120,54 @@
                 <thead>
                     <tr>
                         <th>Product ID</th>
+                        <th>View</th>
                         <th>Product Name</th>
-                        <th>Real Price</th>
-                        <th>Discount Price</th>
-                        <th>Discount Rate</th>
-                        <th>Edit</th>
+                        <th>Critical Level</th>
+                        <th>Current Stock</th>
+                        <th># of Batches</th>
+                        <th>Expiration</th>
                     </tr>
                 </thead>
                 <tbody>
-                @foreach ($sales as $sale)
+                @foreach ($products as $product)
                     <tr>
-                        <td>{{ $sale->id }}</td>
-                        <td>{{ $sale->product->name }}</td>
-                        <td>{{ $sale->product->price }}</td>
+                        <td>{{ $product->id }}</td>
                         <td>
-                            @if ($sale->is_percent)
-                                {{ round(($sale->product->price - ($sale->product->price * ($sale->rate / 100))),2 )  }}
-                            @else
-                                {{ $sale->product->price - $sale->rate }}
-                            @endif
-
-                        </td>
-                        <td>
-                            Type:
-                            @if ($sale->is_percent)
-                                Percent
-                            @else
-                                Flat
-                            @endif
-                            -
-                            {{ $sale->rate }}
-                        </td>
-                        <td>
-                            <a
-                                href="{{ route('admin.sale.show', ['product' => $sale->product_id]) }}">
-                                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                                    Edit
-                                </button>
+                            <a href="{{ route('admin.batch.show', ['batch' => $product->id]) }}">
+                            <button
+                                class="float-right inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                type="button">
+                                View
+                            </button>
                             </a>
+                        </td>
+                        <td>{{ $product->name }}</td>
+                        <td>{{ $product->critical_level }}</td>
+                        <td>
+                            @if ($product->batches()->exists())
+                                <?php $stock = 0; ?>
+                                @foreach ($product->batches as $batch)
+                                    <?php $stock += $batch->remaining_quantity; ?>
+
+                                @endforeach
+                                <?php echo $stock; ?>
+                            @else
+                                None
+                            @endif
+                        </td>
+                        <td>
+                            @if ($product->batches()->exists())
+                            {{ $product->batches()->count() }}
+                            @else
+                                None
+                            @endif
+                        </td>
+                        <td>
+                            @if ($product->batches()->exists())
+                                {{ $product->batches()->oldest('expiration')->limit(1)->first()->expiration }}
+                            @else
+                                None
+                            @endif
                         </td>
                     </tr>
                 @endforeach

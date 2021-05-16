@@ -123,7 +123,7 @@ class OrderController extends Controller
             DB::transaction(function () use($item, $order, $request) {
                 $batches = Batch::where('product_id', $item->product_id)
                 ->where('is_active', 1)
-                ->oldest()
+                ->oldest('expiration')
                 ->get();
 
                 $qty = $item->quantity;

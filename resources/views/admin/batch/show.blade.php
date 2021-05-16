@@ -1,5 +1,75 @@
 @extends('layouts.admin')
 
+@section('style')
+    {{-- DATATABLES --}}
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
+
+    <style>
+
+        /*Overrides for Tailwind CSS */
+
+        /*Form fields*/
+        .dataTables_wrapper select,
+        .dataTables_wrapper .dataTables_filter input {
+            color: #4a5568; 			/*text-gray-700*/
+            padding-left: 1rem; 		/*pl-4*/
+            padding-right: 1rem; 		/*pl-4*/
+            padding-top: .5rem; 		/*pl-2*/
+            padding-bottom: .5rem; 		/*pl-2*/
+            line-height: 1.25; 			/*leading-tight*/
+            border-width: 2px; 			/*border-2*/
+            border-radius: .25rem;
+            border-color: #edf2f7; 		/*border-gray-200*/
+            background-color: #edf2f7; 	/*bg-gray-200*/
+        }
+
+        /*Row Hover*/
+        table.dataTable.hover tbody tr:hover, table.dataTable.display tbody tr:hover {
+            background-color: #ebf4ff;	/*bg-indigo-100*/
+        }
+
+        /*Pagination Buttons*/
+        .dataTables_wrapper .dataTables_paginate .paginate_button		{
+            font-weight: 700;				/*font-bold*/
+            border-radius: .25rem;			/*rounded*/
+            border: 1px solid transparent;	/*border border-transparent*/
+        }
+
+        /*Pagination Buttons - Current selected */
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current	{
+            color: #fff !important;				/*text-white*/
+            box-shadow: 0 1px 3px 0 rgba(0,0,0,.1), 0 1px 2px 0 rgba(0,0,0,.06); 	/*shadow*/
+            font-weight: 700;					/*font-bold*/
+            border-radius: .25rem;				/*rounded*/
+            background: #667eea !important;		/*bg-indigo-500*/
+            border: 1px solid transparent;		/*border border-transparent*/
+        }
+
+        /*Pagination Buttons - Hover */
+        .dataTables_wrapper .dataTables_paginate .paginate_button:hover		{
+            color: #fff !important;				/*text-white*/
+            box-shadow: 0 1px 3px 0 rgba(0,0,0,.1), 0 1px 2px 0 rgba(0,0,0,.06);	 /*shadow*/
+            font-weight: 700;					/*font-bold*/
+            border-radius: .25rem;				/*rounded*/
+            background: #667eea !important;		/*bg-indigo-500*/
+            border: 1px solid transparent;		/*border border-transparent*/
+        }
+
+        /*Add padding to bottom border */
+        table.dataTable.no-footer {
+            border-bottom: 1px solid #e2e8f0;	/*border-b-1 border-gray-300*/
+            margin-top: 0.75em;
+            margin-bottom: 0.75em;
+        }
+
+        /*Change colour of responsive icon*/
+        table.dataTable.dtr-inline.collapsed>tbody>tr>td:first-child:before, table.dataTable.dtr-inline.collapsed>tbody>tr>th:first-child:before {
+            background-color: #667eea !important; /*bg-indigo-500*/
+        }
+
+      </style>
+@endsection
+
 @section('content')
 <div class="container w-full mx-auto pt-20">
     <div class="w-full px-4 md:px-0 md:mt-8 mb-16 text-gray-800 leading-normal">
@@ -38,83 +108,80 @@
                 </p>
             </a>
             /&nbsp;
-            <a href="{{ route('admin.sale.index') }}">
+            <a href="{{ route('admin.batch.index') }}">
                 <p class="text-blue-500 hover:text-blue-700 font-bold">
-                    Sale&nbsp;
+                    Inventory&nbsp;
                 </p>
             </a>
             /&nbsp;
             <p class="text-indigo-700">
-                Sale ID #{{ $product->sale->id }}
+                {{ $product->id }} - {{ $product->name }}
             </p>
         </h1>
+
         {{-- CONTENT --}}
         <div class="flex items-center justify-center h-screen">
-
             <img src="{{ asset('images/' . $product->image) }}" alt="product image" si>
+        </div>
+        <div>
+            <a href="{{ route('admin.batch.add', ['id' => $product->id]) }}">
+                <button
+                    type="button"
+                    class="m-2 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    Add Batch
+                </button>
+            </a>
+        </div>
+        {{-- Table --}}
+        <div id='recipients' class="p-8 mt-6 lg:mt-0 rounded shadow bg-white">
+            <table id="data_table" class="stripe hover" style="width:100%; padding-top: 1em;  padding-bottom: 1em;">
+                <thead>
+                    <tr>
+                        <th>Batch No</th>
+                        <th>Unit Cost</th>
+                        <th>Initial Qty</th>
+                        <th>Remaining Qty</th>
+                        <th>Active</th>
+                        <th>Expiration</th>
+                        <th>Created At</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach ($product->batches as $batch)
+                    @if ($batch->is_active == 0)
+                    <tr class="text-gray-400">
+                    @else
+                    <tr>
+                    @endif
 
-          </div>
-        <div class="flex flex-wrap -mx-1 overflow-hidden text-2xl">
-
-            <div class="my-1 px-1 w-1/2 overflow-hidden border p-5">
-                <strong>Product ID: </strong>
-                {{ $product->id }}
-            </div>
-
-            <div class="my-1 px-1 w-1/2 overflow-hidden border p-5">
-                <strong>Discount Rate: </strong>
-                @if ($product->sale->is_percent)
-                    Percent - {{ $product->sale->rate }}
-                @else
-                    Flat - {{ $product->sale->rate }}
-                @endif
-
-            </div>
-
-            <div class="my-1 px-1 w-1/2 overflow-hidden border p-5">
-                <strong>Product Name: </strong>
-                {{ $product->name }}
-            </div>
-
-
-
-            <div class="my-1 px-1 w-1/2 overflow-hidden border p-5">
-                <strong>Price: </strong>
-                &#8369;{{ $product->price }}
-            </div>
-
-            <div class="my-1 px-1 w-1/2 overflow-hidden border p-5">
-                <strong>Actions:   </strong>
-                <br>
-                <a href="{{ route('admin.sale.edit', ['product' => $product->sale->id]) }}">
-                    <button type="button" class="m-2 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                        Edit
-                    </button>
-                </a>
-               <form
-                    action="{{ route('admin.sale.destroy', ['id' => $product->sale->id]) }}"
-                    method="post">
-                    @csrf
-                    @method('delete')
-                    <button type="submit" class="m-2 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                        End Sale
-                    </button>
-                </form>
-            </div>
-
-            <div class="my-1 px-1 w-1/2 overflow-hidden border p-5">
-                <strong>New Price: </strong>
-                &#8369;
-                @if ($product->sale->is_percent)
-                    {{ round(($product->price - ($product->price * ($product->sale->rate / 100))),2 )  }}
-                @else
-                    {{ $product->price - $product->sale->rate }}
-                @endif
-            </div>
-
-
-
-          </div>
+                        <td>{{ $batch->batch_no }}</td>
+                        <td>{{ $batch->unit_cost }}</td>
+                        <td>{{ $batch->initial_quantity }}</td>
+                        <td>{{ $batch->remaining_quantity }}</td>
+                        <td>{{ $batch->is_active ? 'Yes' : 'No'}}</td>
+                        <td>{{ $batch->expiration }}</td>
+                        <td>{{ $batch->created_at }}</td>
+                    </tr>
+                @endforeach
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
+@endsection
+
+@section('script')
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+	<script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
+    <script>
+        $(document).ready(function() {
+
+			var table = $('#data_table').DataTable( {
+					responsive: true
+				} )
+				.columns.adjust()
+				.responsive.recalc();
+		} );
+    </script>
 @endsection

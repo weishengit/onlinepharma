@@ -53,6 +53,10 @@
           data-toggle="dropdown">Reference</button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuReference">
           <a class="dropdown-item" href="{{ route('pages.shop') }}">Show All</a>
+          <a class="dropdown-item" href="{{ route('pages.shop', ['filter' => 'on_sale']) }}">On Sale</a>
+          <a class="dropdown-item" href="{{ route('pages.shop', ['filter' => 'popular']) }}">Popular</a>
+          <a class="dropdown-item" href="{{ route('pages.shop', ['filter' => 'newest']) }}">Newest</a>
+          <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="{{ route('pages.shop', ['filter' => 'name_asc']) }}">Name, A to Z</a>
           <a class="dropdown-item" href="{{ route('pages.shop', ['filter' => 'name_desc']) }}">Name, Z to A</a>
           <div class="dropdown-divider"></div>

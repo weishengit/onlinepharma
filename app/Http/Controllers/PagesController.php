@@ -16,9 +16,11 @@ class PagesController extends Controller
     {
         $topProducts = Product::where('is_available', 1)->where('is_active', 1)->orderBy('name', 'ASC')->limit(6)->get();
         $newProducts = Product::where('is_available', 1)->where('is_active', 1)->orderBy('created_at', 'DESC')->limit(6)->get();
+        $saleProducts = Product::where('is_available', 1)->where('is_active', 1)->has('sale')->latest()->limit(6)->get();
 
         return view('index')
             ->with('metaTitle', 'Home')
+            ->with('saleProducts', $saleProducts)
             ->with('topProducts', $topProducts)
             ->with('newProducts', $newProducts);
     }
@@ -64,10 +66,21 @@ class PagesController extends Controller
         $categories = Category::where('is_active', 1)->where('id', '!=', 1)->get();
         $filterName = null;
 
+        if ($filter == 'popular') {
+            $products = Product::where('is_active', 1)->where('is_available', 1)->orderBy('name', 'asc')->paginate(12);
+            $filterName = 'Popular';
+        }
+        if ($filter == 'newest') {
+            $products = Product::where('is_active', 1)->where('is_available', 1)->latest()->paginate(12);
+            $filterName = 'Newest';
+        }
+        if ($filter == 'on_sale') {
+            $products = Product::where('is_active', 1)->where('is_available', 1)->has('sale')->orderBy('name', 'asc')->paginate(12);
+            $filterName = 'On Sale';
+        }
         if ($filter == 'name_asc') {
             $products = Product::where('is_active', 1)->where('is_available', 1)->orderBy('name', 'asc')->paginate(12);
             $filterName = 'Name, A-Z';
-
         }
         if ($filter == 'name_desc') {
             $products = Product::where('is_active', 1)->where('is_available', 1)->orderBy('name', 'desc')->paginate(12);
@@ -147,32 +160,13 @@ class PagesController extends Controller
          * set $db to 'mysql' or 'pgsql'
          */
 
-        //-----------------------MYSQL CODE--------------------------//
-        // //CHECK NAME
-        // $name = Product::where('is_available', 1)
-        //     ->where('is_active', 1)
-        //     ->where('name', 'like', '%' . $newstr . '%')
-        //     ->limit(10)->get();
-
-        // //CHECK GENERIC NAME
-        // $generic = Product::where('is_available', 1)
-        // ->where('is_active', 1)
-        // ->where('generic_name', 'like', '%' . $newstr . '%')
-        // ->limit(10)->get();
-
-        // //CHECK DRUG CLASS
-        // $class = Product::where('is_available', 1)
-        // ->where('is_active', 1)
-        // ->where('drug_class', 'like', '%' . $newstr . '%')
-        // ->limit(10)->get();
-        //-----------------------MYSQL CODE--------------------------//
-
+        if(env('DB_CONNECTION') == 'pgsql') {
         //-----------------------PGSQL CODE--------------------------//
         //CHECK NAME
         $name = Product::where('is_available', 1)
-            ->where('is_active', 1)
-            ->where('name', 'ILIKE', '%' . $newstr . '%')
-            ->limit(10)->get();
+        ->where('is_active', 1)
+        ->where('name', 'ILIKE', '%' . $newstr . '%')
+        ->limit(10)->get();
 
         //CHECK GENERIC NAME
         $generic = Product::where('is_available', 1)
@@ -186,7 +180,29 @@ class PagesController extends Controller
         ->where('drug_class', 'ILIKE', '%' . $newstr . '%')
         ->limit(10)->get();
         //-----------------------PGSQL CODE--------------------------//
+        }
+        else
+        {
+        //-----------------------MYSQL CODE--------------------------//
+        //CHECK NAME
+        $name = Product::where('is_available', 1)
+            ->where('is_active', 1)
+            ->where('name', 'like', '%' . $newstr . '%')
+            ->limit(10)->get();
 
+        //CHECK GENERIC NAME
+        $generic = Product::where('is_available', 1)
+        ->where('is_active', 1)
+        ->where('generic_name', 'like', '%' . $newstr . '%')
+        ->limit(10)->get();
+
+        //CHECK DRUG CLASS
+        $class = Product::where('is_available', 1)
+        ->where('is_active', 1)
+        ->where('drug_class', 'like', '%' . $newstr . '%')
+        ->limit(10)->get();
+        //-----------------------MYSQL CODE--------------------------//
+        }
 
         //-----------------------OLD CODE--------------------------//
         //  OLD CODE DOES NOT WORK ON HEROKU PGSQL ONLY FILTERS BY DRUGCLASS

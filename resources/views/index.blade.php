@@ -43,7 +43,7 @@
         </div>
         <div class="col-md-6 col-lg-4 mb-4 mb-lg-0">
           <div class="banner-wrap h-100">
-            <a href="{{ route('pages.shop') }}" class="h-100">
+            <a href="{{ route('pages.shop', ['filter' => 'on_sale']) }}" class="h-100">
               <h5>Sale <br> on select items</h5>
               <p>
                 Amazing Sale
@@ -68,7 +68,64 @@
   </div>
   {{-- BOXES END --}}
 
+  {{-- SALE PRODUCTS --}}
+  @if (isset($saleProducts))
+  <div class="site-section">
+    <div class="container">
+      <div class="row">
+        <div class="title-section text-center col-12">
+          <h2 class="text-uppercase">On SALE!</h2>
+        </div>
+      </div>
+
+      <div class="row">
+
+            @foreach ($saleProducts as $saleProduct)
+                <div class="col-sm-6 col-lg-4 text-center item mb-4">
+                    <span class="tag">
+
+                        @if ($saleProduct->sale->is_percent)
+                            {{ $saleProduct->sale->rate }}
+                            %
+                        @else
+                            &#8369;
+                            {{ $saleProduct->sale->rate }}
+                        @endif
+                        Off
+
+                    </span>
+
+                    <a href="{{ route('pages.show', ['product' => $saleProduct->id]) }}"> <img src="{{ asset('images/' . $saleProduct->image) }}" alt="Image"></a>
+                    <h3 class="text-dark"><a href="{{ route('pages.show', ['product' => $saleProduct->id]) }}">{{ $saleProduct->name }}</a></h3>
+                    <p class="price text-dark">
+                        <del class="text-danger">
+                            &#8369;{{ $saleProduct->price }}
+                        </del>
+                        <strong class="text-dark h4">
+                            &#8369;
+                            @if ($saleProduct->sale->is_percent)
+                            {{ round(($saleProduct->price - ($saleProduct->price * ($saleProduct->sale->rate / 100))),2 )  }}
+                            @else
+                                {{ $saleProduct->price - $saleProduct->sale->rate }}
+                            @endif
+                        </strong>
+                    </p>
+              </div>
+            @endforeach
+
+      </div>
+      <div class="row mt-5">
+        <div class="col-12 text-center">
+          <a href="{{ route('pages.shop', ['filter' => 'on_sale']) }}" class="btn btn-primary px-4 py-3">View Sales</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  @endif
+  {{-- SALE PRODUCTS END --}}
+
   {{-- TOP PRODUCTS --}}
+  @if (isset($topProducts))
   <div class="site-section">
     <div class="container">
       <div class="row">
@@ -78,7 +135,7 @@
       </div>
 
       <div class="row">
-        @if (isset($topProducts))
+
             @foreach ($topProducts as $topProduct)
                 <div class="col-sm-6 col-lg-4 text-center item mb-4">
                     <span class="tag">Sale</span>
@@ -87,17 +144,6 @@
                     <p class="price">&#8369;{{ $topProduct->price }}</p>
               </div>
             @endforeach
-        @else
-            <p>Unable to load top products</p>
-        @endif
-
-
-        {{-- <div class="col-sm-6 col-lg-4 text-center item mb-4">
-            <span class="tag">Sale</span>
-            <a href="shop-single.php"> <img src="images/product_02.png" alt="Image"></a>
-            <h3 class="text-dark"><a href="shop-single.php">Chanca Piedra</a></h3>
-            <p class="price"><del>95.00</del> &mdash; $55.00</p>
-        </div> --}}
 
       </div>
       <div class="row mt-5">
@@ -107,9 +153,11 @@
       </div>
     </div>
   </div>
+  @endif
   {{-- TOP PRODUCTS END --}}
 
   {{-- NEW PRODUCTS --}}
+  @if (isset($newProducts))
   <div class="site-section bg-light">
     <div class="container">
       <div class="row">
@@ -123,7 +171,7 @@
         <div class="col-md-12 block-3 products-wrap">
           <div class="nonloop-block-3 owl-carousel">
 
-            @if (isset($newProducts))
+
                 @foreach ($newProducts as $newProduct)
                     <div class="text-center item mb-4">
                         <a href="{{ route('pages.show', ['product' => $newProduct->id]) }}"> <img src="{{ asset('images/' . $newProduct->image) }}" alt="Image" height="340" width="40"></a>
@@ -131,21 +179,13 @@
                         <p class="price">&#8369;{{ $newProduct->price }}</p>
                     </div>
                 @endforeach
-            @else
-                <p>Unable to load new products</p>
-            @endif
-
-            {{-- <div class="text-center item mb-4">
-              <a href="shop-single.php"> <img src="images/product_01.png" alt="Image"></a>
-              <h3 class="text-dark"><a href="shop-single.php">Umcka Cold Care</a></h3>
-              <p class="price">$120.00</p>
-            </div> --}}
 
           </div>
         </div>
       </div>
     </div>
   </div>
+  @endif
   {{-- NEW PRODUCTS END --}}
 
   <div class="site-section">

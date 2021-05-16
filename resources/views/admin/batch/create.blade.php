@@ -38,23 +38,23 @@
                 </p>
             </a>
             /&nbsp;
-            <a href="{{ route('admin.sale.index') }}">
+            <a href="{{ route('admin.batch.index') }}">
                 <p class="text-blue-500 hover:text-blue-700 font-bold">
-                    Sale&nbsp;
+                    Inventory&nbsp;
                 </p>
             </a>
             /&nbsp;
             <p class="text-blue-500 hover:text-blue-700 font-bold">
-                Create&nbsp;
+                Add&nbsp;
             </p>
             /&nbsp;
             <p class="text-indigo-700">
-                Product ID #{{ $product->id }}
+                Batch
             </p>
         </h1>
         {{-- CONTENT --}}
         <form
-            action="{{ route('admin.sale.store', ['product' => $product->id]) }}"
+            action="{{ route('admin.batch.save', ['id' => $product->id]) }}"
             method="post">
             @csrf
             <div class="flex items-center justify-center h-screen">
@@ -62,49 +62,52 @@
                 <img src="{{ asset('images/' . $product->image) }}" alt="product image">
 
             </div>
-            <div class="flex flex-wrap -mx-1 overflow-hidden text-2xl">
+            <div class="flex flex-wrap -mx-1 overflow-hidden">
 
-                <div class="my-1 px-1 w-1/2 overflow-hidden border p-5">
-                    <strong>Product ID: </strong>
-                    {{ $product->id }}
-                </div>
-
-                <div class="my-1 px-1 w-1/2 overflow-hidden border p-5">
-                    <strong>Discount Rate: </strong>
-                    <br>
-                    <label for="flat">Flat</label>
-                    <input id="flat" type="radio" name="type" value="0">
-                    &nbsp;&nbsp;
-                    <label for="percent">Percent</label>
-                    <input id="percent" type="radio" name="type" value="1">
-                    <br>
-                    <div class="p-4">
-                        <label for="rate">Rate</label>
-                        <input id="rate" name="rate" type="text" value="{{ old('rate') }}" placeholder="Rate...">
+                <div class="my-1 px-1 w-1/2 overflow-hidden">
+                    <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 border">
+                        <label class="text-3xl p-auto m-auto">Product:</label>
+                        <h3 class="text-xl p-auto m-auto">{{ $product->id }} - {{ $product->name }}</h3>
                     </div>
-
                 </div>
 
-                <div class="my-1 px-1 w-1/2 overflow-hidden border p-5">
-                    <strong>Product Name: </strong>
-                    {{ $product->name }}
+                <div class="my-1 px-1 w-1/2 overflow-hidden">
+                    <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 border">
+                        <label class="text-3xl p-auto m-auto" for="batch_no">Batch #:</label>
+                        <input id="batch_no" name="batch_no" type="text" placeholder="Batch no.." value="{{ old('batch_no') }}">
+                    </div>
                 </div>
 
-
-
-                <div class="my-1 px-1 w-1/2 overflow-hidden border p-5">
-                    <strong>Price: </strong>
-                    &#8369;{{ $product->price }}
+                <div class="my-1 px-1 w-1/2 overflow-hidden">
+                    <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 border">
+                        <label class="text-3xl p-auto m-auto" for="unit_cost">Unit Cost:</label>
+                        <input id="unit_cost" name="unit_cost" type="text" placeholder="Unit cost.." value="{{ old('unit_cost') }}">
+                    </div>
                 </div>
 
-                <div class="my-1 px-1 w-1/2 overflow-hidden border p-5">
-                    <strong>Actions:   </strong>
-                    <br>
-                    <button type="submit" class="m-2 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                        Create
-                    </button>
-                    </a>
+                <div class="my-1 px-1 w-1/2 overflow-hidden">
+                    <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 border">
+                        <label class="text-3xl p-auto m-auto" for="quantity">Quantity:</label>
+                        <input id="quantity" name="quantity" type="text" placeholder="Quantity.." value="{{ old('quantity') }}">
+                    </div>
                 </div>
+
+                <div class="my-1 px-1 w-1/2 overflow-hidden">
+                    <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 border">
+                        <label class="text-3xl p-auto m-auto" for="expiration">Expiration:</label>
+                        <input id="expiration" name="expiration" type="date" min="{{ date("Y-m-d") }}" value="{{ old('expiration') }}">
+                    </div>
+                </div>
+
+                <div class="my-1 px-1 w-1/2 overflow-hidden">
+                    <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 border">
+                        <label class="text-3xl p-auto m-auto" for="expiration">Confirm</label>
+                        <button type="submit" class="m-2 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                            Add
+                        </button>
+                    </div>
+                </div>
+
             </div>
         </form>
 
