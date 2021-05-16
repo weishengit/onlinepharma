@@ -20,6 +20,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DiscountController;
 use App\Http\Controllers\PasswordController;
+use App\Http\Controllers\SmsController;
 use App\Http\Controllers\UserReportController;
 
 /*
@@ -115,7 +116,8 @@ Route::middleware(['auth', 'active'])->prefix('profile')->name('profile.')->grou
 
 // ADMIN ROUTE
 Route::middleware(['admin', 'active'])->name('admin.')->prefix('admin')->group(function () {
-
+    //SMS
+    Route::get('/sms', [SmsController::class, 'index']);
     //DASHBOARD
     Route::get('/', [PagesController::class, 'admin'])->name('index');
     Route::get('/manage', [AdminController::class, 'manage'])->name('manage');
@@ -156,6 +158,7 @@ Route::middleware(['admin', 'active'])->name('admin.')->prefix('admin')->group(f
     Route::delete('/sale/{id}/destroy', [SaleController::class, 'destroy'])->name('sale.destroy');
     //BATCH
     Route::get('/batch/create/{id}', [BatchController::class, 'create'])->name('batch.add');
+    Route::post('/batch/activate/{id}', [BatchController::class, 'activate'])->name('batch.activate');
     Route::post('/batch/create/{id}', [BatchController::class, 'store'])->name('batch.save');
     Route::resource('batch', BatchController::class);
     //REPORTS

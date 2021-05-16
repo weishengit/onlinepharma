@@ -138,6 +138,7 @@
                 <thead>
                     <tr>
                         <th>Batch No</th>
+                        <th>Edit</th>
                         <th>Unit Cost</th>
                         <th>Initial Qty</th>
                         <th>Remaining Qty</th>
@@ -153,8 +154,16 @@
                     @else
                     <tr>
                     @endif
-
                         <td>{{ $batch->batch_no }}</td>
+                        <td>
+                            <a href="{{ route('admin.batch.edit', ['batch' => $batch->id]) }}">
+                            <button
+                                type="button"
+                                class="m-2 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                Edit
+                            </button>
+                            </a>
+                        </td>
                         <td>{{ $batch->unit_cost }}</td>
                         <td>{{ $batch->initial_quantity }}</td>
                         <td>{{ $batch->remaining_quantity }}</td>

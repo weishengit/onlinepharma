@@ -38,9 +38,9 @@
                 </p>
             </a>
             /&nbsp;
-            <a href="{{ route('admin.sale.index') }}">
+            <a href="{{ route('admin.batch.index') }}">
                 <p class="text-blue-500 hover:text-blue-700 font-bold">
-                    Sale&nbsp;
+                    Inventory&nbsp;
                 </p>
             </a>
             /&nbsp;
@@ -49,74 +49,95 @@
             </p>
             /&nbsp;
             <p class="text-indigo-700">
-                ID #{{ $sale->id }}
+                Batch - {{ $batch->batch_no }}
             </p>
         </h1>
         {{-- CONTENT --}}
         <form
-            action="{{ route('admin.sale.update', ['product' => $sale->id]) }}"
+            action="{{ route('admin.batch.update', ['batch' => $batch->id]) }}"
             method="post">
             @csrf
             @method('put')
-            <div class="flex items-center justify-center h-screen">
+            <div class="flex flex-wrap -mx-1 overflow-hidden">
 
-                <img src="{{ asset('images/' . $sale->product->image) }}" alt="product image" si>
-
-            </div>
-            <div class="flex flex-wrap -mx-1 overflow-hidden text-2xl">
-
-                <div class="my-1 px-1 w-1/2 overflow-hidden border p-5">
-                    <strong>Product ID: </strong>
-                    {{ $sale->product->id }}
-                </div>
-
-                <div class="my-1 px-1 w-1/2 overflow-hidden border p-5">
-                    <strong>Discount Rate: </strong>
-                    <br>
-                    <label for="flat">Flat</label>
-                    <input id="flat" type="radio" name="type" value="0" @if ($sale->is_percent == 0) checked @endif>
-                    &nbsp;&nbsp;
-                    <label for="percent">Percent</label>
-                    <input id="percent" type="radio" name="type" value="1" @if ($sale->is_percent == 1) checked @endif>
-                    <br>
-                    <div class="p-4">
-                        <label for="rate">Rate</label>
-                        <input id="rate" name="rate" type="text" value="{{ $sale->rate }}" placeholder="Rate...">
+                <div class="my-1 px-1 w-1/2 overflow-hidden">
+                    <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 border">
+                        <label class="text-3xl p-auto m-auto">Product:</label>
+                        <h3 class="text-xl p-auto m-auto">{{ $batch->product->id }} - {{ $batch->product->name }}</h3>
                     </div>
                 </div>
 
-                <div class="my-1 px-1 w-1/2 overflow-hidden border p-5">
-                    <strong>Product Name: </strong>
-                    {{ $sale->product->name }}
+                <div class="my-1 px-1 w-1/2 overflow-hidden">
+                    <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 border">
+                        <label class="text-3xl p-auto m-auto" for="batch_no">Batch #:</label>
+                        <input id="batch_no" name="batch_no" type="text" placeholder="Batch no.." value="{{{ $batch->batch_no }}}">
+                    </div>
                 </div>
 
-
-
-                <div class="my-1 px-1 w-1/2 overflow-hidden border p-5">
-                    <strong>Price: </strong>
-                    &#8369;{{ $sale->product->price }}
+                <div class="my-1 px-1 w-1/2 overflow-hidden">
+                    <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 border">
+                        <label class="text-3xl p-auto m-auto" for="unit_cost">Unit Cost:</label>
+                        <input id="unit_cost" name="unit_cost" type="text" placeholder="Unit cost.." value="{{ $batch->unit_cost }}">
+                    </div>
                 </div>
 
-                <div class="my-1 px-1 w-1/2 overflow-hidden border p-5">
-                    <strong>Actions:   </strong>
-                        <br>
+                <div class="my-1 px-1 w-1/2 overflow-hidden">
+                    <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 border">
+                        <label class="text-3xl p-auto m-auto" for="i_quantity">Initial Quantity:</label>
+                        <input id="i_quantity" name="i_quantity" type="text" placeholder="Initial Quantity.." value="{{ $batch->initial_quantity }}">
+                    </div>
+                </div>
+
+                <div class="my-1 px-1 w-1/2 overflow-hidden">
+                    <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 border">
+                        <label class="text-3xl p-auto m-auto" for="quantity">Remaining Quantity:</label>
+                        <input id="r_quantity" name="r_quantity" type="text" placeholder="Remaining Quantity.." value="{{ $batch->remaining_quantity }}">
+                    </div>
+                </div>
+                <div class="my-1 px-1 w-1/2 overflow-hidden">
+                    <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 border">
+                        <label class="text-3xl p-auto m-auto" for="expiration">Expiration:</label>
+                        <input id="expiration" name="expiration" type="date" min="{{ date("Y-m-d") }}" value="{{ $batch->expiration }}">
+                    </div>
+                </div>
+
+                <div class="my-1 px-1 w-1/2 overflow-hidden">
+                    <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 border">
+                        <label class="text-3xl p-auto m-auto" for="expiration">Save Changes</label>
                         <button type="submit" class="m-2 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                            Create
+                            Save
                         </button>
-                        </a>
+                    </div>
                 </div>
 
-                <div class="my-1 px-1 w-1/2 overflow-hidden border p-5">
-                    <strong>New Price: </strong>
-                    &#8369;
-                    @if ($sale->is_percent)
-                        {{ round(($sale->product->price - ($sale->product->price * ($sale->rate / 100))),2 )  }}
-                    @else
-                        {{ $sale->product->price - $sale->rate }}
-                    @endif
-                </div>
             </div>
         </form>
+
+        <div class="my-1 px-1 w-1/2 overflow-hidden">
+            <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 border">
+                <label class="text-3xl p-auto m-auto" for="expiration">Batch Status: {{ $batch->is_active ? 'Active' : 'Disabled' }}</label>
+                @if ($batch->is_active == 1)
+                <form
+                    action="{{ route('admin.batch.destroy', ['batch' => $batch->id]) }}"
+                    method="post">
+                    @csrf
+                    @method('delete')
+                    <button type="submit" class="m-2 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        Disable
+                    </button>
+                </form>
+                @else
+                <form
+                    action="{{ route('admin.batch.activate', ['id' => $batch->id]) }}"
+                    method="post">
+                    @csrf
+                    <button type="submit" class="m-2 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        Enable
+                    </button>
+                </form>
+                @endif
+            </div>
+        </div>
 
     </div>
 </div>
