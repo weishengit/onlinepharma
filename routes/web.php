@@ -111,6 +111,8 @@ Route::middleware(['auth', 'active'])->prefix('profile')->name('profile.')->grou
     Route::delete('/delete', [ProfileDelete::class, 'destroy']);
 
     Route::get('/orders', [ProfileController::class, 'orders'])->name('orders');
+    Route::delete('/orders/{order}', [ProfileController::class, 'cancel'])->name('cancel')
+        ->middleware(['password.confirm']);
     Route::get('/orders/{order?}', [ProfileController::class, 'order'])->name('order');
 });
 

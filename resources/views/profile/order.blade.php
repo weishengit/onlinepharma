@@ -1,7 +1,162 @@
 @extends('layouts.front')
 
+@section('style')
+<style>
+    .card {
+    position: relative;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 0.10rem
+}
+
+.card-header:first-child {
+    border-radius: calc(0.37rem - 1px) calc(0.37rem - 1px) 0 0
+}
+
+.card-header {
+    padding: 0.75rem 1.25rem;
+    margin-bottom: 0;
+    background-color: #fff;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1)
+}
+
+.track {
+    position: relative;
+    background-color: #ddd;
+    height: 7px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    margin-bottom: 60px;
+    margin-top: 50px
+}
+
+.track .step {
+    -webkit-box-flex: 1;
+    -ms-flex-positive: 1;
+    flex-grow: 1;
+    width: 25%;
+    margin-top: -18px;
+    text-align: center;
+    position: relative
+}
+
+.track .step.active:before {
+    background: #FF5722
+}
+
+.track .step::before {
+    height: 7px;
+    position: absolute;
+    content: "";
+    width: 100%;
+    left: 0;
+    top: 18px
+}
+
+.track .step.active .icon {
+    background: #ee5435;
+    color: #fff
+}
+
+.track .icon {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    position: relative;
+    border-radius: 100%;
+    background: #ddd
+}
+
+.track .step.active .text {
+    font-weight: 400;
+    color: #000
+}
+
+.track .text {
+    display: block;
+    margin-top: 7px
+}
+</style>
+@endsection
+
 @section('content')
 <div class="container">
+    @if ($order->is_void != 1)
+        {{-- TRACKING --}}
+        <div class="card">
+            <div class="card-body row">
+                <div class="col"> <strong>Estimated Delivery time:</strong> <br>29 nov 2019 </div>
+                <div class="col"> <strong>Status:</strong> <br> {{ $order->message }} </div>
+            </div>
+        </div>
+        @if ($order->delivery_mode == 'delivery')
+        <div class="track">
+            <div class="step active">
+                <span class="icon icon-shopping-bag"></span>
+                <span class="text">Order Placed</span>
+            </div>
+            <div class="step active">
+                <span class="icon icon-checkmark"></span>
+                <span class="text">Order confirmed</span>
+            </div>
+            <div class="step">
+                <span class="icon icon-truck"></span>
+                <span class="text"> On the way </span>
+            </div>
+            <div class="step">
+                <span class="icon icon-star"> /span>
+                <span class="text">Completed</span>
+            </div>
+        </div>
+        @endif
+        @if ($order->delivery_mode == 'pickup')
+        <div class="track">
+            <div class="step active">
+                <span class="icon icon-shopping-bag"></span>
+                <span class="text">Order Placed</span>
+            </div>
+            <div class="step active">
+                <span class="icon icon-check"></span>
+                <span class="text">Order confirmed</span>
+            </div>
+            <div class="step">
+                <span class="icon icon-shopping-basket"></span>
+                <span class="text">Ready for pickup</span>
+            </div>
+            <div class="step">
+                <span class="icon icon-star"></span>
+                <span class="text">Completed</span>
+            </div>
+        </div>
+        @endif
+    @else
+    <div class="card">
+        <div class="card-body row">
+            <div class="col"> <strong>Estimated Delivery time:</strong> <br> Cancelled </div>
+            <div class="col"> <strong>Status:</strong> <br> {{ $order->message }} </div>
+        </div>
+    </div>
+    <div class="track">
+        <div class="step active">
+            <span class="icon icon-close"></span>
+            <span class="text">Order Cancelled</span>
+        </div>
+    </div>
+    @endif
+
+    <br class="mb-10">
     <div class="card">
         {{-- STATUS BAR --}}
         <div class="card-header">
@@ -110,10 +265,18 @@
             </div>
             <a href="{{ route('profile.orders') }}">
                 <div class="text-center">
-                    <br><br>
-                    <button type="submit" class="btn btn-primary btn-md">Done</button>
+                    <br>
+                    <button type="submit" class="btn btn-primary btn-md">Back</button>
                 </div>
             </a>
+            <form action="{{ route('profile.cancel', ['order' => $order->id]) }}" method="post">
+                @csrf
+                @method('delete')
+                <div class="text-center">
+                    <br>
+                    <button type="submit" class="btn btn-danger btn-md">Cancel Order</button>
+                </div>
+            </form>
             <a href="#">
                 <div class="text-center">
                     <br>

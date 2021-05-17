@@ -95,4 +95,27 @@ class ProfileController extends Controller
             ->with('items', $items);
     }
 
+    public function cancel($order_id = null)
+    {
+        $order = Order::find($order_id);
+
+        if ($order_id == null || $order->user_id != auth()->id()) {
+            return redirect()->route('profile.orders')->with('message', 'Not a valid order id.');
+        }
+
+        $order->is_void = 1;
+        $order->message = 'Cancelled by user';
+        $order->status = 'void';
+        $order->save();
+
+
+        $items = Item::where('order_id', $order_id)->get();
+
+        return view('profile.order')
+            ->with('order', $order)
+            ->with('items', $items);
+
+
+    }
+
 }
