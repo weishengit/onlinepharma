@@ -22,6 +22,7 @@ use App\Http\Controllers\DiscountController;
 use App\Http\Controllers\PasswordController;
 use App\Http\Controllers\ProductReturnController;
 use App\Http\Controllers\SmsController;
+use App\Http\Controllers\CriticalLevelController;
 use App\Http\Controllers\UserReportController;
 use App\Models\ProductReturn;
 
@@ -164,6 +165,8 @@ Route::middleware(['admin', 'active'])->name('admin.')->prefix('admin')->group(f
     Route::post('/sale/{product}', [SaleController::class, 'store'])->name('sale.store');
     Route::delete('/sale/{id}/destroy', [SaleController::class, 'destroy'])->name('sale.destroy');
     //BATCH
+    Route::get('/inventory/critical', [CriticalLevelController::class, 'index'])->name('inventory.critical');
+    Route::get('/inventory/expiring', [CriticalLevelController::class, 'index'])->name('inventory.expiring');
     Route::get('/batch/create/{id}', [BatchController::class, 'create'])->name('batch.add');
     Route::post('/batch/activate/{id}', [BatchController::class, 'activate'])->name('batch.activate');
     Route::post('/batch/create/{id}', [BatchController::class, 'store'])->name('batch.save');

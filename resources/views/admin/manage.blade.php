@@ -60,6 +60,22 @@
                     </a>
                 </div>
             </div>
+            <div class="flex flex-col">
+                {{-- Critical Level --}}
+                <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                    <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                        <a
+                            href="{{ route('admin.inventory.critical') }}">
+
+                            <div class="max-w-2xl bg-white border-2 border-gray-300 p-5 rounded-md tracking-wide shadow-lg">
+                                <div id="header" class="">
+                                    <h4 id="name" class="text-blue-500 text-2xl font-semibold mb-2">Critical Level</h4>
+                                    <p id="job" class="text-gray-800 mt-2 text-sm">View products in critical level.</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
             {{-- Sales --}}
             <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                 <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">

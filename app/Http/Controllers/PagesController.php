@@ -34,8 +34,20 @@ class PagesController extends Controller
         $pending_orders = Order::where('is_void', 0)->where('status', 'pending')->count();
         $dispatched_orders = Order::where('is_void', 0)->where('status', 'dispatched')->count();
 
+        $products = Product::where('is_active', '1')->get();
+        $has_critical = false;
+        foreach ($products as $product) {
+            $count = $product->batches->where('is_active', 1)->where('expiration', '>', now())->sum('remaining_quantity');
+
+            if ($count <= $product->critical_level) {
+                $has_critical = true;
+                break;
+            }
+        }
+
 
         return view('admin.index')
+            ->with('has_critical', $has_critical)
             ->with('total_revenue', $total_revenue)
             ->with('dispatched_orders', $dispatched_orders)
             ->with('totalUsers', $totalUsers)

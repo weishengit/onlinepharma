@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Item;
 use App\Models\Batch;
 use App\Models\Order;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Nexmo\Laravel\Facade\Nexmo;
@@ -140,6 +141,7 @@ class OrderController extends Controller
             DB::transaction(function () use($item, $order, $request) {
                 $batches = Batch::where('product_id', $item->product_id)
                 ->where('is_active', 1)
+                ->where('expiration', '>', Carbon::now())
                 ->oldest('expiration')
                 ->get();
 
