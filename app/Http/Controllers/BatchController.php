@@ -121,7 +121,6 @@ class BatchController extends Controller
 
         Batch::where('id', $batch->id)
             ->update([
-                'product_id' => $id,
                 'batch_no' => $request->input('batch_no'),
                 'unit_cost' => $request->input('unit_cost'),
                 'initial_quantity' => $request->input('i_quantity'),
@@ -130,7 +129,7 @@ class BatchController extends Controller
         ]);
 
         return redirect()
-            ->route('admin.batch.show', ['batch' => $id])
+            ->route('admin.batch.show', ['batch' => $batch->product->id])
             ->with('message', 'Updated Batch#' . $request->input('batch_no'));
     }
 

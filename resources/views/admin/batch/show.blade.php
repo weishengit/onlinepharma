@@ -151,6 +151,8 @@
                 @foreach ($product->batches as $batch)
                     @if ($batch->is_active == 0)
                     <tr class="text-gray-400">
+                    @elseif ($batch->expiration < now())
+                    <tr class="text-red-700">
                     @else
                     <tr>
                     @endif
@@ -168,7 +170,7 @@
                         <td>{{ $batch->initial_quantity }}</td>
                         <td>{{ $batch->remaining_quantity }}</td>
                         <td>{{ $batch->is_active ? 'Yes' : 'No'}}</td>
-                        <td>{{ $batch->expiration }}</td>
+                        <td>{{ $batch->expiration }} @if ($batch->expiration < now()) - Expired @endif</td>
                         <td>{{ $batch->created_at }}</td>
                     </tr>
                 @endforeach

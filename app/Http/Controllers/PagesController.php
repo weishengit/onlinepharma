@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Batch;
 use App\Models\User;
 use App\Models\Product;
 use App\Models\Category;
@@ -33,7 +34,7 @@ class PagesController extends Controller
         $new_orders = Order::where('is_void', 0)->where('status', 'new')->count();
         $pending_orders = Order::where('is_void', 0)->where('status', 'pending')->count();
         $dispatched_orders = Order::where('is_void', 0)->where('status', 'dispatched')->count();
-
+        $expiring_soon = Batch::where('is_active', '1')->where('expiration', '<', now()->addMonths(6))->count();
         $products = Product::where('is_active', '1')->get();
         $has_critical = false;
         foreach ($products as $product) {
@@ -45,8 +46,8 @@ class PagesController extends Controller
             }
         }
 
-
         return view('admin.index')
+            ->with('expiring_soon', $expiring_soon)
             ->with('has_critical', $has_critical)
             ->with('total_revenue', $total_revenue)
             ->with('dispatched_orders', $dispatched_orders)

@@ -62,10 +62,10 @@
                 </div>
             </div>
             @endif
-            @if (true)
+            @if ($expiring_soon != 0)
             <div class="my-1 px-1 w-1/2 overflow-hidden">
                 <div class="p-2 flex flex-col space-y-3">
-
+                    <a href="{{ route('admin.inventory.expiring') }}">
                     <div class="bg-yellow-100 p-5 w-full border-l-4 border-yellow-500">
                       <div class="flex space-x-3">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="flex-none fill-current text-yellow-500 h-4 w-4">
@@ -76,7 +76,7 @@
                         </div>
                       </div>
                     </div>
-
+                    </a>
                 </div>
             </div>
             @endif

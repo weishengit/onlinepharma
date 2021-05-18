@@ -77,6 +77,7 @@ class OrderController extends Controller
         foreach ($items as $item) {
             $stock = Batch::where('product_id', $item->product_id)
                 ->where('is_active', 1)
+                ->where('expiration', '>', Carbon::now())
                 ->groupBy('product_id')
                 ->sum('remaining_quantity');
 
@@ -131,6 +132,7 @@ class OrderController extends Controller
         foreach ($items as $item) {
             $stock = Batch::where('product_id', $item->product_id)
                 ->where('is_active', 1)
+                ->where('expiration', '>', Carbon::now())
                 ->groupBy('product_id')
                 ->sum('remaining_quantity');
 
