@@ -86,7 +86,7 @@ class ProfileController extends Controller
         $order = Order::find($order_id);
         $settings = Setting::first();
 
-        if ($order_id == null) {
+        if ($order_id == null || $order->user_id != auth()->user()->id) {
             return redirect()->route('profile.orders')->with('message', 'Not a valid order id.');
         }
 
