@@ -29,7 +29,7 @@ class CartController extends Controller
             ->with('cart', $cart);
     }
 
-    public function add(Request $request, $id, $rx)
+    public function add(Request $request, $id)
     {
         $request->validate([
             'quantity' => 'numeric|min:1'
@@ -42,7 +42,7 @@ class CartController extends Controller
 
         $oldCart = Session::has('cart') ? Session::get('cart') : null;
         $cart = new Cart($oldCart);
-        $cart->add($product, $product->id, $request->quantity, $rx);
+        $cart->add($product, $product->id, $request->quantity);
 
         $request->session()->put('cart', $cart);
 

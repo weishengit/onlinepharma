@@ -76,7 +76,7 @@ Route::prefix('pages')->name('pages.')->group(function () {
 
 // CART ROUTE
 Route::get('/cart', [CartController::class, 'getCart'])->name('cart');
-Route::post('/add-to-cart/{id}/{rx}', [CartController::class, 'add'])->name('cart.add');
+Route::post('/add-to-cart/{id}', [CartController::class, 'add'])->name('cart.add');
 Route::get('/remove-from-cart/{id}/{quantity}', [CartController::class, 'remove'])->name('cart.remove');
 Route::get('/cart/increase/{id}', [CartController::class, 'increase'])->name('cart.increase');
 Route::get('/cart/decrease/{id}', [CartController::class, 'decrease'])->name('cart.decrease');
