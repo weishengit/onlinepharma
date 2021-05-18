@@ -138,7 +138,6 @@
 
             @foreach ($topProducts as $topProduct)
                 <div class="col-sm-6 col-lg-4 text-center item mb-4">
-                    <span class="tag">Sale</span>
                     <a href="{{ route('pages.show', ['product' => $topProduct->id]) }}"> <img src="{{ asset('images/' . $topProduct->image) }}" alt="Image"></a>
                     <h3 class="text-dark"><a href="{{ route('pages.show', ['product' => $topProduct->id]) }}">{{ $topProduct->name }}</a></h3>
                     <p class="price">&#8369;{{ $topProduct->price }}</p>

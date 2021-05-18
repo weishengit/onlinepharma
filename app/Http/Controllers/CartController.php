@@ -36,6 +36,9 @@ class CartController extends Controller
         ]);
 
         $product = Product::find($id);
+        if ($product == null) {
+            return redirect()->route('pages.cart')->with('message', 'Product not found!');
+        }
 
         $oldCart = Session::has('cart') ? Session::get('cart') : null;
         $cart = new Cart($oldCart);
@@ -43,10 +46,8 @@ class CartController extends Controller
 
         $request->session()->put('cart', $cart);
 
-        return view('pages.show')
-            ->with('metaTitle', 'Shop - ' . $product->name)
-            ->with('product', $product)
-            ->with('message', $product->name . ' added to cart.');
+        return redirect()->route('pages.show', ['product' => $id])
+            ->with('message', $request->input('quantity') . ' ' . $product->name . ' added to cart!' );
     }
 
     public function remove($id)
