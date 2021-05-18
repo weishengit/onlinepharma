@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Item;
 use App\Models\Order;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Facades\Auth;
@@ -83,6 +84,7 @@ class ProfileController extends Controller
     public function order($order_id = null)
     {
         $order = Order::find($order_id);
+        $settings = Setting::first();
 
         if ($order_id == null) {
             return redirect()->route('profile.orders')->with('message', 'Not a valid order id.');
@@ -92,6 +94,7 @@ class ProfileController extends Controller
 
         return view('profile.order')
             ->with('order', $order)
+            ->with('settings', $settings)
             ->with('items', $items);
     }
 
@@ -110,6 +113,8 @@ class ProfileController extends Controller
 
 
         $items = Item::where('order_id', $order_id)->get();
+
+        $settings = Setting::first();
 
         return view('profile.order')
             ->with('order', $order)

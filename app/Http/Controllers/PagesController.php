@@ -27,15 +27,17 @@ class PagesController extends Controller
 
     public function admin()
     {
+        $total_revenue = Order::where('status', 'completed')->sum('amount_due');
         $totalUsers = User::count();
         $newUsers = User::where('created_at', '>=', Carbon::today()->subDays(7))->count();
-        $totalProducts = Product::count();
         $new_orders = Order::where('is_void', 0)->where('status', 'new')->count();
         $pending_orders = Order::where('is_void', 0)->where('status', 'pending')->count();
+        $dispatched_orders = Order::where('is_void', 0)->where('status', 'dispatched')->count();
 
 
         return view('admin.index')
-            ->with('totalProducts', $totalProducts)
+            ->with('total_revenue', $total_revenue)
+            ->with('dispatched_orders', $dispatched_orders)
             ->with('totalUsers', $totalUsers)
             ->with('new_orders', $new_orders)
             ->with('pending_orders', $pending_orders)

@@ -20,8 +20,10 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DiscountController;
 use App\Http\Controllers\PasswordController;
+use App\Http\Controllers\ProductReturnController;
 use App\Http\Controllers\SmsController;
 use App\Http\Controllers\UserReportController;
+use App\Models\ProductReturn;
 
 /*
 |--------------------------------------------------------------------------
@@ -147,9 +149,12 @@ Route::middleware(['admin', 'active'])->name('admin.')->prefix('admin')->group(f
     Route::put('product/{product}/available', [ProductController::class, 'markForSale'])->name('product.available');
     Route::resource('product', ProductController::class);
     //ORDERS
+    Route::post('/order/{id}/dispatch', [OrderController::class, 'dispatch'])->name('order.dispatch');
     Route::post('/order/{id}/accept', [OrderController::class, 'accept'])->name('order.accept');
     Route::post('/order/{id}/complete', [OrderController::class, 'complete'])->name('order.complete');
     Route::resource('order', OrderController::class);
+    //RETURNS
+    Route::resource('return', ProductReturnController::class);
     //SALES
     Route::get('/sale', [SaleController::class, 'index'])->name('sale.index');
     Route::get('/sale/{product}', [SaleController::class, 'show'])->name('sale.show');

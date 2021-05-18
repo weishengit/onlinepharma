@@ -116,38 +116,48 @@
                 </p>
             </a>
             /&nbsp;
-            <p class="text-indigo-700">
-                {{ $title ?? 'Order' }}
+            <p
+                class="text-blue-500 hover:text-blue-700 font-bold">
+                Returns&nbsp;
             </p>
 		</h1>
-
+        <div>
+            <a href="{{ route('admin.return.create') }}">
+                <button
+                    type="button"
+                    class="m-2 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    Process Return
+                </button>
+            </a>
+        </div>
         {{-- Table --}}
         <div id='recipients' class="p-8 mt-6 lg:mt-0 rounded shadow bg-white">
             <table id="data_table" class="stripe hover" style="width:100%; padding-top: 1em;  padding-bottom: 1em;">
                 <thead>
                     <tr>
-                        <th>View</th>
                         <th>Order ID</th>
-                        <th>Status</th>
-                        <th>Mode</th>
-                        <th>Date Placed</th>
+                        <th>View</th>
+                        <th>Reason</th>
+                        <th>Action</th>
+                        <th>Return Date</th>
                     </tr>
                 </thead>
                 <tbody>
-                @foreach ($orders as $order)
+                @foreach ($returns as $return)
                     <tr>
+                        <td>{{ $return->order_id }}</td>
                         <td>
-                            <a
-                                href="{{ route('admin.order.edit', ['order' => $order->id]) }}">
-                                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                                    View
-                                </button>
+                            <a href="{{ route('admin.return.show', ['return' => $return->id]) }}">
+                            <button
+                                class="float-right inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                type="button">
+                                View
+                            </button>
                             </a>
                         </td>
-                        <td>{{ $order->id }}</td>
-                        <td>{{ $order->status }}</td>
-                        <td>{{ $order->delivery_mode }}</td>
-                        <td>{{ $order->created_at }}</td>
+                        <td>{{ $return->reason }}</td>
+                        <td>{{ $return->action }}</td>
+                        <td>{{ $return->created_at }}</td>
                     </tr>
                 @endforeach
                 </tbody>

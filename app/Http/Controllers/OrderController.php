@@ -7,6 +7,7 @@ use App\Models\Batch;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Nexmo\Laravel\Facade\Nexmo;
 
 class OrderController extends Controller
 {
@@ -27,6 +28,10 @@ class OrderController extends Controller
         if ($search == 'pending') {
             $orders = Order::where('status', 'pending')->where('is_void', 0)->get() ?? null;
             $title = 'Pending';
+        }
+        if ($search == 'dispatched') {
+            $orders = Order::where('status', 'dispatched')->where('is_void', 0)->get() ?? null;
+            $title = 'Dispatched';
         }
         if ($search == 'new') {
             $orders = Order::where('status', 'new')->where('is_void', 0)->get() ?? null;
@@ -63,6 +68,10 @@ class OrderController extends Controller
             return redirect()->route('admin.order.index')->with('message', 'Order not found.');
         }
 
+        $request->validate([
+            'est_date' => 'required|date_format:Y-m-d',
+        ]);
+
         $items = Item::where('order_id', $order->id)->get();
         foreach ($items as $item) {
             $stock = Batch::where('product_id', $item->product_id)
@@ -78,8 +87,16 @@ class OrderController extends Controller
         // MARK AS PENDING
         Order::where('id', $order->id)
         ->update([
-            'message' => $request->input('reason'),
+            'estimated_dispatch_date' => $request->input('est_date'),
+            'message' => 'Order Confirmed',
             'status' => 'pending',
+        ]);
+
+        $receiver = env('NEXMO_TEST_NUMBER', '63' . ltrim($order->contact, $order->contact[0]));
+        Nexmo::message()->send([
+            'to' => $receiver,
+            'from' => config('app.name', 'Online Pharma'),
+            'text' => 'Ref#'. $order->ref_no  .' : Your Order Has Been Accepted.',
         ]);
 
         return redirect()
@@ -146,11 +163,18 @@ class OrderController extends Controller
                     }
                 }
 
-                // MARK AS PENDING
+                // MARK AS COMPETED
                 Order::where('id', $order->id)
                 ->update([
-                    'message' => $request->input('reason'),
+                    'message' => 'Order Completed',
                     'status' => 'completed',
+                ]);
+
+                $receiver = env('NEXMO_TEST_NUMBER', '63' . ltrim($order->contact, $order->contact[0]));
+                Nexmo::message()->send([
+                    'to' => $receiver,
+                    'from' => config('app.name', 'Online Pharma'),
+                    'text' => 'Ref#'. $order->ref_no  .' : Your Order Has Been Completed.',
                 ]);
             });
 
@@ -162,9 +186,52 @@ class OrderController extends Controller
             ->with('message', 'Order #' . $order->id . ' has been marked as complete.');
     }
 
+    public function dispatch($id)
+    {
+        $order = Order::find($id);
+
+        if ($order == null) {
+            return redirect()->route('admin.order.index')->with('message', 'Order not found.');
+        }
+
+        // DISPATCH ORDER
+        $msg = 'Dispatched';
+        $text = 'Ref#'. $order->ref_no  .' Your Order Is Ready.';
+        if ($order->delivery_mode == 'delivery') {
+            $msg = 'On The Way';
+            $text = 'Ref#'. $order->ref_no  .' : Your Order Is On The Way. Please Prepare The Requirements.';
+        }
+        if ($order->delivery_mode == 'pickup') {
+            $msg = 'Ready For Pickup';
+            $text = 'Ref#'. $order->ref_no  .' : Your Order Ready. Please Bring The Requirements When Claiming.';
+        }
+
+        Order::where('id', $order->id)
+        ->update([
+            'message' => $msg,
+            'status' => 'dispatched',
+        ]);
+
+        $receiver = env('NEXMO_TEST_NUMBER', '63' . ltrim($order->contact, $order->contact[0]));
+        Nexmo::message()->send([
+            'to' => $receiver,
+            'from' => config('app.name', 'Online Pharma'),
+            'text' => $text,
+        ]);
+
+
+        return redirect()
+            ->route('admin.order.index')
+            ->with('message', 'Order #' . $order->ref_no . ' has been dispatched.');
+    }
+
     public function destroy(Request $request, $id)
     {
         $order = Order::find($id);
+
+        $request->validate([
+            'reason' => 'required|string|max:30'
+        ]);
 
         if ($order == null) {
             return redirect()->route('admin.order.index')->with('message', 'Order not found.');
@@ -178,9 +245,16 @@ class OrderController extends Controller
             'is_void' => 1,
         ]);
 
+        $receiver = env('NEXMO_TEST_NUMBER', '63' . ltrim($order->contact, $order->contact[0]));
+        Nexmo::message()->send([
+            'to' => $receiver,
+            'from' => config('app.name', 'Online Pharma'),
+            'text' => 'Ref#'. $order->ref_no  .' : Your Order Has Been Cancelled. - Reason: ' . $request->input('reason'),
+        ]);
+
 
         return redirect()
             ->route('admin.order.index')
-            ->with('message', 'Order #' . $order->id . ' has been voided.');
+            ->with('message', 'Order #' . $order->ref_no . ' has been voided.');
     }
 }

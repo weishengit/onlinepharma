@@ -39,6 +39,7 @@ class CreateOrdersTable extends Migration
             $table->string('other_discount')->nullable();
             $table->decimal('amount_due')->nullable();
             $table->integer('is_void');
+            $table->date('estimated_dispatch_date')->nullable();
             $table->timestamps();
         });
     }

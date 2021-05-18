@@ -8,17 +8,7 @@
     </div>
     <br>
     <div class="row">
-  		<div class="col-sm-3"><!--left col-->
-          
-            <ul class="list-group">
-                <li class="list-group-item text-muted">Order Activity <i class="fa fa-dashboard fa-1x"></i></li>
-                <li class="list-group-item text-left">Order# 20203234</li>
-                <li class="list-group-item text-left">Order# 20203234</li>
-                <li class="list-group-item text-left">Order# 20203234</li>
-                <li class="list-group-item text-left">Order# 20203234</li>
-            </ul> 
-            
-            </div><!--/col-3-->
+
     	<div class="col-sm-9">
             @if (session()->has('message'))
                 <div class="alert alert-warning alert-dismissible fade show" role="alert">
@@ -42,7 +32,7 @@
                 </div>
             @endif
 
-              
+
             <div class="tab-content">
                 <div class="btn-group" role="group">
                     <a href="{{ route('profile.password.edit') }}"><button class="btn btn-lg btn-success" type="submit"><i class="glyphicon glyphicon-ok-sign"></i>Change Password</button></a>
@@ -53,29 +43,29 @@
                         @csrf
                         @method('PUT')
                         <div class="form-group">
-                          
+
                             <div class="col-xs-6">
                                 <label for="first_name"><h4>First name</h4></label>
                                 <input type="text" class="form-control" name="first_name" id="first_name" placeholder="enter first name..." value="{{ auth()->user()->first_name ?? '' }}">
                             </div>
                         </div>
                         <div class="form-group">
-                            
+
                             <div class="col-xs-6">
                                 <label for="last_name"><h4>Last name</h4></label>
                                 <input type="text" class="form-control" name="last_name" id="last_name" placeholder="enter last name..." value="{{ auth()->user()->last_name ?? '' }}">
                             </div>
                         </div>
-          
+
                         <div class="form-group">
-                            
+
                             <div class="col-xs-6">
                                 <label for="phone"><h4>Contact Number</h4></label>
                                 <input type="text" class="form-control" name="contact" id="phone" placeholder="09XXXXXXXXX" value="{{ auth()->user()->contact ?? '' }}">
                             </div>
                         </div>
                         <div class="form-group">
-                            
+
                             <div class="col-xs-6">
                                 <label for="location"><h4>Address(House Number, Street, Barangay, City)</h4></label>
                                 <input type="text" class="form-control" name="address" id="location" placeholder="enter address..." value="{{ auth()->user()->address ?? '' }}">
@@ -83,7 +73,7 @@
                         </div>
 
                         <div class="form-group">
-                            
+
                             <div class="col-xs-6">
                                 <label for="scid"><h4>SCID(Senior Citizen ID)</h4></label>
                                 <input type="text" class="form-control" name="scid" id="scid" placeholder="enter scid..." value="{{ auth()->user()->scid ?? '' }}">

@@ -83,8 +83,38 @@
 
                         <div class="max-w-2xl bg-white border-2 border-gray-300 p-5 rounded-md tracking-wide shadow-lg">
                             <div id="header" class="">
-                                <h4 id="name" class="text-blue-500 text-2xl font-semibold mb-2">Pending Orders</h4>
+                                <h4 id="name" class="text-blue-500 text-2xl font-semibold mb-2">Accepted Orders</h4>
                                 <p id="job" class="text-gray-800 mt-2 text-sm">Show all currently pending orders.</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            {{-- DISPATCH ORDERS --}}
+            <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                    <a
+                        href="{{ route('admin.order.show', ['order' => 'dispatched']) }}">
+
+                        <div class="max-w-2xl bg-white border-2 border-gray-300 p-5 rounded-md tracking-wide shadow-lg">
+                            <div id="header" class="">
+                                <h4 id="name" class="text-blue-500 text-2xl font-semibold mb-2">Dispatch Orders</h4>
+                                <p id="job" class="text-gray-800 mt-2 text-sm">Show all currently disptached orders.</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            {{-- Return Orders --}}
+            <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                    <a
+                        href="{{ route('admin.return.index') }}">
+
+                        <div class="max-w-2xl bg-white border-2 border-gray-300 p-5 rounded-md tracking-wide shadow-lg">
+                            <div id="header" class="">
+                                <h4 id="name" class="text-blue-500 text-2xl font-semibold mb-2">Return Orders</h4>
+                                <p id="job" class="text-gray-800 mt-2 text-sm">Show returns menu.</p>
                             </div>
                         </div>
                     </a>

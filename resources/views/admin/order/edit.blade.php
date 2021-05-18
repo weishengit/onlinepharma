@@ -216,10 +216,10 @@
                                         @method('post')
                                         <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 border">
                                             <dt class="text-xl font-medium text-gray-500">
-                                                Accept
+                                                Estimated Delivery Date
                                             </dt>
+                                            <input id="est_date" name="est_date" type="date" min="{{ date("Y-m-d") }}" value="{{ old('est_date') }}">
                                             <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                                <input type="text" name="reason" placeholder="note...">
                                                 <button type="submit"
                                                     class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                                                     Accept
@@ -229,16 +229,38 @@
                                     </form>
                                 @endif
                                 @if ($order->status == 'pending')
+                                    {{-- ACCEPT FORM --}}
+                                    <form action="{{ route('admin.order.dispatch', ['id' => $order->id]) }}" method="POST">
+                                        @csrf
+                                        @method('post')
+                                        <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 border">
+                                            <dt class="text-xl font-medium text-gray-500">
+                                                @if ($order->delivery_mode == 'delivery')
+                                                    Send For Delivery
+                                                @endif
+                                                @if ($order->delivery_mode == 'pickup')
+                                                    Ready For Pickup
+                                                @endif
+                                            </dt>
+                                            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                                <button type="submit"
+                                                    class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                                    Dispatch
+                                                </button>
+                                            </dd>
+                                        </div>
+                                    </form>
+                                @endif
+                                @if ($order->status == 'dispatched')
                                     {{-- COMPLETE FORM --}}
                                     <form action="{{ route('admin.order.complete', ['id' => $order->id]) }}" method="POST">
                                         @csrf
                                         @method('post')
                                         <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 border">
                                             <dt class="text-xl font-medium text-gray-500">
-                                                Complete
+                                                Mark As Complete
                                             </dt>
                                             <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                                <input type="text" name="reason" placeholder="message...">
                                                 <button type="submit"
                                                     class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                                                     Complete

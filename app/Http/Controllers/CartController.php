@@ -6,6 +6,7 @@ use App\Models\Cart;
 use App\Models\Item;
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -94,9 +95,14 @@ class CartController extends Controller
         $oldCart = Session::get('cart');
         $cart = new Cart($oldCart);
 
-        $cart->decrease($id);
-
+        $is_empty = $cart->decrease($id);
         Session::put('cart', $cart);
+
+        if ($is_empty == true) {
+            if (Session::has('cart')) {
+                session()->forget('cart');
+            }
+        }
 
         return redirect()->route('cart');
     }
@@ -170,12 +176,13 @@ class CartController extends Controller
     public function delivery()
     {
         // GET THE OLD CART
+        $settings = Setting::first();
         $oldCart = Session::get('cart');
         $cart = new Cart($oldCart);
 
         // CHANGE THE MODEL
         $cart->setClaim_type('delivery');
-        $cart->setDeliveryFee(30);
+        $cart->setDeliveryFee($settings->delivery_fee);
 
         // Overwrite the cart session
         Session::put('cart', $cart);
@@ -256,6 +263,7 @@ class CartController extends Controller
                 'address' => auth()->user()->address,
                 'contact' => auth()->user()->contact,
                 'scid' => auth()->user()->scid,
+                'cashier' => config('app.name', 'Online Pharma'),
                 'scid_image' => $cart->getSc_image(),
                 'prescription_image' => $cart->getRx_image(),
                 'ref_no' => $cart->getRef_no(),

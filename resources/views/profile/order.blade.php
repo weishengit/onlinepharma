@@ -94,48 +94,71 @@
 @section('content')
 <div class="container">
     @if ($order->is_void != 1)
+        <?php
+            $status = 0;
+            switch ($order->status) {
+                case 'void':
+                    $status = 0;
+                    break;
+                case 'new':
+                    $status = 1;
+                    break;
+                case 'pending':
+                    $status = 2;
+                    break;
+                case 'dispatched':
+                    $status = 3;
+                    break;
+                case 'completed':
+                    $status = 4;
+                    break;
+                default:
+                    $status = 0;
+                    break;
+            }
+        ?>
         {{-- TRACKING --}}
         <div class="card">
             <div class="card-body row">
-                <div class="col"> <strong>Estimated Delivery time:</strong> <br>29 nov 2019 </div>
+                <div class="col"> <strong>Estimated Delivery time:</strong> <br> {{ $order->estimated_dispatch_date ?? 'None' }} </div>
                 <div class="col"> <strong>Status:</strong> <br> {{ $order->message }} </div>
             </div>
         </div>
         @if ($order->delivery_mode == 'delivery')
         <div class="track">
-            <div class="step active">
+            <div class="step @if ($status >= 1) active @endif">
                 <span class="icon icon-shopping-bag"></span>
                 <span class="text">Order Placed</span>
             </div>
-            <div class="step active">
-                <span class="icon icon-checkmark"></span>
+            <div class="step @if ($status >= 2) active @endif">
+                <span class="icon icon-check"></span>
                 <span class="text">Order confirmed</span>
             </div>
-            <div class="step">
+            <div class="step @if ($status >= 3) active @endif">
                 <span class="icon icon-truck"></span>
                 <span class="text"> On the way </span>
             </div>
-            <div class="step">
-                <span class="icon icon-star"> /span>
+            <div class="step @if ($status == 4) active @endif">
+                <span class="icon icon-star"> </span>
                 <span class="text">Completed</span>
             </div>
         </div>
         @endif
         @if ($order->delivery_mode == 'pickup')
         <div class="track">
-            <div class="step active">
+            <div class="step @if ($status >= 1) active @endif">
                 <span class="icon icon-shopping-bag"></span>
                 <span class="text">Order Placed</span>
             </div>
-            <div class="step active">
+            <div class="step @if ($status >= 2) active @endif">
                 <span class="icon icon-check"></span>
                 <span class="text">Order confirmed</span>
             </div>
-            <div class="step">
+            <div class="step @if ($status >= 3) active @endif">
                 <span class="icon icon-shopping-basket"></span>
                 <span class="text">Ready for pickup</span>
             </div>
-            <div class="step">
+            <div class="step @if ($status == 4) active @endif">
                 <span class="icon icon-star"></span>
                 <span class="text">Completed</span>
             </div>
@@ -144,14 +167,14 @@
     @else
     <div class="card">
         <div class="card-body row">
-            <div class="col"> <strong>Estimated Delivery time:</strong> <br> Cancelled </div>
-            <div class="col"> <strong>Status:</strong> <br> {{ $order->message }} </div>
+            <div class="col"> <strong>Estimated Delivery time:</strong> <br> None </div>
+            <div class="col"> <strong>Status:</strong> <br> {{ ucwords($order->message) }}</div>
         </div>
     </div>
     <div class="track">
         <div class="step active">
             <span class="icon icon-close"></span>
-            <span class="text">Order Cancelled</span>
+            <span class="text">Order {{ ucwords($order->status) }}</span>
         </div>
     </div>
     @endif
@@ -166,17 +189,17 @@
             <br>
             <span class="float-right"> <strong>Claim Type: {{ ucwords($order->delivery_mode) }}</strong></span>
             <br>
-            <span class="float-right"> <strong>Status: </strong>Pending</span>
+            <span class="float-right"> <strong>Status: </strong>{{ ucwords($order->status) }}</span>
         </div>
         {{-- HEADER --}}
         <div class="card-body">
             <div class="row mb-4">
                 <div class="col-sm-6">
                     <h6 class="mb-3">From:</h6>
-                    <div><strong>{{ $order->cashier }}</strong></div>
-                    <div>Cabanatuan City</div>
-                    <div>Email: shop@onlinepharma.com</div>
-                    <div>Contact: +64 444 666 3333</div>
+                    <div><strong>{{ $settings->name }}</strong></div>
+                    <div>{{ $settings->address }}</div>
+                    <div>Email: {{ $settings->email }}</div>
+                    <div>Contact: {{ $settings->contact }}</div>
                 </div>
                 <div class="col-sm-6">
                     <h6 class="mb-3">To:</h6>
@@ -269,6 +292,7 @@
                     <button type="submit" class="btn btn-primary btn-md">Back</button>
                 </div>
             </a>
+            @if ($order->is_void != 1 && $order->status != 'completed')
             <form action="{{ route('profile.cancel', ['order' => $order->id]) }}" method="post">
                 @csrf
                 @method('delete')
@@ -277,12 +301,13 @@
                     <button type="submit" class="btn btn-danger btn-md">Cancel Order</button>
                 </div>
             </form>
-            <a href="#">
+            @endif
+            {{-- <a href="#">
                 <div class="text-center">
                     <br>
                     <button class="btn btn-success btn-md">Download PDF</button>
                 </div>
-            </a>
+            </a> --}}
         </div>
     </div>
 </div>
