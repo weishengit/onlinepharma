@@ -114,7 +114,8 @@ class Cart
     // DECREASE QUANTITY
     public function decrease($id)
     {
-        $storedItem = $this->items[$id];
+        if (isset($this->items[$id])) {
+            $storedItem = $this->items[$id];
 
         $storedItem['qty'] -= 1;
 
@@ -126,6 +127,17 @@ class Cart
 
         if ($storedItem['qty'] <= 0) {
             $this->remove($id);
+        }
+
+        if (empty($this->items)) {
+            return true;
+        }
+
+        return false;
+        }
+
+        if (empty($this->items)) {
+            return true;
         }
     }
 

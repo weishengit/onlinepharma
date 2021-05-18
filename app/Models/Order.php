@@ -40,12 +40,13 @@ class Order extends Model
         'other_discount',
         'amount_due',
         'is_void',
+        'estimated_dispatch_date',
     ];
 
     protected $attributes = [
         'is_void' => 0,
         'status' => 'new',
-        'cashier' => 'Online Pharma',
+        'message' => 'Order Placed',
     ];
 
     public function items()
@@ -56,5 +57,10 @@ class Order extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function product_return()
+    {
+        return $this->hasOne(ProductReturn::class);
     }
 }

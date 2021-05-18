@@ -9,16 +9,16 @@
         <ul class="list-group list-group-flush">
             @foreach ($new_orders as $new_order)
                 <a href="{{ route('profile.order', ['order' => $new_order->id]) }}">
-                    @if ($new_order->status == 'void')
+                @if ($new_order->status == 'void')
                     <li class="list-group-item border text-danger">
-                    @elseif ($new_order->status == 'pending')
+                @elseif ($new_order->status == 'pending')
                     <li class="list-group-item border text-success">
-                    @elseif ($new_order->status == 'completed')
+                @elseif ($new_order->status == 'completed')
                     <li class="list-group-item border text-info">
-                    @else
+                @else
                     <li class="list-group-item border text-dark">
-                    @endif
-                    ID: {{ $new_order->ref_no }}
+                @endif
+                    Ref: {{ $new_order->ref_no }}
                         <br>
                         <strong>Date: {{ $new_order->created_at }}</strong>
                         <span class="float-right">
@@ -40,16 +40,16 @@
 
             @foreach ($old_orders as $old_order)
             <a href="{{ route('profile.order', ['order' => $old_order->id]) }}">
-                @if ($old_order->status == 'void')
+                @if ($old_order->status == 'void' || $old_order->status == 'returned')
                     <li class="list-group-item border text-danger">
-                    @elseif ($old_order->status == 'pending')
+                @elseif ($old_order->status == 'pending')
                     <li class="list-group-item border text-success">
-                    @elseif ($old_order->status == 'completed')
+                @elseif ($old_order->status == 'completed')
                     <li class="list-group-item border text-info">
-                    @else
+                @else
                     <li class="list-group-item border text-dark">
-                    @endif
-                    ID: {{ $old_order->ref_no }}
+                @endif
+                    Ref: {{ $old_order->ref_no }}
                     <br>
                     <strong>Date: {{ $old_order->created_at }}</strong>
                     <span class="float-right">

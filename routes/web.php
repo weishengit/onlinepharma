@@ -20,7 +20,10 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DiscountController;
 use App\Http\Controllers\PasswordController;
+use App\Http\Controllers\ProductReturnController;
+use App\Http\Controllers\SmsController;
 use App\Http\Controllers\UserReportController;
+use App\Models\ProductReturn;
 
 /*
 |--------------------------------------------------------------------------
@@ -110,12 +113,15 @@ Route::middleware(['auth', 'active'])->prefix('profile')->name('profile.')->grou
     Route::delete('/delete', [ProfileDelete::class, 'destroy']);
 
     Route::get('/orders', [ProfileController::class, 'orders'])->name('orders');
+    Route::delete('/orders/{order}', [ProfileController::class, 'cancel'])->name('cancel')
+        ->middleware(['password.confirm']);
     Route::get('/orders/{order?}', [ProfileController::class, 'order'])->name('order');
 });
 
 // ADMIN ROUTE
 Route::middleware(['admin', 'active'])->name('admin.')->prefix('admin')->group(function () {
-
+    //SMS
+    Route::get('/sms', [SmsController::class, 'index']);
     //DASHBOARD
     Route::get('/', [PagesController::class, 'admin'])->name('index');
     Route::get('/manage', [AdminController::class, 'manage'])->name('manage');
@@ -143,9 +149,12 @@ Route::middleware(['admin', 'active'])->name('admin.')->prefix('admin')->group(f
     Route::put('product/{product}/available', [ProductController::class, 'markForSale'])->name('product.available');
     Route::resource('product', ProductController::class);
     //ORDERS
+    Route::post('/order/{id}/dispatch', [OrderController::class, 'dispatch'])->name('order.dispatch');
     Route::post('/order/{id}/accept', [OrderController::class, 'accept'])->name('order.accept');
     Route::post('/order/{id}/complete', [OrderController::class, 'complete'])->name('order.complete');
     Route::resource('order', OrderController::class);
+    //RETURNS
+    Route::resource('return', ProductReturnController::class);
     //SALES
     Route::get('/sale', [SaleController::class, 'index'])->name('sale.index');
     Route::get('/sale/{product}', [SaleController::class, 'show'])->name('sale.show');
@@ -156,6 +165,7 @@ Route::middleware(['admin', 'active'])->name('admin.')->prefix('admin')->group(f
     Route::delete('/sale/{id}/destroy', [SaleController::class, 'destroy'])->name('sale.destroy');
     //BATCH
     Route::get('/batch/create/{id}', [BatchController::class, 'create'])->name('batch.add');
+    Route::post('/batch/activate/{id}', [BatchController::class, 'activate'])->name('batch.activate');
     Route::post('/batch/create/{id}', [BatchController::class, 'store'])->name('batch.save');
     Route::resource('batch', BatchController::class);
     //REPORTS

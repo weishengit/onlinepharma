@@ -58,6 +58,10 @@
     FACEBOOK_CLIENT_SECRET="6710e6bbcb1862f17aefa5e0453d0680"
     FACEBOOK_REDIRECT="http://127.0.0.1:8000/login/facebook/callback"
 
+    NEXMO_KEY=8c81c151
+    NEXMO_SECRET=l7Dpl2HMJATXYFn9
+    NEXMO_TEST_NUMBER=639750239318
+
 6. Open XAMPP and create a database called "onlinepharma"
 7. Go back to the terminal and type "composer Install"
 8. Next type "php artisan migrate"
