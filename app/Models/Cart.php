@@ -64,7 +64,7 @@ class Cart
 
         $price = 0;
         $rx = $item->is_prescription;
-        dd($rx);
+
         if ($item->sale()->exists()) {
             if ($item->sale->is_percent == true) {
                 $price = round(($item->price - ($item->price * ($item->sale->rate / 100))), 2);
