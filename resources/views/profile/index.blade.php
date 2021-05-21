@@ -15,10 +15,10 @@
             {{-- ORDERS --}}
             <a href="{{ route('profile.orders') }}">
                 <ul class="list-group">
-                        <li class="list-group-item text-muted">Order Activity <i class="fa fa-dashboard fa-1x"></i></li>
+                        <li class="list-group-item text-muted">View Order Activity <i class="fa fa-dashboard fa-1x"></i></li>
                     @if (isset($orders))
                         @foreach ($orders as $order)
-                            <li class="list-group-item text-left">#{{ $order->id }}</li>
+                            <li class="list-group-item text-left">#{{ $order->ref_no }}</li>
                         @endforeach
                     @else
                         <li class="list-group-item text-center">No Orders Yet</li>
