@@ -173,8 +173,10 @@ Route::middleware(['admin', 'active'])->name('admin.')->prefix('admin')->group(f
     Route::post('/batch/create/{id}', [BatchController::class, 'store'])->name('batch.save');
     Route::resource('batch', BatchController::class);
     //REPORTS
-    Route::get('/reports', [ReportController::class, 'index'])->name('report');
-    Route::get('/reports/{report?}', [ReportController::class, 'show'])->name('report.show');
+    Route::get('/reports', [ReportController::class, 'index'])->name('report.index');
+    //REPORTS-USER
+    Route::get('/reports/users/', [ReportController::class, 'users'])->name('report.user');
+    Route::get('/reports/users/api/', [UserReportController::class, 'users'])->name('report.user.api');
 });
 
 require __DIR__.'/auth.php';

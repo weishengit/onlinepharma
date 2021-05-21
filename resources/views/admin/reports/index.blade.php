@@ -49,7 +49,7 @@
             <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                 <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
                     <a
-                        href="{{ route('admin.report.show', ['report' => 'user']) }}">
+                        href="{{ route('admin.report.user') }}">
 
                         <div class="max-w-2xl bg-white border-2 border-gray-300 p-5 rounded-md tracking-wide shadow-lg">
                             <div id="header" class="">

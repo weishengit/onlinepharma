@@ -11,15 +11,9 @@ class ReportController extends Controller
         return view('admin.reports.index');
     }
 
-    public function show($report = null)
+    public function users()
     {
-        if ($report == 'user') {
-            return view('admin.reports.user');
-        }
-        if ($report == null) {
-            return redirect()->route('admin.index')->with('message', 'report not found.');
-        }
-
-        return view('admin.reports.show');
+        return view('admin.reports.user');
     }
+
 }

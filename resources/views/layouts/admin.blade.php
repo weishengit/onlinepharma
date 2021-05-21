@@ -110,7 +110,7 @@
                             </a>
                         </li>
                         <li class="mr-6 my-2 md:my-0">
-                            <a href="{{ route('admin.report') }}" class="block py-1 md:py-3 pl-1 align-middle text-gray-500 no-underline hover:text-gray-900 border-b-2 border-white hover:border-green-500">
+                            <a href="{{ route('admin.report.index') }}" class="block py-1 md:py-3 pl-1 align-middle text-gray-500 no-underline hover:text-gray-900 border-b-2 border-white hover:border-green-500">
                                 <i class="fas fa-chart-area fa-fw mr-3"></i><span class="pb-1 md:pb-0 text-sm">Analytics</span>
                             </a>
                         </li>
