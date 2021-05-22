@@ -26,14 +26,13 @@ class UserReportController extends Controller
             $year = Carbon::now();
         }
 
+
         $start_date = $year->startOfYear();
         $end_date = $start_date->copy()->endOfYear();
-        $months = 12;
 
         if (($month_start != null || $month_start >= 0) && $month_end != null) {
             $start_date->addMonths($month_start);
             $end_date = $start_date->copy()->addMonths($month_end)->endOfMonth();
-            $months = $month_end - $month_start + 1;
         }
 
         // dd($start_date . ' - ' . $end_date);
@@ -57,7 +56,7 @@ class UserReportController extends Controller
 
         // dd($user_count);
 
-        for($month = 1; $month <= $months; $month++){
+        for($month = $month_start+1; $month <= $month_end + 1; $month++){
             if(!empty($user_count[$month])){
                 $user_array[$month_name[$month-1]] = $user_count[$month];
             }else{
