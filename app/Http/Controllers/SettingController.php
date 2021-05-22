@@ -7,79 +7,44 @@ use Illuminate\Http\Request;
 
 class SettingController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        //
+        $settings = Setting::first();
+        return view('admin.settings.index')->with('settings', $settings);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Setting  $setting
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Setting $setting)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Setting  $setting
-     * @return \Illuminate\Http\Response
-     */
     public function edit(Setting $setting)
     {
-        //
+        $settings = Setting::first();
+        return view('admin.settings.edit')->with('settings', $settings);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Setting  $setting
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Setting $setting)
+    public function update(Request $request)
     {
-        //
+        $request->validate([
+            'setting_name' => 'required|string|max:100',
+            'setting_address' => 'required|string|max:255',
+            'setting_email' => 'required|string|max:255',
+            'setting_contact' => 'required|string|max:100',
+            'setting_minimum' => 'required|numeric',
+            'setting_delivery_fee' => 'required|numeric',
+        ]);
+
+        Setting::first()
+            ->update([
+                'name' => $request->input('setting_name'),
+                'address' => $request->input('setting_address'),
+                'email' => $request->input('setting_email'),
+                'contact' => $request->input('setting_contact'),
+                'delivery_fee' => $request->input('setting_delivery_fee'),
+                'minimum_order_cost' => $request->input('setting_minimum'),
+            ]
+        );
+
+        return redirect()
+            ->route('admin.setting.index')
+            ->with('message', 'Settings has been updated.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Setting  $setting
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Setting $setting)
-    {
-        //
-    }
+
 }

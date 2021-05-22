@@ -24,6 +24,7 @@ use App\Http\Controllers\ProductReturnController;
 use App\Http\Controllers\SmsController;
 use App\Http\Controllers\CriticalLevelController;
 use App\Http\Controllers\ExpirationController;
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\UserReportController;
 use App\Models\ProductReturn;
 
@@ -124,6 +125,10 @@ Route::middleware(['auth', 'active'])->prefix('profile')->name('profile.')->grou
 Route::middleware(['admin', 'active'])->name('admin.')->prefix('admin')->group(function () {
     //SMS
     Route::get('/sms', [SmsController::class, 'index']);
+    //SETTINGS
+    Route::get('/settings', [SettingController::class, 'index'])->name('setting.index');
+    Route::get('/settings/edit', [SettingController::class, 'edit'])->name('setting.edit');
+    Route::put('/settings/edit', [SettingController::class, 'update'])->name('setting.update');
     //DASHBOARD
     Route::get('/', [PagesController::class, 'admin'])->name('index');
     Route::get('/manage', [AdminController::class, 'manage'])->name('manage');

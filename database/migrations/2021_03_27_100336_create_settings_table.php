@@ -20,7 +20,8 @@ class CreateSettingsTable extends Migration
             $table->string('address');
             $table->string('email');
             $table->string('contact');
-            $table->string('delivery_fee');
+            $table->decimal('delivery_fee');
+            $table->decimal('minimum_order_cost');
             $table->timestamps();
         });
 
@@ -31,7 +32,8 @@ class CreateSettingsTable extends Migration
             'address' => '42 Work St., Bussiness Avenue, M City',
             'email' => 'emailaddress@domain.com',
             'contact' => '0927-449-6838',
-            'delivery_fee' => 30
+            'delivery_fee' => 30,
+            'minimum_order_cost' => 0,
         ]);
     }
 

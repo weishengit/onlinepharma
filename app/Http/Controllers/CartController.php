@@ -119,7 +119,11 @@ class CartController extends Controller
 
     public function method()
     {
-        return view('pages.method');
+        $oldCart = Session::get('cart');
+        $cart = new Cart($oldCart);
+        $minimum = Setting::first()->minimum_order_cost;
+
+        return view('pages.method')->with('minimum', $minimum)->with('cart', $cart);;
     }
 
     public function discount()
@@ -226,7 +230,7 @@ class CartController extends Controller
         // GET THE OLD CART
         $oldCart = Session::get('cart');
         $cart = new Cart($oldCart);
-
+        $settings = Setting::first();
         // CHANGE THE MODEL
         $cart->finalize();
 
@@ -234,7 +238,8 @@ class CartController extends Controller
         Session::put('cart', $cart);
 
         return view('pages.finalize')
-            ->with('cart', session()->get('cart'));
+            ->with('cart', session()->get('cart'))
+            ->with('settings', $settings);
     }
 
     public function confirm()

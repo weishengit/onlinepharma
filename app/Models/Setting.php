@@ -15,5 +15,6 @@ class Setting extends Model
         'email',
         'contact',
         'delivery_fee',
+        'minimum_order_cost',
     ];
 }

@@ -21,6 +21,7 @@ class UserReportController extends Controller
         $month_start = $request->input('start') ?? null;
         $month_end = $request->input('end') ?? null;
         $year = Carbon::createFromDate($year);
+
         if ($year == null) {
             $year = Carbon::now();
         }

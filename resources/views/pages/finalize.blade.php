@@ -18,10 +18,10 @@
             <div class="row mb-4">
                 <div class="col-sm-6">
                     <h6 class="mb-3">From:</h6>
-                    <div><strong>{{ env('APP_NAME') ?? Store }}</strong></div>
-                    <div>Cabanatuan City</div>
-                    <div>Email: shop@onlinepharma.com</div>
-                    <div>Contact: +64 444 666 3333</div>
+                    <div><strong>{{ $settings->name }}</strong></div>
+                    <div>{{ $settings->address }}</div>
+                    <div>Email: {{ $settings->email }}</div>
+                    <div>Contact: {{ $settings->contact }}</div>
                 </div>
                 <div class="col-sm-6">
                     <h6 class="mb-3">To:</h6>

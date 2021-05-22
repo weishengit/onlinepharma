@@ -49,9 +49,16 @@
                     </ul>
                 </li>
             </ul>
+            @if ($cart->getSubTotal() >= $minimum)
             <div class="text-center">
                 <a href="{{ route('cart.delivery') }}" class="btn btn-primary">Deliver To My Address</a>
             </div>
+            @else
+            <div class="text-center">
+                Your order &#8369;{{ $cart->getSubTotal() }} is less than the minimum delivery amount &#8369;{{ $minimum }}.
+            </div>
+            @endif
+
         </div>
     </div>
 </div>
