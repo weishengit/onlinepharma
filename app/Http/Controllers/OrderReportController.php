@@ -77,10 +77,15 @@ class OrderReportController extends Controller
             $product = Product::find($key);
             $product_results[$product->name] = $value;
         }
-
-        // dd($product_results);
-
-
+        // AVERAGE SPENDING
+        $total_orders = Order::whereBetween('created_at', [$start_date, $end_date])->get();
+        $number_of_orders = $total_orders->count();
+        $number_of_customer = Order::whereBetween('created_at', [$start_date, $end_date])->get()->groupBy('user_id')->count();
+        $number_of_items = Order::select('total_items')->whereBetween('created_at', [$start_date, $end_date])->sum('total_items');
+        $price_of_orders = Order::select('amount_due')->whereBetween('created_at', [$start_date, $end_date])->sum('amount_due');
+        $avg_spending = $price_of_orders / $number_of_orders;
+        $avg_items = $number_of_items / $number_of_orders;
+        $avg_orders = $number_of_orders / $number_of_customer;
 
         // CREATE RESPONCE
         $return_array = [];
@@ -88,7 +93,10 @@ class OrderReportController extends Controller
         $return_array['name'] = 'orders';
         $return_array['data'] = [
             'orders_by_year' => $order_array,
-            'top10_products' => $product_results
+            'top10_products' => $product_results,
+            'avg_spending' => number_format($avg_spending, 2),
+            'avg_items' => number_format($avg_items, 2),
+            'avg_orders' => number_format($avg_orders, 2),
         ];
 
         // dd($return_array);

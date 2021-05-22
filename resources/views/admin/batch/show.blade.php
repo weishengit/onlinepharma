@@ -120,8 +120,8 @@
         </h1>
 
         {{-- CONTENT --}}
-        <div class="flex items-center justify-center h-screen">
-            <img src="{{ asset('images/' . $product->image) }}" alt="product image" si>
+        <div class="flex items-center justify-center">
+            <img src="{{ asset('images/' . $product->image) }}" alt="product image" height="">
         </div>
         <div>
             <a href="{{ route('admin.batch.add', ['id' => $product->id]) }}">
