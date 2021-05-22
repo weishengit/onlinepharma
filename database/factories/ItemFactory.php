@@ -30,7 +30,8 @@ class ItemFactory extends Factory
             'price' => $this->faker->numberBetween(20, 100),
             'total_price' => $this->faker->randomFloat(2, 5, 200),
             'vat_type' => $this->faker->numberBetween(2, 4),
-            'is_prescription' => $this->faker->biasedNumberBetween($min = 0, $max = 1, $function = 'sqrt')
+            'is_prescription' => $this->faker->biasedNumberBetween($min = 0, $max = 1, $function = 'sqrt'),
+            'created_at' => $this->faker->dateTimeBetween('-3 years', 'now'),
         ];
     }
 }

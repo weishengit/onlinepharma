@@ -65,22 +65,43 @@
             </div>
 
         </div>
-        {{-- USER REGISTRATION LINE CHART --}}
+        {{-- ORDER LINE CHART --}}
         <div class="bg-white border rounded shadow mt-20 h-1/2">
             <div class="border-b p-3">
                 <h5 class="font-bold uppercase text-gray-600">Orders</h5>
             </div>
             <div class="flex flex-wrap">
                 <div class="pt-5 pl-20 p-5 w-1/2">
-                    <ol id="order_list" class="list-decimal">
+                    <div>
+                        <h3 class="font-bold mb-4">Number of Orders</h3>
+                        <ol id="order_list" class="list-decimal">
 
-                    </ol>
+                        </ol>
+                    </div>
                 </div>
                 <div class="p-5 h-1/2 w-1/2">
                     <canvas id="line-chart" width="800" height="450"></canvas>
                 </div>
             </div>
+        </div>
+        {{-- TOP PRODUCT PIE CHART --}}
+        <div class="bg-white border rounded shadow mt-20 h-1/2">
+            <div class="border-b p-3">
+                <h5 class="font-bold uppercase text-gray-600">Product</h5>
+            </div>
+            <div class="flex flex-wrap">
+                <div class="pt-5 pl-20 p-5 w-1/2">
+                    <div>
+                        <h3 class="font-bold mb-4">Most Bought Products</h3>
+                        <ol id="product_list" class="list-decimal">
 
+                        </ol>
+                    </div>
+                </div>
+                <div class="p-5 h-1/2 w-1/2">
+                    <canvas id="pie-chart" width="800" height="450"></canvas>
+                </div>
+            </div>
         </div>
 
     </div>
@@ -110,23 +131,25 @@
             start_span.innerText = 'M'+(parseInt(start_input.value) + 1);
             end_span.innerText = 'M'+(parseInt(end_input.value) + 1);
 
-            get_registrations();
+            get_data();
 
-            function get_registrations() {
+            function get_data() {
                 // CREATE XHR
                 let api_url = '/admin/reports/orders/api?year=' + year_input.value + '&start=' + start_input.value + '&end=' + end_input.value;
                 let xhr = new XMLHttpRequest();
                 xhr.open("GET", api_url, true);
                 xhr.onload = function() {
                     if (this.status == 200) {
-                        let res = this.responseText;
+                        var res = this.responseText;
+                        console.log('respoonce 200');
                         document.getElementById("order_list").innerHTML = "";
-
                         if(res){
                             // CHART DATA
-                            let users = JSON.parse(this.responseText);
-                            let user_data = Object.values(users);
-                            let user_labels = Object.keys(users);
+                            let data = JSON.parse(this.responseText);
+                            console.log(data);
+                            console.log(JSON.parse(orders_by_year));
+                            let date_data = Object.values(data.orders_by_year);
+                            let date_labels = Object.keys(data.top10_products);
                             // LIST
                             Object.entries(users).forEach(function([key, value]) {
                                 let list_item = document.createElement("li");
@@ -138,9 +161,9 @@
                             new Chart(document.getElementById("line-chart"), {
                                 type: 'line',
                                 data: {
-                                    labels: user_labels,
+                                    labels: date_labels,
                                     datasets: [{
-                                        data: user_data,
+                                        data: date_data,
                                         label: "Number of Orders",
                                         borderColor: "#3e95cd",
                                         fill: false

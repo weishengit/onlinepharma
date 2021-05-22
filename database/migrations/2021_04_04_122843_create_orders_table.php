@@ -27,7 +27,7 @@ class CreateOrdersTable extends Migration
             $table->string('prescription_image')->nullable();
             $table->string('cashier')->nullable();
             $table->string('delivery_mode')->nullable();
-            $table->integer('delivery_fee')->nullable();
+            $table->decimal('delivery_fee')->nullable();
             $table->integer('total_items')->nullable();
             $table->decimal('vatable_sale')->nullable();
             $table->decimal('vat_amount')->nullable();

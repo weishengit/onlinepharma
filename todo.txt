@@ -2,8 +2,10 @@ TODO
 
 1. -- ADD SMS To Order Tracking Controller
 2. -- Fix Customer Order UI
-3. Analytics
-4. Overhaul Order Controller Views
+3. -Analytics
+    -- 3.1 - User Page
+     3.2 - Orders Page
+4. --Overhaul Order Controller Views
 5. -- Refund Feature
-6. Low stock Feature
-7. Expiration feature
+6. --Low stock Feature
+7. --Expiration feature

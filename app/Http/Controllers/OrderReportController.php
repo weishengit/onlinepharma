@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Item;
 use App\Models\Order;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 
@@ -34,8 +36,8 @@ class OrderReportController extends Controller
         }
         // dd($start_date . ' - ' . $end_date);
 
-        $user_count = [];
-        $user_array = [];
+        $order_count = [];
+        $order_array = [];
 
         $orders = Order::whereBetween('created_at', [$start_date, $end_date])
             ->get()
@@ -43,27 +45,55 @@ class OrderReportController extends Controller
                 return Carbon::parse($date->created_at)->format('m');
         });
 
-        // dd($orders);
+        //dd($orders);
         $month_name = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
         foreach ($orders as $key => $value) {
-            $user_count[(int)$key] = count($value);
+            $order_count[(int)$key] = count($value);
         }
-
-        // dd($user_count);
+        // dd($order_count);
 
         for($month = $month_start+1; $month <= $month_end + 1; $month++){
-            if(!empty($user_count[$month])){
-                $user_array[$month_name[$month-1]] = $user_count[$month];
+            if(!empty($order_count[$month])){
+                $order_array[$month_name[$month-1]] = $order_count[$month];
             }else{
-                $user_array[$month_name[$month-1]] = 0;
+                $order_array[$month_name[$month-1]] = 0;
             }
         }
 
-        // dd($user_array);
-        // GET ALL REGISTRATIONS
+        // GET TO PRODUCTS
+        $products = Item::whereBetween('created_at', [$start_date, $end_date])
+            ->get()
+            ->groupBy('product_id')->map(function($row){
+                return $row->sum('quantity');
+            }
+        );
 
-        return json_encode($user_array);
+        $product_array = $products->toArray();
+        arsort($product_array, SORT_NUMERIC);
+        $product_array = array_slice($product_array, 0, 10, true);
+        $product_results = [];
+        foreach ($product_array as $key => $value) {
+            $product = Product::find($key);
+            $product_results[$product->name] = $value;
+        }
+
+        // dd($product_results);
+
+
+
+        // CREATE RESPONCE
+        $return_array = [];
+        $return_array['status'] = 200;
+        $return_array['name'] = 'orders';
+        $return_array['data'] = [
+            'orders_by_year' => $order_array,
+            'top10_products' => $product_results
+        ];
+
+        // dd($return_array);
+
+        return json_encode($return_array);
 
     }
 }
