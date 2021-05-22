@@ -201,84 +201,9 @@
                 <!--/Metric Card-->
             </div>
         </div>
-
-        <!--Divider-->
-        <hr class="border-b-2 border-gray-400 my-8 mx-4">
-
-        <div class="flex flex-row flex-wrap flex-grow mt-2">
-            <div class="w-full md:w-full p-3">
-                <!--Graph Card-->
-                <div class="bg-white border rounded shadow">
-                    <div class="border-b p-3">
-                        <h5 class="font-bold uppercase text-gray-600">New Users</h5>
-                    </div>
-                    <div class="p-5">
-                        <canvas id="chartjs-0" class="chartjs" width="undefined" height="undefined"></canvas>
-                        <script>
-
-                        // AUTOLOAD
-                        window.onload = function load_users() {
-
-                            // CREATE XHR
-                            var xhr = new XMLHttpRequest();
-                            xhr.open("GET", "{{ route('dash_users') }}", true);
-                            var userData = [];
-
-                            xhr.onload = function() {
-                                if (this.status == 200) {
-                                    var res = this.responseText;
-
-                                    if(res){
-                                        var users = JSON.parse(this.responseText);
-                                        var userData = Object.values(users);
-
-                                        console.log(userData);
-
-                                    }
-
-                                }
-
-                                new Chart(document.getElementById("chartjs-0"), {
-                                    "type": "bar",
-                                    "data": {
-                                        "labels": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-                                        "datasets": [{
-                                            "label": "Registrations",
-                                            "data": userData,
-                                            "fill": false,
-                                            "backgroundColor": ["rgba(255, 99, 132, 0.2)", "rgba(255, 159, 64, 0.2)", "rgba(255, 205, 86, 0.2)", "rgba(75, 192, 192, 0.2)", "rgba(54, 162, 235, 0.2)", "rgba(153, 102, 255, 0.2)", "rgba(201, 203, 207, 0.2)","rgba(255, 99, 132, 0.2)", "rgba(255, 159, 64, 0.2)", "rgba(255, 205, 86, 0.2)", "rgba(75, 192, 192, 0.2)", "rgba(54, 162, 235, 0.2)"],
-                                            "borderColor": ["rgb(255, 99, 132)", "rgb(255, 159, 64)", "rgb(255, 205, 86)", "rgb(75, 192, 192)", "rgb(54, 162, 235)", "rgb(153, 102, 255)", "rgb(201, 203, 207)","rgb(255, 99, 132)", "rgb(255, 159, 64)", "rgb(255, 205, 86)", "rgb(75, 192, 192)", "rgb(54, 162, 235)", "rgb(153, 102, 255)"],
-                                            "borderWidth": 1
-                                        }]
-                                    },
-                                    "options": {
-                                        "scales": {
-                                            "yAxes": [{
-                                                "ticks": {
-                                                    "beginAtZero": true
-                                                }
-                                            }]
-                                        }
-                                    }
-                                });
-
-                            }
-
-                            xhr.send();
-                        }
-
-                            </script>
-                        </div>
-                    </div>
-
-            </div>
-        </div>
-
         <!--/ Console Content-->
 
     </div>
-
-
 </div>
 <!--/container-->
 @endsection

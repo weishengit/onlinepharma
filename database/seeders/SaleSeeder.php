@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Sale;
 use Illuminate\Database\Seeder;
 
 class SaleSeeder extends Seeder
@@ -13,6 +14,6 @@ class SaleSeeder extends Seeder
      */
     public function run()
     {
-        //
+        Sale::factory()->times(20)->create();
     }
 }

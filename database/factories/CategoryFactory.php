@@ -22,7 +22,7 @@ class CategoryFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->unique()->domainWord,
+            'name' => 'Category ' .$this->faker->unique()->numberBetween(1,8),
             'is_active' => 1,
         ];
     }

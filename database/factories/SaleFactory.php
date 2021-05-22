@@ -22,7 +22,9 @@ class SaleFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'product_id' => $this->faker->unique()->numberBetween(1, 50),
+            'rate' => $this->faker->numberBetween(20, 50),
+            'is_percent' => $this->faker->numberBetween(0, 1),
         ];
     }
 }

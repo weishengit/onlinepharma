@@ -22,7 +22,12 @@ class BatchFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'batch_no' => $this->faker->uuid,
+            'product_id' => $this->faker->numberBetween(1, 50),
+            'unit_cost' => $this->faker->numberBetween(5, 200),
+            'initial_quantity' => $this->faker->numberBetween(500, 1000),
+            'remaining_quantity' => $this->faker->numberBetween(200, 500),
+            'expiration' => $this->faker->dateTimeBetween('+1 years', '+3 years', null)
         ];
     }
 }

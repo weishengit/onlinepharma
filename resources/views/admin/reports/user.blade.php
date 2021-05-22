@@ -82,15 +82,7 @@
             </div>
 
         </div>
-        {{-- DOUGHNUT CHART --}}
-        <div class="bg-white border rounded shadow h-1/2">
-            <div class="border-b p-3">
-                <h5 class="font-bold uppercase text-gray-600">New Users</h5>
-            </div>
-            <div class="w-1/2">
-                <canvas id="doughnut-chart" width="800" height="450"></canvas>
-            </div>
-        </div>
+
     </div>
 </div>
 
@@ -107,6 +99,7 @@
             const year_span = document.getElementById('y_span');
             const start_span = document.getElementById('s_span');
             const end_span = document.getElementById('e_span');
+
             error_flash.innerText = '';
 
             if(parseInt(start_input.value) >= parseInt(end_input.value)){
@@ -118,7 +111,6 @@
             end_span.innerText = 'M'+(parseInt(end_input.value) + 1);
 
             get_registrations();
-            get_users();
 
             function get_registrations() {
                 // CREATE XHR
@@ -129,7 +121,7 @@
                     if (this.status == 200) {
                         let res = this.responseText;
                         document.getElementById("registration_list").innerHTML = "";
-                        console.log(res);
+
                         if(res){
                             // CHART DATA
                             let users = JSON.parse(this.responseText);
@@ -156,8 +148,8 @@
                                 },
                                 options: {
                                     title: {
-                                    display: true,
-                                    text: 'User Registrations'
+                                        display: true,
+                                        text: 'User Registrations'
                                     }
                                 }
                             });
@@ -168,48 +160,9 @@
                 xhr.send();
             }
 
-            function get_users(){
-                let api_url = '/admin/reports/users/api?year=' + year_input.value + '&start=' + start_input.value + '&end=' + end_input.value;
-                let xhr2 = new XMLHttpRequest();
-                xhr2.open("GET", api_url, true);
-                xhr2.onload = function() {
-                    if (this.status == 200) {
-                        let res = this.responseText;
-                        console.log(res);
-                        if(res){
-                            // CHART DATA
-                            let users = JSON.parse(this.responseText);
-                            let user_data = Object.values(users);
-                            let user_labels = Object.keys(users);
-
-                            new Chart(document.getElementById("doughnut-chart"), {
-                                type: 'doughnut',
-                                data: {
-                                    labels: user_labels,
-                                    datasets: [
-                                        {
-                                        label: "Population (millions)",
-                                        backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
-                                        data: user_data
-                                        }
-                                    ]
-                                },
-                                options: {
-                                    title: {
-                                        display: true,
-                                        text: 'Predicted world population (millions) in 2050'
-                                    }
-                                }
-                            });
-                        }
-                    }
-                }
-                xhr2.send();
-            }
 
         }
     );
-    console.log('AF Func');
 </script>
 
 @endsection

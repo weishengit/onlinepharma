@@ -24,13 +24,15 @@ class OrderFactory extends Factory
     public function definition()
     {
         return [
-            'prescription_image' => 'product_04.png',
-            'scid_image' => 'product_03.png',
-            'is_sc' => 1,
-            'sc_discount' => 0.20,
+            'user_id' => $this->faker->numberBetween(1, 20),
+            'ref_no' => $this->faker->uuid,
+            'status' => $this->faker->randomElement($array = array ('new','pending', 'dispatched', 'complete', 'cancelled')),
+            'is_void' => 0,
+            'is_sc' => 0,
             'delivery_mode' => $this->faker->randomElement($array = array ('delivery','pickup')),
-            'total_items' => $this->faker->numberBetween(1, 50),
-            'subtotal' => $this->faker->numberBetween(50, 2000),
+            'total_items' => $this->faker->numberBetween(3, 20),
+            'amount_due' => $this->faker->numberBetween(50, 2000),
+            'created_at' => $this->faker->dateTimeBetween('-3 years', 'now'),
         ];
     }
 }

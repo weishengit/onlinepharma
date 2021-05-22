@@ -24,6 +24,7 @@ use App\Http\Controllers\ProductReturnController;
 use App\Http\Controllers\SmsController;
 use App\Http\Controllers\CriticalLevelController;
 use App\Http\Controllers\ExpirationController;
+use App\Http\Controllers\OrderReportController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\UserReportController;
 use App\Models\ProductReturn;
@@ -180,8 +181,11 @@ Route::middleware(['admin', 'active'])->name('admin.')->prefix('admin')->group(f
     //REPORTS
     Route::get('/reports', [ReportController::class, 'index'])->name('report.index');
     //REPORTS-USER
-    Route::get('/reports/users/', [ReportController::class, 'users'])->name('report.user');
+    Route::get('/reports/users/report', [ReportController::class, 'users'])->name('report.user');
     Route::get('/reports/users/api/', [UserReportController::class, 'users'])->name('report.user.api');
+    //REPORTS-ORDERS
+    Route::get('/reports/orders/report', [ReportController::class, 'orders'])->name('report.order');
+    Route::get('/reports/orders/api/', [OrderReportController::class, 'orders'])->name('report.order.api');
 });
 
 require __DIR__.'/auth.php';

@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Batch;
 use Illuminate\Database\Seeder;
 
 class BatchSeeder extends Seeder
@@ -13,6 +14,6 @@ class BatchSeeder extends Seeder
      */
     public function run()
     {
-        //
+        Batch::factory()->times(200)->create();
     }
 }

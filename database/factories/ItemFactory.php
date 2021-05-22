@@ -22,8 +22,9 @@ class ItemFactory extends Factory
     public function definition()
     {
         return [
+            'order_id' => $this->faker->numberBetween(1, 50),
             'quantity' => $this->faker->numberBetween(1, 30),
-            'product_id' => $this->faker->numberBetween(1, 30),
+            'product_id' => $this->faker->numberBetween(1, 50),
             'name' => $this->faker->unique->streetSuffix,
             'description' => $this->faker->realText(140),
             'price' => $this->faker->numberBetween(20, 100),
