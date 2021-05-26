@@ -86,7 +86,7 @@ Route::get('/cart/increase/{id}', [CartController::class, 'increase'])->name('ca
 Route::get('/cart/decrease/{id}', [CartController::class, 'decrease'])->name('cart.decrease');
 Route::get('/clear-cart', [CartController::class, 'clear'])->name('cart.clear');
 
-Route::middleware(['auth', 'active', 'checkout'])->group(function () {
+Route::middleware(['auth', 'active', 'checkout', 'verified'])->group(function () {
 
     Route::post('/cart/prescription', [CartController::class, 'prescription'])->name('cart.prescription');
     Route::get('/cart/discount', [CartController::class, 'discount'])->name('cart.discount');
@@ -101,7 +101,7 @@ Route::middleware(['auth', 'active', 'checkout'])->group(function () {
 });
 
 // PROFILE ROUTE
-Route::middleware(['auth', 'active'])->prefix('profile')->name('profile.')->group(function () {
+Route::middleware(['auth', 'active', 'verified'])->prefix('profile')->name('profile.')->group(function () {
     Route::get('/', [ProfileController::class, 'index'] )->name('index');
     Route::get('/edit', [ProfileController::class, 'edit'] )->name('edit');
     Route::put('/update', [ProfileController::class, 'update'] )->name('update');

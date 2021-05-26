@@ -37,6 +37,7 @@ class CreateUsersTable extends Migration
             'name' => 'admin@gmail.com',
             'password' => '$2y$10$1cbdzXESQS3kr53ZK3yuce9BpU2rlI5vBZPZnreLfiA3gVyVqx9Ue',
             'email' => 'admin@gmail.com',
+            'email_verified_at' => now(),
             'is_admin' => 1,
             'is_active' => 1
             )

@@ -243,4 +243,16 @@
       </div>
     </div>
   </div>
+  <div id="#open_preferences_center">Yo</div>
+
+  <!-- Cookie Consent by https://www.TermsFeed.com -->
+<script type="text/javascript" src="//www.termsfeed.com/public/cookie-consent/4.0.0/cookie-consent.js" charset="UTF-8"></script>
+<script type="text/javascript" charset="UTF-8">
+document.addEventListener('DOMContentLoaded', function () {
+cookieconsent.run({"notice_banner_type":"interstitial","consent_type":"implied","palette":"light","language":"en","page_load_consent_levels":["strictly-necessary","functionality","tracking","targeting"],"notice_banner_reject_button_hide":false,"preferences_center_close_button_hide":false,"website_name":"Online Pharma","website_privacy_policy_url":"https://www.privacypolicies.com/live/b01165fa-fed1-4589-b7f0-93dccdfa1571","open_preferences_center_selector":" #open_preferences_center"});
+});
+</script>
+
+<noscript>Cookie Consent by <a href="https://www.TermsFeed.com/" rel="nofollow noopener">TermsFeed</a></noscript>
+<!-- End Cookie Consent -->
 @endsection()
