@@ -1,4 +1,4 @@
-TODO
+TODO:
 
 1. -- ADD SMS To Order Tracking Controller
 2. -- Fix Customer Order UI
@@ -9,3 +9,12 @@ TODO
 5. -- Refund Feature
 6. --Low stock Feature
 7. --Expiration feature
+
+REVISIONS:
+
+1. Access Roles(Admin, Manager, Cashier, Pharmacist)
+3. Verify Account
+2. Printable Reports(PDF)
+4. Inventory Movement
+5. Delivery Proof/Confirmation
+6. Courier Info
