@@ -67,6 +67,13 @@
                         class="w-full px-4 py-2 text-base text-black transition duration-500 ease-in-out transform bg-gray-100 border-transparent rounded-lg focus:border-gray-500 focus:bg-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 "
                         required>
                 </div>
+                <div class="mt-4">
+                    <input type="checkbox" id="terms" name="terms" value="1">
+                    <label for="terms">I have read <a href="https://www.termsandcondiitionssample.com/live.php?token=TCUlrbrerMPL7GTqfrN4eDDghJLBm52J"><span class="text-blue-500">terms and conditions</span></a></label>
+                    <br>
+                    <input type="checkbox" id="privacy-checkbox" name="privacy" value="1">
+                    <label for="privacy">I accept the <a href="https://www.privacypolicies.com/live/b01165fa-fed1-4589-b7f0-93dccdfa1571"><span class="text-blue-500">privacy policy</span></a></label>
+                </div>
                 <button type="submit" class="block w-full px-4 py-3 mt-6 font-semibold text-white transition duration-500 ease-in-out transform bg-black rounded-lg hover:bg-gray-800 hover:to-black focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 ">Register</button>
             </form>
             <hr class="w-full my-6 border-gray-300">

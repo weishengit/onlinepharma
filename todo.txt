@@ -12,9 +12,10 @@ TODO:
 
 REVISIONS:
 
+3. --Verify Account
+7. --Consent Form/I Accept
 1. Access Roles(Admin, Manager, Cashier, Pharmacist)
-3. Verify Account
-2. Printable Reports(PDF)
 4. Inventory Movement
 5. Delivery Proof/Confirmation
 6. Courier Info
+2. Printable Reports(PDF)
