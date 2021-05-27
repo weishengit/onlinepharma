@@ -60,7 +60,15 @@
                 <button
                     class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                     type="button" id="submit_btn">
-                    Submit
+                    Set
+                </button>
+            </div>
+            {{-- GENERATE REPORT --}}
+            <div>
+                <button
+                    class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    type="button" id="generate_btn">
+                    Download PDF
                 </button>
             </div>
 
@@ -119,18 +127,26 @@
 </div>
 
 <script>
+    const year_input = document.getElementById('year');
+    const start_input = document.getElementById('start_month');
+    const end_input = document.getElementById('end_month');
+    const error_flash = document.getElementById('filter-error');
+    const year_span = document.getElementById('y_span');
+    const start_span = document.getElementById('s_span');
+    const end_span = document.getElementById('e_span');
+
+    const reportBtn = document.getElementById('generate_btn');
+    reportBtn.addEventListener('click',
+        function generate_report(){
+
+            window.location.href = 'http://127.0.0.1:8000/admin/pdf?year=' + year_input.value + '&start=' + start_input.value + '&end=' + end_input.value;
+        });
 
     const submitBtn = document.getElementById('submit_btn');
     submitBtn.addEventListener('click',
         function send_filter() {
 
-            const year_input = document.getElementById('year');
-            const start_input = document.getElementById('start_month');
-            const end_input = document.getElementById('end_month');
-            const error_flash = document.getElementById('filter-error');
-            const year_span = document.getElementById('y_span');
-            const start_span = document.getElementById('s_span');
-            const end_span = document.getElementById('e_span');
+
 
             error_flash.innerText = '';
 

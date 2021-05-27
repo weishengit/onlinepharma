@@ -1,5 +1,6 @@
 <?php
 
+use Barryvdh\DomPDF\Facade as PDF;
 use App\Http\Controllers\GoogleLogin;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BanController;
@@ -20,15 +21,16 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\DeliveryController;
 use App\Http\Controllers\DiscountController;
 use App\Http\Controllers\PasswordController;
 use App\Http\Controllers\ExpirationController;
 use App\Http\Controllers\PharmacistController;
 use App\Http\Controllers\UserReportController;
+use App\Http\Controllers\InvMovementController;
 use App\Http\Controllers\OrderReportController;
 use App\Http\Controllers\CriticalLevelController;
-use App\Http\Controllers\DeliveryController;
-use App\Http\Controllers\InvMovementController;
+use App\Http\Controllers\PdfReport;
 use App\Http\Controllers\ProductReturnController;
 
 
@@ -130,8 +132,9 @@ Route::middleware(['active'])->name('admin.')->prefix('admin')->group(function (
 
     // ADMIN
     Route::middleware(['admin'])->group(function () {
-        //SMS
+        //TEST
         Route::get('/sms', [SmsController::class, 'index']);
+        Route::get('/pdf', [PdfReport::class, 'orders']);
         //SETTINGS
         Route::get('/settings', [SettingController::class, 'index'])->name('setting.index');
         Route::get('/settings/edit', [SettingController::class, 'edit'])->name('setting.edit');
