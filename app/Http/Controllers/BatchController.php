@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Batch;
 use App\Models\Product;
-use Illuminate\Http\Request;
-
+use App\Models\InvMovement;
 use function Ramsey\Uuid\v1;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use SebastianBergmann\Diff\Diff;
 
 class BatchController extends Controller
 {
@@ -51,14 +54,27 @@ class BatchController extends Controller
             'expiration' => 'required|date_format:Y-m-d',
         ]);
 
-        Batch::create([
-            'product_id' => $id,
-            'batch_no' => $request->input('batch_no'),
-            'unit_cost' => $request->input('unit_cost'),
-            'initial_quantity' => $request->input('quantity'),
-            'remaining_quantity' => $request->input('quantity'),
-            'expiration' => $request->input('expiration'),
-        ]);
+        $product = Product::find($id);
+        if ($product == null) {
+            return redirect()->route('admin.batch.index')->with('message', 'product not found!');
+        }
+
+        DB::transaction(function () use($request, $product){
+            Batch::create([
+                'product_id' => $product->id,
+                'batch_no' => $request->input('batch_no'),
+                'unit_cost' => $request->input('unit_cost'),
+                'initial_quantity' => $request->input('quantity'),
+                'remaining_quantity' => $request->input('quantity'),
+                'expiration' => $request->input('expiration'),
+            ]);
+            // INV MOVEMENT
+            InvMovement::create([
+                'product_name' => $product->id . ' - ' . $product->name,
+                'quantity' => $request->input('quantity'),
+                'action' => 'ADDED'
+            ]);
+        });
 
         return redirect()
             ->route('admin.batch.show', ['batch' => $id])
@@ -119,14 +135,27 @@ class BatchController extends Controller
             'expiration' => 'required|date_format:Y-m-d',
         ]);
 
-        Batch::where('id', $batch->id)
+        DB::transaction(function () use($request, $batch){
+            $diff = $batch->remaining_quantity - $request->input('r_quantity');
+            $status = $batch->remaining_quantity >= $request->input('r_quantity') ? 'SUBTRACTED' : 'ADDED';
+            Batch::where('id', $batch->id)
             ->update([
                 'batch_no' => $request->input('batch_no'),
                 'unit_cost' => $request->input('unit_cost'),
                 'initial_quantity' => $request->input('i_quantity'),
                 'remaining_quantity' => $request->input('r_quantity'),
                 'expiration' => $request->input('expiration'),
-        ]);
+            ]);
+
+            // INV MOVEMENT
+            InvMovement::create([
+                'product_name' => $batch->product->id . ' - ' . $batch->product->name,
+                'quantity' => abs($diff),
+                'action' => $status,
+            ]);
+        });
+
+
 
         return redirect()
             ->route('admin.batch.show', ['batch' => $batch->product->id])
@@ -145,9 +174,20 @@ class BatchController extends Controller
         if ($batch == null) {
             return redirect()->route('admin.inventory.index')->with('message', 'batch number not found!');
         }
+        DB::transaction(function () use($batch){
 
-        $batch->is_active = 0;
-        $batch->save();
+            $batch->is_active = 0;
+
+            // INV MOVEMENT
+            InvMovement::create([
+                'product_name' => $batch->product->id . ' - ' . $batch->product->name,
+                'quantity' => $batch->remaining_quantity,
+                'action' => 'REMOVED',
+            ]);
+
+            $batch->save();
+
+        });
 
         return redirect()
             ->route('admin.batch.show', ['batch' => $batch->product->id])
@@ -161,9 +201,20 @@ class BatchController extends Controller
             return redirect()->route('admin.inventory.index')->with('message', 'batch number not found!');
         }
 
-        $batch->is_active = 1;
-        $batch->save();
+        DB::transaction(function () use($batch){
 
+            $batch->is_active = 1;
+
+            // INV MOVEMENT
+            InvMovement::create([
+                'product_name' => $batch->product->id . ' - ' . $batch->product->name,
+                'quantity' => $batch->remaining_quantity,
+                'action' => 'RESTORED',
+            ]);
+
+            $batch->save();
+
+        });
         return redirect()
             ->route('admin.batch.show', ['batch' => $batch->product->id])
             ->with('message', 'Activated Batch#' . $batch->batch_no);

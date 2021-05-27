@@ -28,6 +28,7 @@ use App\Http\Controllers\UserReportController;
 use App\Http\Controllers\OrderReportController;
 use App\Http\Controllers\CriticalLevelController;
 use App\Http\Controllers\DeliveryController;
+use App\Http\Controllers\InvMovementController;
 use App\Http\Controllers\ProductReturnController;
 
 
@@ -199,8 +200,11 @@ Route::middleware(['active'])->name('admin.')->prefix('admin')->group(function (
         Route::get('/reports/orders/report', [ReportController::class, 'orders'])->name('report.order');
         Route::get('/reports/orders/api/', [OrderReportController::class, 'orders'])->name('report.order.api');
         //DELIVERIES
-        Route::get('/deliveries,', [DeliveryController::class, 'index'])->name('delivery.index');
-        Route::get('/deliveries/{delivery},', [DeliveryController::class, 'show'])->name('delivery.show');
+        Route::get('/deliveries', [DeliveryController::class, 'index'])->name('delivery.index');
+        Route::get('/deliveries/{delivery}', [DeliveryController::class, 'show'])->name('delivery.show');
+        //INVENTORY MOVEMENT
+        Route::get('/invmovement', [InvMovementController::class, 'index'])->name('movement.index');
+
     });
 
     // PHARMACIST
