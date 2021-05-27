@@ -73,34 +73,51 @@ class OrderController extends Controller
             'est_date' => 'required|date_format:Y-m-d',
         ]);
 
-        $items = Item::where('order_id', $order->id)->get();
-        foreach ($items as $item) {
-            $stock = Batch::where('product_id', $item->product_id)
-                ->where('is_active', 1)
-                ->where('expiration', '>', Carbon::now())
-                ->groupBy('product_id')
-                ->sum('remaining_quantity');
+        DB::transaction(function () use($order, $request){
 
-            if ($stock == null || $stock < $item->quantity) {
-                return redirect()->back()->with('message', 'Not enough "' . $item->name . '" in stock to complete the order #' . $order->id . '.');
+            $items = Item::where('order_id', $order->id)->get();
+            foreach ($items as $item) {
+                $stock = Batch::where('product_id', $item->product_id)
+                    ->where('is_active', 1)
+                    ->where('expiration', '>', Carbon::now())
+                    ->groupBy('product_id')
+                    ->sum('remaining_quantity');
+
+                if ($stock == null || $stock < $item->quantity) {
+                    return redirect()->back()->with('message', 'Not enough "' . $item->name . '" in stock to complete the order #' . $order->id . '.');
+                }
             }
+
+            // MARK AS PENDING
+            Order::where('id', $order->id)
+            ->update([
+                'estimated_dispatch_date' => $request->input('est_date'),
+                'message' => 'Order Confirmed',
+                'status' => 'pending',
+            ]);
+
+            $receiver = '';
+            if (env('NEXMO_TEST_MODE')) {
+                $receiver = env('NEXMO_TEST_NUMBER');
+            }
+            else{
+                $receiver = '63' . ltrim($order->contact, $order->contact[0]);
+            }
+            Nexmo::message()->send([
+                'to' => $receiver,
+                'from' => config('app.name', 'Online Pharma'),
+                'text' => 'Ref#'. $order->ref_no  .' : Your Order Has Been Accepted.',
+            ]);
+        });
+
+        // REDIRECT IF PHARMACIST
+        if (auth()->user()->role->role_name != 'admin' || auth()->user()->role->role_name != 'manager') {
+            return redirect()
+            ->route('admin.pharmacist.index')
+            ->with('message', 'Order #' . $order->id . ' has been accepted and now pending for dispatch.');
         }
 
-        // MARK AS PENDING
-        Order::where('id', $order->id)
-        ->update([
-            'estimated_dispatch_date' => $request->input('est_date'),
-            'message' => 'Order Confirmed',
-            'status' => 'pending',
-        ]);
-
-        $receiver = env('NEXMO_TEST_NUMBER', '63' . ltrim($order->contact, $order->contact[0]));
-        Nexmo::message()->send([
-            'to' => $receiver,
-            'from' => config('app.name', 'Online Pharma'),
-            'text' => 'Ref#'. $order->ref_no  .' : Your Order Has Been Accepted.',
-        ]);
-
+        // REDIRECT TO DASHBOARD
         return redirect()
             ->route('admin.order.index')
             ->with('message', 'Order #' . $order->id . ' has been accepted and now pending for dispatch.');
@@ -174,7 +191,13 @@ class OrderController extends Controller
                     'status' => 'completed',
                 ]);
 
-                $receiver = env('NEXMO_TEST_NUMBER', '63' . ltrim($order->contact, $order->contact[0]));
+                $receiver = '';
+                if (env('NEXMO_TEST_MODE')) {
+                    $receiver = env('NEXMO_TEST_NUMBER');
+                }
+                else{
+                    $receiver = '63' . ltrim($order->contact, $order->contact[0]);
+                }
                 Nexmo::message()->send([
                     'to' => $receiver,
                     'from' => config('app.name', 'Online Pharma'),
@@ -183,7 +206,6 @@ class OrderController extends Controller
             });
 
         }
-
 
         return redirect()
             ->route('admin.order.index')
@@ -216,7 +238,13 @@ class OrderController extends Controller
             'status' => 'dispatched',
         ]);
 
-        $receiver = env('NEXMO_TEST_NUMBER', '63' . ltrim($order->contact, $order->contact[0]));
+        $receiver = '';
+        if (env('NEXMO_TEST_MODE')) {
+            $receiver = env('NEXMO_TEST_NUMBER');
+        }
+        else{
+            $receiver = '63' . ltrim($order->contact, $order->contact[0]);
+        }
         Nexmo::message()->send([
             'to' => $receiver,
             'from' => config('app.name', 'Online Pharma'),
@@ -249,7 +277,13 @@ class OrderController extends Controller
             'is_void' => 1,
         ]);
 
-        $receiver = env('NEXMO_TEST_NUMBER', '63' . ltrim($order->contact, $order->contact[0]));
+        $receiver = '';
+        if (env('NEXMO_TEST_MODE')) {
+            $receiver = env('NEXMO_TEST_NUMBER');
+        }
+        else{
+            $receiver = '63' . ltrim($order->contact, $order->contact[0]);
+        }
         Nexmo::message()->send([
             'to' => $receiver,
             'from' => config('app.name', 'Online Pharma'),

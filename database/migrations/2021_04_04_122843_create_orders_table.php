@@ -25,6 +25,7 @@ class CreateOrdersTable extends Migration
             $table->string('scid')->nullable();
             $table->string('scid_image')->nullable();
             $table->string('prescription_image')->nullable();
+            $table->string('completion_proof')->nullable();
             $table->string('cashier')->nullable();
             $table->string('delivery_mode')->nullable();
             $table->decimal('delivery_fee')->nullable();

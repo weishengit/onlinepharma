@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
         $this->call(BatchSeeder::class);
         $this->call(OrderSeeder::class);
         $this->call(ItemSeeder::class);
+        $this->call(RoleSeeder::class);
         // \App\Models\User::factory(10)->create();
     }
 }

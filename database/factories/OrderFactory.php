@@ -25,10 +25,11 @@ class OrderFactory extends Factory
     {
         return [
             'user_id' => $this->faker->numberBetween(1, 20),
-            'ref_no' => $this->faker->uuid,
+            'ref_no' => uniqid(),
             'status' => $this->faker->randomElement($array = array ('new','pending', 'dispatched', 'complete', 'cancelled')),
             'is_void' => 0,
             'is_sc' => 0,
+            'contact' => '09750239310',
             'delivery_mode' => $this->faker->randomElement($array = array ('delivery','pickup')),
             'total_items' => $this->faker->numberBetween(3, 20),
             'amount_due' => $this->faker->numberBetween(50, 2000),
