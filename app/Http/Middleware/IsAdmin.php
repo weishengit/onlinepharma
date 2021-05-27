@@ -17,7 +17,7 @@ class IsAdmin
      */
     public function handle(Request $request, Closure $next)
     {
-        if (!Auth::user() || Auth::user()->is_admin != 1) {
+        if (Auth::user()->role->role_name != 'admin') {
             abort(403);
         }
 

@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.subadmin')
 
 @section('content')
 <!--Container-->
@@ -208,40 +208,16 @@
                                     </dd>
                                 </div>
                             </form>
-                            <!--
                             @if ($order->is_void != 1)
-                                @if ($order->status == 'new')
-                                    {{-- ACCEPT FORM --}}
-                                    <form action="{{ route('admin.order.accept', ['id' => $order->id]) }}" method="POST">
-                                        @csrf
-                                        @method('post')
-                                        <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 border">
-                                            <dt class="text-xl font-medium text-gray-500">
-                                                Estimated Delivery Date
-                                            </dt>
-                                            <input id="est_date" name="est_date" type="date" min="{{ date("Y-m-d") }}" value="{{ old('est_date') }}">
-                                            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                                <button type="submit"
-                                                    class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                                                    Accept
-                                                </button>
-                                            </dd>
-                                        </div>
-                                    </form>
-                                @endif
                                 @if ($order->status == 'pending')
                                     {{-- ACCEPT FORM --}}
+                                    @if ($order->delivery_mode == 'pickup')
                                     <form action="{{ route('admin.order.dispatch', ['id' => $order->id]) }}" method="POST">
                                         @csrf
                                         @method('post')
                                         <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 border">
                                             <dt class="text-xl font-medium text-gray-500">
-                                                @if ($order->delivery_mode == 'delivery')
-                                                    Send For Delivery
-                                                @endif
-                                                @if ($order->delivery_mode == 'pickup')
-                                                    Ready For Pickup
-                                                @endif
+                                                Ready For Pickup
                                             </dt>
                                             <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                                                 <button type="submit"
@@ -251,6 +227,26 @@
                                             </dd>
                                         </div>
                                     </form>
+                                    @endif
+                                    @if ($order->delivery_mode == 'delivery')
+                                    <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 border">
+                                        <dt class="text-xl font-medium text-gray-500">
+                                            Create Delivery
+                                        </dt>
+                                        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                            <a href="{{ route('admin.delivery.create', ['cashier' => $order->id]) }}">
+                                                @if ($order->status == 'pending' && $order->status != 'dispatched')
+                                                    <button type="button"
+                                                        class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                                        Delivery
+                                                    </button>
+                                                @else
+                                                    <h4>Order Already Dispatched</h4>
+                                                @endif
+                                            </a>
+                                        </dd>
+                                    </div>
+                                    @endif
                                 @endif
                                 @if ($order->status == 'dispatched')
                                     {{-- COMPLETE FORM --}}
@@ -262,17 +258,26 @@
                                                 Mark As Complete
                                             </dt>
                                             <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                                @if ($order->delivery_mode == 'delivery')
+                                                <a href="{{ route('admin.cashier.finish', ['cashier' => $order->id]) }}">
+                                                    <button type="button"
+                                                    class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                                    Confirm
+                                                </button>
+                                                </a>
+                                                @else
                                                 <button type="submit"
                                                     class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                                                     Complete
                                                 </button>
+                                                @endif
                                             </dd>
                                         </div>
                                     </form>
                                 @endif
-                                -->
-                            {{-- DISABLE FORM --}}
-                            <form action="{{ route('admin.order.destroy', ['order' => $order->id]) }}" method="POST">
+
+                            {{-- DISABLE FORM - MOVED TO MANAGER POWER --}}
+                            {{-- <form action="{{ route('admin.order.destroy', ['order' => $order->id]) }}" method="POST">
                                 @csrf
                                 @method('delete')
                                 <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 border">
@@ -287,7 +292,7 @@
                                         </button>
                                     </dd>
                                 </div>
-                            </form>
+                            </form> --}}
                             @endif
                             </div>
 
@@ -324,23 +329,6 @@
                 </div>
                 <a
                     href="{{ asset('images/temp/rx/' . $order->prescription_image) }}"
-                    class="">
-                    <button type="button"
-                        class="m-5 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                        View
-                    </button>
-                </a>
-                @endif
-            </div>
-            {{-- COMPLETION PHOTO --}}
-            <div class="my-1 px-1 w-1/2 overflow-hidden border">
-                @if ($order->completion_proof != null)
-                <div>
-                    <h2 class="text-gray-900 text-3xl">Proof of Completion</h2>
-                    <img src="{{ asset('images/temp/proof/' . $order->completion_proof) }}" alt="completion image">
-                </div>
-                <a
-                    href="{{ asset('images/temp/proof/' . $order->completion_proof) }}"
                     class="">
                     <button type="button"
                         class="m-5 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">

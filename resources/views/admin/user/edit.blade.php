@@ -27,17 +27,17 @@
         @endif
         {{-- Title --}}
         <h1 class="border-2 flex items-center font-sans font-bold break-normal text-gray-900 px-2 py-8 text-lg md:text-2xl">
-			<a 
+			<a
                 href="{{ route('admin.index') }}">
-                <p 
+                <p
                     class="text-blue-500 hover:text-blue-700 font-bold">
                     Dashboard&nbsp;
                 </p>
             </a>
             /&nbsp;
-            <a 
+            <a
                 href="{{ route('admin.user.index') }}">
-                <p 
+                <p
                     class="text-blue-500 hover:text-blue-700 font-bold">
                     Accounts&nbsp;
                 </p>
@@ -54,13 +54,13 @@
                 <div class="border-t border-gray-200"></div>
                 </div>
             </div>
-        
+
             <div class="mt-10 sm:mt-0">
                 <div class="md:grid md:grid-cols-2 md:gap-6">
                     <div class="md:col-span-1">
                         <div class="px-4 sm:px-0">
                             <h3 class="text-3xl font-medium leading-6 text-gray-900">Account Information</h3>
-                                
+
                         </div>
                     </div>
                     <div class="mt-5 md:mt-0 md:col-span-2">
@@ -72,40 +72,45 @@
                                             <input disabled value="{{ $user->name ?? ''}}" type="text" name="username" id="username" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                                         </div>
                                         <div class="col-span-6 sm:col-span-3">
+                                            <label for="role_name" class="block text-sm font-medium text-gray-700">Role</label>
+                                            <input disabled value="{{ $user->role->role_name ?? ''}}"type="text" name="role_name" id="role_name" autocomplete="given-name" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                        </div>
+
+                                        <div class="col-span-6 sm:col-span-3">
                                             <label for="first_name" class="block text-sm font-medium text-gray-700">First name</label>
                                             <input disabled value="{{ $user->first_name ?? ''}}"type="text" name="first_name" id="first_name" autocomplete="given-name" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                                         </div>
-                
+
                                         <div class="col-span-6 sm:col-span-3">
                                             <label for="last_name" class="block text-sm font-medium text-gray-700">Last name</label>
                                             <input disabled value="{{ $user->last_name ?? ''}}" type="text" name="last_name" id="last_name" autocomplete="family-name" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                                         </div>
-                    
+
                                         <div class="col-span-6 sm:col-span-4">
                                             <label for="email_address" class="block text-sm font-medium text-gray-700">Email address</label>
                                             <input disabled value="{{ $user->email ?? ''}}" type="text" name="email_address" id="email_address" autocomplete="email" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                                         </div>
-                    
+
                                         <div class="col-span-6 sm:col-span-6 lg:col-span-2">
                                             <label for="contact" class="block text-sm font-medium text-gray-700">Contact number</label>
                                             <input disabled value="{{ $user->contact ?? ''}}" type="text" name="contact" id="contact" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                                         </div>
-                    
+
                                         <div class="col-span-6">
                                             <label for="address" class="block text-sm font-medium text-gray-700">Street address</label>
                                             <input disabled value="{{ $user->address ?? ''}}" type="text" name="address" id="address" autocomplete="street-address" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                                         </div>
-                        
+
                                         <div class="col-span-6 sm:col-span-6 lg:col-span-2">
                                             <label for="scid" class="block text-sm font-medium text-gray-700">SCID</label>
                                             <input disabled value="{{ $user->scid ?? ''}}" type="text" name="scid" id="scid" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                                         </div>
-                        
+
                                         <div class="col-span-6 sm:col-span-3 lg:col-span-2">
                                             <label for="created" class="block text-sm font-medium text-gray-700">Account Creation</label>
                                             <input disabled value="{{ $user->created_at ?? ''}}" type="text" name="created" id="created" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                                         </div>
-                        
+
                                         <div class="col-span-6 sm:col-span-3 lg:col-span-2">
                                             <label for="postal_code" class="block text-sm font-medium text-gray-700">Last Updated</label>
                                             <input disabled value="{{ $user->updated_at ?? ''}}" type="text" name="postal_code" id="postal_code" autocomplete="postal-code" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
@@ -113,15 +118,15 @@
                                     </div>
                                 </div>
 
-                                <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
+                                <div class="flex flex-wrap -mx-1 overflow-hidden">
                                     {{-- CHECK IF SUPER ADMIN --}}
                                     @if ($user->id == 1)
                                         <button disabled type="button" class="block py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                                             Super Admin
                                         </button>
-                                    @else                                 
+                                    @else
                                         @if ($user->is_active == 0)
-                                            <form 
+                                            <form
                                                 action="{{ route('admin.user.unban', ['id' => $user->id]) }}"
                                                 method="POST">
                                                 @csrf
@@ -142,24 +147,24 @@
                                                         </div>
                                                     </div>
                                         @else
-                                            <div class="grid grid-cols-2 gap-6">
-                                                <form 
+                                            <div class="my-1 px-1 w-full overflow-hidden">
+                                                <form
                                                     action="{{ route('admin.user.ban', ['id' => $user->id]) }}"
                                                     method="POST">
                                                     @csrf
-                                                    <div class="col-span-6 sm:col-span-3 lg:col-span-1">
-                                                        <label for="reason" class="text-left block text-lg font-medium text-gray-700">Reason for ban:</label>
+                                                    <div class="my-1 px-1 w-1/2 overflow-hidden">
+                                                        <label for="reason" class="text-left text-lg font-medium text-gray-700">Reason for ban:</label>
                                                         <input  placecholder="reason for ban..." type="text" name="reason" id="reason" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                                                     </div>
-                                                    <div class="col-span-6 sm:col-span-3 lg:col-span-2">
+                                                    <div class="my-1 px-1 w-1/2 overflow-hidden">
                                                         <button type="submit" class="block py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                                                             Ban
                                                         </button>
                                                     </div>
                                                 </form>
                                                 @if ($user->is_admin == 0)
-                                                <div class="col-span-6 sm:col-span-3 lg:col-span-2">
-                                                    <form 
+                                                <div class="my-1 px-1 w-1/4 overflow-hidden">
+                                                    <form
                                                         action="{{ route('admin.make.admin', ['id' => $user->id]) }}"
                                                         method="POST">
                                                         @csrf
@@ -168,32 +173,63 @@
                                                         </button>
                                                     </form>
                                                 </div>
+                                                <div class="my-1 px-1 w-1/4overflow-hidden">
+                                                    <form
+                                                        action="{{ route('admin.make.manager', ['id' => $user->id]) }}"
+                                                        method="POST">
+                                                        @csrf
+                                                        <button type="submit" class="block py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                                            Make Manager
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                                <div class="my-1 px-1 w-1/4 overflow-hidden">
+                                                    <form
+                                                        action="{{ route('admin.make.pharmacist', ['id' => $user->id]) }}"
+                                                        method="POST">
+                                                        @csrf
+                                                        <button type="submit" class="block py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                                            Make Pharmacist
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                                <div class="my-1 px-1 w-1/4 overflow-hidden">
+                                                    <form
+                                                        action="{{ route('admin.make.cashier', ['id' => $user->id]) }}"
+                                                        method="POST">
+                                                        @csrf
+                                                        <button type="submit" class="block py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                                            Make Cashier
+                                                        </button>
+                                                    </form>
+                                                </div>
                                                 @else
-                                                <div class="col-span-6 sm:col-span-3 lg:col-span-2">
-                                                    <form 
+                                                <div class="my-1 px-1 w-full overflow-hidden">
+                                                    <form
                                                         action="{{ route('admin.remove.admin', ['id' => $user->id]) }}"
                                                         method="POST">
                                                         @csrf
                                                         @method('delete')
                                                         <button type="submit" class="block py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-yellow-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                                                            Remove Admin
+                                                            Remove Permission
                                                         </button>
                                                     </form>
                                                 </div>
                                                 @endif
+
                                             </div>
-                                            
+
                                         @endif
                                     @endif
                                 </div>
-                                
+
                             </div>
                     </div>
                 </div>
             </div>
         </div>
         {{-- Profile End --}}
-        
+
     </div>
 </div>
 @endsection

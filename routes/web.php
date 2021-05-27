@@ -1,11 +1,11 @@
 <?php
 
-use App\Models\Cart;
 use App\Http\Controllers\GoogleLogin;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BanController;
 use App\Http\Controllers\FacebookLogin;
 use App\Http\Controllers\ProfileDelete;
+use App\Http\Controllers\SmsController;
 use App\Http\Controllers\TaxController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\SaleController;
@@ -15,19 +15,21 @@ use App\Http\Controllers\BatchController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PagesController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\CashierController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DiscountController;
 use App\Http\Controllers\PasswordController;
-use App\Http\Controllers\ProductReturnController;
-use App\Http\Controllers\SmsController;
-use App\Http\Controllers\CriticalLevelController;
 use App\Http\Controllers\ExpirationController;
-use App\Http\Controllers\OrderReportController;
-use App\Http\Controllers\SettingController;
+use App\Http\Controllers\PharmacistController;
 use App\Http\Controllers\UserReportController;
-use App\Models\ProductReturn;
+use App\Http\Controllers\OrderReportController;
+use App\Http\Controllers\CriticalLevelController;
+use App\Http\Controllers\DeliveryController;
+use App\Http\Controllers\ProductReturnController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -40,9 +42,9 @@ use App\Models\ProductReturn;
 |
 */
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->middleware(['auth'])->name('dashboard');
 
 // SOCIAL LOGIN
 Route::get('/login/google', [GoogleLogin::class, 'redirect'])->name('google.login');
@@ -122,70 +124,100 @@ Route::middleware(['auth', 'active', 'verified'])->prefix('profile')->name('prof
     Route::get('/orders/{order?}', [ProfileController::class, 'order'])->name('order');
 });
 
-// ADMIN ROUTE
-Route::middleware(['admin', 'active'])->name('admin.')->prefix('admin')->group(function () {
-    //SMS
-    Route::get('/sms', [SmsController::class, 'index']);
-    //SETTINGS
-    Route::get('/settings', [SettingController::class, 'index'])->name('setting.index');
-    Route::get('/settings/edit', [SettingController::class, 'edit'])->name('setting.edit');
-    Route::put('/settings/edit', [SettingController::class, 'update'])->name('setting.update');
-    //DASHBOARD
-    Route::get('/', [PagesController::class, 'admin'])->name('index');
-    Route::get('/manage', [AdminController::class, 'manage'])->name('manage');
-    //CATEGORY
-    Route::put('category/{id}/activate', [CategoryController::class, 'activate'])->name('category.activate');
-    Route::resource('category', CategoryController::class);
-    //USERS
-    Route::post('users/admin/{id}/add', [AdminController::class, 'store'])->name('make.admin');
-    Route::delete('users/admin/{id}/remove', [AdminController::class, 'destroy'])->name('remove.admin');
-    Route::get('users/show/admin', [UserController::class , 'showAdmin'])->name('user.admin.show');
-    Route::get('users/show/customer', [UserController::class , 'showCustomer'])->name('user.customer.show');
-    Route::get('users/show/inactive', [UserController::class , 'showInactive'])->name('user.inactive.show');
-    Route::post('users/edit/{id}/ban', [BanController::class , 'store'])->name('user.ban');
-    Route::delete('users/edit/{id}/unban', [BanController::class , 'destroy'])->name('user.unban');
-    Route::resource('user', UserController::class);
-    //TAX
-    Route::put('tax/{product}/activate', [TaxController::class, 'activate'])->name('tax.activate');
-    Route::resource('tax', TaxController::class);
-    //DISCOUNTS
-    Route::put('discount/{discount}/activate', [DiscountController::class, 'activate'])->name('discount.activate');
-    Route::resource('discount', DiscountController::class);
-    //PRODUCTS
-    Route::put('product/{product}/activate', [ProductController::class, 'activate'])->name('product.activate');
-    Route::put('product/{product}/not-available', [ProductController::class, 'markNotForSale'])->name('product.notavailable');
-    Route::put('product/{product}/available', [ProductController::class, 'markForSale'])->name('product.available');
-    Route::resource('product', ProductController::class);
-    //ORDERS
-    Route::post('/order/{id}/dispatch', [OrderController::class, 'dispatch'])->name('order.dispatch');
-    Route::post('/order/{id}/accept', [OrderController::class, 'accept'])->name('order.accept');
-    Route::post('/order/{id}/complete', [OrderController::class, 'complete'])->name('order.complete');
-    Route::resource('order', OrderController::class);
-    //RETURNS
-    Route::resource('return', ProductReturnController::class);
-    //SALES
-    Route::get('/sale', [SaleController::class, 'index'])->name('sale.index');
-    Route::get('/sale/{product}', [SaleController::class, 'show'])->name('sale.show');
-    Route::get('/sale/{product}/edit', [SaleController::class, 'edit'])->name('sale.edit');
-    Route::put('/sale/{product}/edit', [SaleController::class, 'update'])->name('sale.update');
-    Route::get('/sale/{product}/create', [SaleController::class, 'create'])->name('sale.create');
-    Route::post('/sale/{product}', [SaleController::class, 'store'])->name('sale.store');
-    Route::delete('/sale/{id}/destroy', [SaleController::class, 'destroy'])->name('sale.destroy');
-    //BATCH
-    Route::get('/inventory/critical', [CriticalLevelController::class, 'index'])->name('inventory.critical');
-    Route::get('/inventory/expiring', [ExpirationController::class, 'index'])->name('inventory.expiring');
-    Route::get('/batch/create/{id}', [BatchController::class, 'create'])->name('batch.add');
-    Route::post('/batch/activate/{id}', [BatchController::class, 'activate'])->name('batch.activate');
-    Route::post('/batch/create/{id}', [BatchController::class, 'store'])->name('batch.save');
-    Route::resource('batch', BatchController::class);
-    //REPORTS
-    Route::get('/reports', [ReportController::class, 'index'])->name('report.index');
-    //REPORTS-USER
-    Route::get('/reports/users/report', [ReportController::class, 'users'])->name('report.user');
-    Route::get('/reports/users/api/', [UserReportController::class, 'users'])->name('report.user.api');
-    //REPORTS-ORDERS
-    Route::get('/reports/orders/report', [ReportController::class, 'orders'])->name('report.order');
-    Route::get('/reports/orders/api/', [OrderReportController::class, 'orders'])->name('report.order.api');
+// BACKEND ROUTE
+Route::middleware(['active'])->name('admin.')->prefix('admin')->group(function () {
+
+    // ADMIN
+    Route::middleware(['admin'])->group(function () {
+        //SMS
+        Route::get('/sms', [SmsController::class, 'index']);
+        //SETTINGS
+        Route::get('/settings', [SettingController::class, 'index'])->name('setting.index');
+        Route::get('/settings/edit', [SettingController::class, 'edit'])->name('setting.edit');
+        Route::put('/settings/edit', [SettingController::class, 'update'])->name('setting.update');
+        //USERS
+        Route::post('users/admin/{id}/admin', [AdminController::class, 'store'])->name('make.admin');
+        Route::post('users/admin/{id}/manager', [AdminController::class, 'manager'])->name('make.manager');
+        Route::post('users/admin/{id}/pharmacist', [AdminController::class, 'pharmacist'])->name('make.pharmacist');
+        Route::post('users/admin/{id}/cashier', [AdminController::class, 'cashier'])->name('make.cashier');
+        Route::delete('users/admin/{id}/remove', [AdminController::class, 'destroy'])->name('remove.admin');
+        Route::get('users/show/admin', [UserController::class , 'showAdmin'])->name('user.admin.show');
+        Route::get('users/show/customer', [UserController::class , 'showCustomer'])->name('user.customer.show');
+        Route::get('users/show/inactive', [UserController::class , 'showInactive'])->name('user.inactive.show');
+        Route::post('users/edit/{id}/ban', [BanController::class , 'store'])->name('user.ban');
+        Route::delete('users/edit/{id}/unban', [BanController::class , 'destroy'])->name('user.unban');
+        Route::resource('user', UserController::class);
+    });
+
+    // MANAGER
+    Route::middleware(['manager'])->group(function () {
+        //DASHBOARD
+        Route::get('/', [PagesController::class, 'admin'])->name('index');
+        Route::get('/manage', [AdminController::class, 'manage'])->name('manage');
+        //CATEGORY
+        Route::put('category/{id}/activate', [CategoryController::class, 'activate'])->name('category.activate');
+        Route::resource('category', CategoryController::class);
+        //TAX
+        Route::put('tax/{product}/activate', [TaxController::class, 'activate'])->name('tax.activate');
+        Route::resource('tax', TaxController::class);
+        //DISCOUNTS
+        Route::put('discount/{discount}/activate', [DiscountController::class, 'activate'])->name('discount.activate');
+        Route::resource('discount', DiscountController::class);
+        //PRODUCTS
+        Route::put('product/{product}/activate', [ProductController::class, 'activate'])->name('product.activate');
+        Route::put('product/{product}/not-available', [ProductController::class, 'markNotForSale'])->name('product.notavailable');
+        Route::put('product/{product}/available', [ProductController::class, 'markForSale'])->name('product.available');
+        Route::resource('product', ProductController::class);
+        //ORDERS
+        Route::post('/order/{id}/dispatch', [OrderController::class, 'dispatch'])->name('order.dispatch');
+        Route::post('/order/{id}/accept', [OrderController::class, 'accept'])->name('order.accept');
+        Route::post('/order/{id}/complete', [OrderController::class, 'complete'])->name('order.complete');
+        Route::resource('order', OrderController::class);
+        //RETURNS
+        Route::resource('return', ProductReturnController::class);
+        //SALES
+        Route::get('/sale', [SaleController::class, 'index'])->name('sale.index');
+        Route::get('/sale/{product}', [SaleController::class, 'show'])->name('sale.show');
+        Route::get('/sale/{product}/edit', [SaleController::class, 'edit'])->name('sale.edit');
+        Route::put('/sale/{product}/edit', [SaleController::class, 'update'])->name('sale.update');
+        Route::get('/sale/{product}/create', [SaleController::class, 'create'])->name('sale.create');
+        Route::post('/sale/{product}', [SaleController::class, 'store'])->name('sale.store');
+        Route::delete('/sale/{id}/destroy', [SaleController::class, 'destroy'])->name('sale.destroy');
+        //BATCH
+        Route::get('/inventory/critical', [CriticalLevelController::class, 'index'])->name('inventory.critical');
+        Route::get('/inventory/expiring', [ExpirationController::class, 'index'])->name('inventory.expiring');
+        Route::get('/batch/create/{id}', [BatchController::class, 'create'])->name('batch.add');
+        Route::post('/batch/activate/{id}', [BatchController::class, 'activate'])->name('batch.activate');
+        Route::post('/batch/create/{id}', [BatchController::class, 'store'])->name('batch.save');
+        Route::resource('batch', BatchController::class);
+        //REPORTS
+        Route::get('/reports', [ReportController::class, 'index'])->name('report.index');
+        //REPORTS-USER
+        Route::get('/reports/users/report', [ReportController::class, 'users'])->name('report.user');
+        Route::get('/reports/users/api/', [UserReportController::class, 'users'])->name('report.user.api');
+        //REPORTS-ORDERS
+        Route::get('/reports/orders/report', [ReportController::class, 'orders'])->name('report.order');
+        Route::get('/reports/orders/api/', [OrderReportController::class, 'orders'])->name('report.order.api');
+        //DELIVERIES
+        Route::get('/deliveries,', [DeliveryController::class, 'index'])->name('delivery.index');
+        Route::get('/deliveries/{delivery},', [DeliveryController::class, 'show'])->name('delivery.show');
+    });
+
+    // PHARMACIST
+    Route::middleware(['pharmacist'])->group(function () {
+        Route::resource('pharmacist', PharmacistController::class);
+    });
+
+    // CASHIER
+    Route::middleware(['cashier'])->group(function () {
+        // CASHIER RESOURCE
+        Route::get('/cashier/complete/{cashier}', [CashierController::class, 'finish'])->name('cashier.finish');
+        Route::post('/cashier/complete/{cashier}', [CashierController::class, 'complete'])->name('cashier.complete');
+        Route::resource('cashier', CashierController::class);
+        // SEND DELIVERY
+        Route::get('/cashier/delivery/{cashier}', [DeliveryController::class, 'create'])->name('delivery.create');
+        Route::post('/cashier/delivery/{cashier}', [DeliveryController::class, 'store'])->name('delivery.store');
+    });
 });
 
 require __DIR__.'/auth.php';

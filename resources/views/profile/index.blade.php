@@ -38,6 +38,7 @@
 
 
             <div class="tab-content">
+
                 <div class="btn-group" role="group">
                     <a href="{{ route('profile.edit') }}"><button class="btn btn-lg btn-success" type="submit"><i class="glyphicon glyphicon-ok-sign"></i>Edit</button></a>
                 </div>
@@ -47,11 +48,25 @@
                     <button type="submit" class="btn btn-lg btn-danger">Logout</button>
                   </form>
                 </div>
-                @if (auth()->user()->is_admin == 1)
+                {{-- ADMIN CHECK --}}
+                @if (auth()->user()->role->role_name == 'admin' || auth()->user()->role->role_name == 'manager')
                     <div class="btn-group float-right" role="group">
-                        <a href="{{ route('admin.index') }}"><button class="btn btn-lg btn-primary" type="submit"><i class="glyphicon glyphicon-ok-sign"></i>Admin</button></a>
+                        <a href="{{ route('admin.index') }}"><button class="btn btn-lg btn-primary" type="button"><i class="glyphicon glyphicon-ok-sign"></i>Admin</button></a>
                     </div>
                 @endif
+                {{-- PHARMACIST CHECK --}}
+                @if (auth()->user()->role->role_name == 'pharmacist' || auth()->user()->role->role_name == 'manager' || auth()->user()->role->role_name == 'admin')
+                    <div class="btn-group float-right" role="group">
+                        <a href="{{ route('admin.pharmacist.index') }}"><button class="btn btn-lg btn-info" type="button"><i class="glyphicon glyphicon-ok-sign"></i>Pharmacist</button></a>
+                    </div>
+                @endif
+                {{-- CASHIER CHECK --}}
+                @if (auth()->user()->role->role_name == 'cashier' || auth()->user()->role->role_name == 'manager' || auth()->user()->role->role_name == 'admin')
+                    <div class="btn-group float-right" role="group">
+                        <a href="{{ route('admin.cashier.index') }}"><button class="btn btn-lg btn-success" type="button"><i class="glyphicon glyphicon-ok-sign"></i>Cashier</button></a>
+                    </div>
+                @endif
+
                 <div class="tab-pane active" id="home">
                     <hr>
                         <div class="form-group">

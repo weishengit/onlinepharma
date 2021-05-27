@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.subadmin')
 
 @section('content')
 <!--Container-->
@@ -34,13 +34,13 @@
         {{-- Title --}}
         <h1
             class="border-2 flex items-center font-sans font-bold break-normal text-gray-900 px-2 py-8 text-lg md:text-2xl">
-            <a href="{{ route('admin.index') }}">
+            <a href="{{ route('admin.pharmacist.index') }}">
                 <p class="text-blue-500 hover:text-blue-700 font-bold">
                     Dashboard&nbsp;
                 </p>
             </a>
             /&nbsp;
-            <a href="{{ route('admin.order.index') }}">
+            <a href="{{ route('admin.pharmacist.index') }}">
                 <p class="text-blue-500 hover:text-blue-700 font-bold">
                     Order&nbsp;
                 </p>
@@ -208,7 +208,6 @@
                                     </dd>
                                 </div>
                             </form>
-                            <!--
                             @if ($order->is_void != 1)
                                 @if ($order->status == 'new')
                                     {{-- ACCEPT FORM --}}
@@ -229,61 +228,20 @@
                                         </div>
                                     </form>
                                 @endif
-                                @if ($order->status == 'pending')
-                                    {{-- ACCEPT FORM --}}
-                                    <form action="{{ route('admin.order.dispatch', ['id' => $order->id]) }}" method="POST">
-                                        @csrf
-                                        @method('post')
-                                        <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 border">
-                                            <dt class="text-xl font-medium text-gray-500">
-                                                @if ($order->delivery_mode == 'delivery')
-                                                    Send For Delivery
-                                                @endif
-                                                @if ($order->delivery_mode == 'pickup')
-                                                    Ready For Pickup
-                                                @endif
-                                            </dt>
-                                            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                                <button type="submit"
-                                                    class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                                                    Dispatch
-                                                </button>
-                                            </dd>
-                                        </div>
-                                    </form>
-                                @endif
-                                @if ($order->status == 'dispatched')
-                                    {{-- COMPLETE FORM --}}
-                                    <form action="{{ route('admin.order.complete', ['id' => $order->id]) }}" method="POST">
-                                        @csrf
-                                        @method('post')
-                                        <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 border">
-                                            <dt class="text-xl font-medium text-gray-500">
-                                                Mark As Complete
-                                            </dt>
-                                            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                                <button type="submit"
-                                                    class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                                                    Complete
-                                                </button>
-                                            </dd>
-                                        </div>
-                                    </form>
-                                @endif
-                                -->
-                            {{-- DISABLE FORM --}}
+
+                            {{-- REJECT --}}
                             <form action="{{ route('admin.order.destroy', ['order' => $order->id]) }}" method="POST">
                                 @csrf
                                 @method('delete')
                                 <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 border">
                                     <dt class="text-xl font-medium text-gray-500">
-                                        Void
+                                        Reject
                                     </dt>
                                     <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                                         <input type="text" name="reason" placeholder="reason...">
                                         <button type="submit"
                                             class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                                            Void
+                                            Reject
                                         </button>
                                     </dd>
                                 </div>
@@ -324,23 +282,6 @@
                 </div>
                 <a
                     href="{{ asset('images/temp/rx/' . $order->prescription_image) }}"
-                    class="">
-                    <button type="button"
-                        class="m-5 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                        View
-                    </button>
-                </a>
-                @endif
-            </div>
-            {{-- COMPLETION PHOTO --}}
-            <div class="my-1 px-1 w-1/2 overflow-hidden border">
-                @if ($order->completion_proof != null)
-                <div>
-                    <h2 class="text-gray-900 text-3xl">Proof of Completion</h2>
-                    <img src="{{ asset('images/temp/proof/' . $order->completion_proof) }}" alt="completion image">
-                </div>
-                <a
-                    href="{{ asset('images/temp/proof/' . $order->completion_proof) }}"
                     class="">
                     <button type="button"
                         class="m-5 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">

@@ -33,9 +33,8 @@
 
 
             <div class="w-full container mx-auto flex flex-wrap items-center mt-0 pt-3 pb-3 md:pb-0">
-
                 <div class="w-1/2 pl-2 md:pl-0">
-                    <a class="text-green-600 text-base xl:text-xl no-underline hover:no-underline font-bold" href="{{ route('admin.index') }}">
+                    <a class="text-green-600 text-base xl:text-xl no-underline hover:no-underline font-bold" href="#">
                         <i class="fas fa-heart pr-3"></i> Admin Dashboard
                     </a>
                 </div>
@@ -85,89 +84,12 @@
                     </div>
 
                 </div>
-
-
-                <div class="w-full flex-grow lg:flex lg:items-center lg:w-auto hidden lg:block mt-2 lg:mt-0 bg-white z-20" id="nav-content">
-                    <ul class="list-reset lg:flex flex-1 items-center px-4 md:px-0">
-                        <li class="mr-6 my-2 md:my-0">
-                            <a href="{{ route('admin.index') }}" class="block py-1 md:py-3 pl-1 align-middle text-pink-600 no-underline hover:text-gray-900 border-b-2 border-orange-600 hover:border-orange-600">
-                                <i class="fas fa-home fa-fw mr-3 text-pink-600"></i><span class="pb-1 md:pb-0 text-sm">Home</span>
-                            </a>
-                        </li>
-                        @if (auth()->user()->role->role_name == 'admin')
-                        <li class="mr-6 my-2 md:my-0">
-                            <a href="{{ route('admin.user.index') }}" class="block py-1 md:py-3 pl-1 align-middle text-gray-500 no-underline hover:text-gray-900 border-b-2 border-white hover:border-pink-500">
-                                <i class="fas fa-tasks fa-fw mr-3"></i><span class="pb-1 md:pb-0 text-sm">Accounts</span>
-                            </a>
-                        </li>
-                        @endif
-                        <li class="mr-6 my-2 md:my-0">
-                            <a href="{{ route('admin.manage') }}" class="block py-1 md:py-3 pl-1 align-middle text-gray-500 no-underline hover:text-gray-900 border-b-2 border-white hover:border-purple-500">
-                                <i class="fa fa-box fa-fw mr-3"></i><span class="pb-1 md:pb-0 text-sm">Manage</span>
-                            </a>
-                        </li>
-                        <li class="mr-6 my-2 md:my-0">
-                            <a href="{{ route('admin.product.index') }}" class="block py-1 md:py-3 pl-1 align-middle text-gray-500 no-underline hover:text-gray-900 border-b-2 border-white hover:border-purple-500">
-                                <i class="fa fa-envelope fa-fw mr-3"></i><span class="pb-1 md:pb-0 text-sm">Products</span>
-                            </a>
-                        </li>
-                        <li class="mr-6 my-2 md:my-0">
-                            <a href="{{ route('admin.report.index') }}" class="block py-1 md:py-3 pl-1 align-middle text-gray-500 no-underline hover:text-gray-900 border-b-2 border-white hover:border-green-500">
-                                <i class="fas fa-chart-area fa-fw mr-3"></i><span class="pb-1 md:pb-0 text-sm">Analytics</span>
-                            </a>
-                        </li>
-                        <li class="mr-6 my-2 md:my-0">
-                            <a href="{{ route('admin.order.index') }}" class="block py-1 md:py-3 pl-1 align-middle text-gray-500 no-underline hover:text-gray-900 border-b-2 border-white hover:border-red-500">
-                                <i class="fa fa-wallet fa-fw mr-3"></i><span class="pb-1 md:pb-0 text-sm">Orders</span>
-                            </a>
-                        </li>
-                    </ul>
-
-
-
-                </div>
-
             </div>
         </nav>
+
         {{-- CONTENT --}}
         @yield('content')
         {{-- CONTENT END --}}
-        {{-- FOOTER --}}
-        {{-- <footer class="bg-white border-t border-gray-400 shadow">
-            <div class="container max-w-md mx-auto flex py-8">
-
-                <div class="w-full mx-auto flex flex-wrap">
-                    <div class="flex w-full md:w-1/2 ">
-                        <div class="px-8">
-                            <h3 class="font-bold font-bold text-gray-900">About</h3>
-                            <p class="py-4 text-gray-600 text-sm">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vel mi ut felis tempus commodo nec id erat. Suspendisse consectetur dapibus velit ut lacinia.
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="flex w-full md:w-1/2">
-                        <div class="px-8">
-                            <h3 class="font-bold font-bold text-gray-900">Social</h3>
-                            <ul class="list-reset items-center text-sm pt-3">
-                                <li>
-                                    <a class="inline-block text-gray-600 no-underline hover:text-gray-900 hover:text-underline py-1" href="#">Add social link</a>
-                                </li>
-                                <li>
-                                    <a class="inline-block text-gray-600 no-underline hover:text-gray-900 hover:text-underline py-1" href="#">Add social link</a>
-                                </li>
-                                <li>
-                                    <a class="inline-block text-gray-600 no-underline hover:text-gray-900 hover:text-underline py-1" href="#">Add social link</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-
-
-            </div>
-        </footer> --}}
 
         @yield('script')
 

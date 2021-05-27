@@ -41,6 +41,7 @@ class Order extends Model
         'amount_due',
         'is_void',
         'estimated_dispatch_date',
+        'completion_proof'
     ];
 
     protected $attributes = [
@@ -62,5 +63,10 @@ class Order extends Model
     public function product_return()
     {
         return $this->hasOne(ProductReturn::class);
+    }
+
+    public function delivery()
+    {
+        return $this->hasOne(Delivery::class);
     }
 }
