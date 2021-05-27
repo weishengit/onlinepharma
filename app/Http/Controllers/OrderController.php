@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Item;
 use App\Models\Batch;
+use App\Models\Delivery;
+use App\Models\InvMovement;
 use App\Models\Order;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -165,6 +167,12 @@ class OrderController extends Controller
                 ->get();
 
                 $qty = $item->quantity;
+                // INV MOVEMENT
+                InvMovement::create([
+                    'product_name' => $item->product->id . ' - ' . $item->product->name,
+                    'quantity' => $qty,
+                    'action' => 'SOLD'
+                ]);
 
                 foreach ($batches as $batch) {
                     if ($qty > 0) {
@@ -268,27 +276,40 @@ class OrderController extends Controller
         if ($order == null) {
             return redirect()->route('admin.order.index')->with('message', 'Order not found.');
         }
+        DB::transaction(function () use($order, $request){
+            // DISABLE DISCOUNT
+            Order::where('id', $order->id)
+            ->update([
+                'message' => $request->input('reason'),
+                'status' => 'void',
+                'is_void' => 1,
+            ]);
 
-        // DISABLE DISCOUNT
-        Order::where('id', $order->id)
-        ->update([
-            'message' => $request->input('reason'),
-            'status' => 'void',
-            'is_void' => 1,
-        ]);
+            // CANCEL DELIVERY IF VOIDED
+            if ($order->delivery_mode == 'delivery') {
+                if ($order->delivery()->exists()) {
+                    Delivery::where('order_id')
+                    ->update([
+                        'status' => 'void',
+                        'is_void' => 1,
+                    ]);
+                }
+            }
 
-        $receiver = '';
-        if (env('NEXMO_TEST_MODE')) {
-            $receiver = env('NEXMO_TEST_NUMBER');
-        }
-        else{
-            $receiver = '63' . ltrim($order->contact, $order->contact[0]);
-        }
-        Nexmo::message()->send([
-            'to' => $receiver,
-            'from' => config('app.name', 'Online Pharma'),
-            'text' => 'Ref#'. $order->ref_no  .' : Your Order Has Been Cancelled. - Reason: ' . $request->input('reason'),
-        ]);
+            $receiver = '';
+            if (env('NEXMO_TEST_MODE')) {
+                $receiver = env('NEXMO_TEST_NUMBER');
+            }
+            else{
+                $receiver = '63' . ltrim($order->contact, $order->contact[0]);
+            }
+            Nexmo::message()->send([
+                'to' => $receiver,
+                'from' => config('app.name', 'Online Pharma'),
+                'text' => 'Ref#'. $order->ref_no  .' : Your Order Has Been Cancelled. - Reason: ' . $request->input('reason'),
+            ]);
+        });
+
 
 
         return redirect()

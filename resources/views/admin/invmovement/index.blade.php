@@ -108,8 +108,16 @@
                 </p>
             </a>
             /&nbsp;
+            <a
+                href="{{ route('admin.index') }}">
+                <p
+                    class="text-blue-500 hover:text-blue-700 font-bold">
+                    Inventory&nbsp;
+                </p>
+            </a>
+            /&nbsp;
             <p class="text-indigo-700">
-                Deliveries
+                Movement
             </p>
 		</h1>
 
@@ -118,29 +126,19 @@
             <table id="data_table" class="stripe hover" style="width:100%; padding-top: 1em;  padding-bottom: 1em;">
                 <thead>
                     <tr>
-                        <th>View</th>
                         <th>Date</th>
-                        <th>Reference</th>
-                        <th>Courier</th>
-                        <th>Status</th>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                @foreach ($deliveries as $delivery)
+                @foreach ($items as $item)
                     <tr>
-                        <td>
-                            <a href="{{ route('admin.delivery.show', ['delivery' => $delivery->id]) }}">
-                            <button
-                                type="button"
-                                class="m-2 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                                View
-                            </button>
-                            </a>
-                        </td>
-                        <td>{{ $delivery->created_at }}</td>
-                        <td>{{ $delivery->order->ref_no }}</td>
-                        <td>{{ $delivery->driver_id }} - {{ $delivery->driver_name }}</td>
-                        <td>{{ $delivery->status }}</td>
+                        <td>{{ $item->created_at }}</td>
+                        <td>{{ $item->product_name }}</td>
+                        <td>{{ $item->quantity }}</td>
+                        <td>{{ $item->action }}</td>
                     </tr>
                 @endforeach
                 </tbody>

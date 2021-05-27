@@ -17,7 +17,8 @@ class DeliveryController extends Controller
      */
     public function index()
     {
-        //
+        $deliveries = Delivery::where('is_void', 0)->get();
+        return view('admin.delivery.index')->with('deliveries', $deliveries);
     }
 
     // CREATE DELIVERY
@@ -84,42 +85,13 @@ class DeliveryController extends Controller
      * @param  \App\Models\Delivery  $delivery
      * @return \Illuminate\Http\Response
      */
-    public function show(Delivery $delivery)
+    public function show($id)
     {
-        //
+        $delivery = Delivery::find($id);
+        if ($delivery == null) {
+            return redirect()->route('admin.delivery.index')->with('message', 'Delivery not found.');
+        }
+        return view('admin.delivery.show')->with('delivery', $delivery);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Delivery  $delivery
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Delivery $delivery)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Delivery  $delivery
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Delivery $delivery)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Delivery  $delivery
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Delivery $delivery)
-    {
-        //
-    }
 }
