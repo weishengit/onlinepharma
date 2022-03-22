@@ -71,7 +71,7 @@ class OrderController extends Controller
                 ->sum('remaining_quantity');
 
             if ($stock == null || $stock < $item->quantity) {
-                return redirect()->back()->with('message', 'Not enough "' . $item->name . '" in stock to complete the order #' . $order->id . '.');
+                return redirect()->back()->with('message', 'Not enough "' . $item->name . '" in stock to complete the order #' . $order->ref_no . '.');
             }
         }
 
@@ -117,7 +117,7 @@ class OrderController extends Controller
                 ->sum('remaining_quantity');
 
             if ($stock == null || $stock < $item->quantity) {
-                return redirect()->back()->with('message', 'Not enough "' . $item->name . '" in stock to complete the order #' . $order->id . '.');
+                return redirect()->back()->with('message', 'Not enough "' . $item->name . '" in stock to complete the order #' . $order->ref_no . '.');
             }
 
             DB::transaction(function () use($item, $order, $request) {

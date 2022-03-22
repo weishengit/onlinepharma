@@ -1,0 +1,11 @@
+1. Add sale carousel to front ui
+2. Add batch links and pages
+3. Fix contact page
+4. Add ability to download pdf invoices
+5. Add email support
+6. Add iventory overview
+7. filterable analytics page
+9. make photos of tables for docu
+10. critical level view
+11. expiration view
+12. remove graphs in admin home

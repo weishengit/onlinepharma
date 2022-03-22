@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
 use App\Models\Sale;
+use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Builder;
 
 class SaleController extends Controller
 {
@@ -15,7 +16,9 @@ class SaleController extends Controller
      */
     public function index()
     {
-        $sales = Sale::all();
+        $sales = Sale::whereHas('product', function (Builder $query) {
+            $query->where('is_active', '1');
+        })->get();
 
         return view('admin.sale.index')
             ->with('sales' ,$sales);

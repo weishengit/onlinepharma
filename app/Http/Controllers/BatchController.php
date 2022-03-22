@@ -14,7 +14,9 @@ class BatchController extends Controller
      */
     public function index()
     {
-        //
+        $batches = Batch::where('is_active', 1)->get();
+
+        return view('admin.batch.index')->with('batches', $batches);
     }
 
     /**

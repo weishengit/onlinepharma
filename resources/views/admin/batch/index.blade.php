@@ -110,7 +110,7 @@
             /&nbsp;
             <p
                 class="text-blue-500 hover:text-blue-700 font-bold">
-                Sale&nbsp;
+                Inventory&nbsp;
             </p>
 		</h1>
 
@@ -119,10 +119,11 @@
             <table id="data_table" class="stripe hover" style="width:100%; padding-top: 1em;  padding-bottom: 1em;">
                 <thead>
                     <tr>
+                        <th>Batch Number</th>
                         <th>Product ID</th>
                         <th>Product Name</th>
-                        <th>Real Price</th>
-                        <th>Discount Price</th>
+                        <th>Initial Quantity</th>
+                        <th>Remaining Quantity</th>
                         <th>Discount Rate</th>
                         <th>Edit</th>
                     </tr>
