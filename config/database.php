@@ -3,7 +3,6 @@
 use Illuminate\Support\Str;
 
 // POST GRES URL
-$DATABASE_URL = parse_url('postgres://gffiwdysuacngt:2ee38b3bd796a863a65957f67b12d5c633843dec532688c912dca80066459992@ec2-23-21-229-200.compute-1.amazonaws.com:5432/dd6ti0cq9jogd2');
 
 return [
 
@@ -18,7 +17,7 @@ return [
     |
     */
 
-    'default' => env('DB_CONNECTION', 'pgsql'),
+    'default' => env('DB_CONNECTION', 'mysql'),
 
     /*
     |--------------------------------------------------------------------------
